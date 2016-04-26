@@ -2,10 +2,15 @@ package com.nightonke.githubwidget;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.widget.ImageView;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,30 +29,86 @@ public class MainActivity extends AppCompatActivity {
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
 
-        imageView.setImageBitmap(get2DBitmap(getTestData()));
+        imageView.setImageBitmap(get2DBitmap(getTestData(), 0, 0, Color.parseColor("#000000")));
     }
 
-    private Bitmap get2DBitmap(Day[] contributions) {
+    private Bitmap get2DBitmap(
+            ArrayList<Day> contributions,
+            int startWeekDay,
+            int baseColor,
+            int textColor) {
         Bitmap bitmap;
         Canvas canvas;
         Paint blockPaint;
         Paint textPaint;
 
-        int baseColor = Util.getBaseColor(this);
         int bitmapWidth = Util.getScreenWidth(this);
         int horizontalBlockNumber = Util.getContributionsColumnNumber(TEST_DATA);
         int verticalBlockNumber = 7;
         float ADJUST_VALUE = 0.8f;
         float blockWidth = bitmapWidth / (ADJUST_VALUE + horizontalBlockNumber) * (1.0F - 0.1F);
         float spaceWidth = bitmapWidth / (ADJUST_VALUE + horizontalBlockNumber) - blockWidth;
-        float textHeight = blockWidth * 0.87F;
+        float textHeight = blockWidth * 1F;
+        float topMargin = 7f;
         int bitmapHeight = (int)(textHeight + verticalBlockNumber * (blockWidth + spaceWidth) + 7);
 
+        bitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.ARGB_8888);
+        canvas = new Canvas(bitmap);
+        blockPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        blockPaint.setStyle(Paint.Style.FILL);
+        textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        textPaint.setTextSize(textHeight);
+        textPaint.setColor(textColor);
+        textPaint.setTypeface(Typeface.create(Typeface.DEFAULT, 0));
 
+        // draw the text for weekdays
+        float textStartHeight = textHeight + topMargin + blockWidth + spaceWidth;
+        Paint.FontMetricsInt fontMetrics = textPaint.getFontMetricsInt();
+        float baseline = (
+                textStartHeight + blockWidth +
+                textStartHeight -
+                fontMetrics.bottom - fontMetrics.top) / 2;
+        canvas.drawText(Util.getWeekDayFirstLetter((startWeekDay + 1) % 7),
+                0, baseline, textPaint);
+        canvas.drawText(Util.getWeekDayFirstLetter((startWeekDay + 3) % 7),
+                0, baseline + 2 * (blockWidth + spaceWidth), textPaint);
+        canvas.drawText(Util.getWeekDayFirstLetter((startWeekDay + 5) % 7),
+                0, baseline + 4 * (blockWidth + spaceWidth), textPaint);
 
+        // draw the blocks
+        int currentWeekDay = Util.getWeekDayFromDate(
+                contributions.get(0).year,
+                contributions.get(0).month,
+                contributions.get(0).day);
+        float x = textHeight + topMargin;
+        float y = (currentWeekDay - startWeekDay + 7) % 7
+                * (blockWidth + spaceWidth) + topMargin + textHeight;
+        int lastMonth = contributions.get(0).month;
+        for (Day day : contributions) {
+            blockPaint.setColor(Util.getLevelColor(baseColor, day.level));
+            canvas.drawRect(x, y, x + blockWidth, y + blockWidth, blockPaint);
+
+            currentWeekDay = (currentWeekDay + 1) % 7;
+            if (currentWeekDay == startWeekDay) {
+                // another column
+                x += blockWidth + spaceWidth;
+                y = topMargin + textHeight;
+                if (day.month != lastMonth) {
+                    // judge whether we should draw the text of month
+                    canvas.drawText(
+                            Util.getMonthName(day.year, day.month, day.day),
+                            x, textHeight, textPaint);
+                    lastMonth = day.month;
+                }
+            } else {
+                y += blockWidth + spaceWidth;
+            }
+        }
+
+        return bitmap;
     }
 
-    private Day[] getTestData() {
+    private ArrayList<Day> getTestData() {
         return Util.getContributionsFromString(TEST_DATA);
     }
 
@@ -55,7 +116,6 @@ public class MainActivity extends AppCompatActivity {
             "<svg width=\"721\" height=\"110\" class=\"js-calendar-graph-svg\">\n" +
             "  <g transform=\"translate(20, 20)\">\n" +
             "      <g transform=\"translate(0, 0)\">\n" +
-            "          <rect class=\"day\" width=\"11\" height=\"11\" y=\"65\" fill=\"#eeeeee\" data-count=\"0\" data-date=\"2015-04-24\"/>\n" +
             "          <rect class=\"day\" width=\"11\" height=\"11\" y=\"78\" fill=\"#eeeeee\" data-count=\"0\" data-date=\"2015-04-25\"/>\n" +
             "      </g>\n" +
             "      <g transform=\"translate(13, 0)\">\n" +
@@ -528,6 +588,7 @@ public class MainActivity extends AppCompatActivity {
             "      </g>\n" +
             "      <g transform=\"translate(689, 0)\">\n" +
             "          <rect class=\"day\" width=\"11\" height=\"11\" y=\"0\" fill=\"#d6e685\" data-count=\"4\" data-date=\"2016-04-24\"/>\n" +
+            "          <rect class=\"day\" width=\"11\" height=\"11\" y=\"13\" fill=\"#d6e685\" data-count=\"1\" data-date=\"2016-04-25\"/>\n" +
             "      </g>\n" +
             "      <text x=\"26\" y=\"-5\" class=\"month\">May</text>\n" +
             "      <text x=\"91\" y=\"-5\" class=\"month\">Jun</text>\n" +

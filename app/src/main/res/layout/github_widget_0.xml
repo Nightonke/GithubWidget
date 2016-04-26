@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/base_layout"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/github_widget_background"
+    >
+
+    <LinearLayout
+        android:layout_height="match_parent"
+        android:layout_width="@dimen/github_widget_0_avator_border_size"
+        android:orientation="vertical"
+        >
+
+        <ImageView
+            android:id="@+id/avatar"
+            android:layout_width="@dimen/github_widget_0_avator_size"
+            android:layout_height="@dimen/github_widget_0_avator_size"
+            android:src="@drawable/default_avatar"
+            android:layout_marginLeft="@dimen/github_widget_0_avator_padding"
+            android:layout_marginStart="@dimen/github_widget_0_avator_padding"
+            android:layout_marginRight="@dimen/github_widget_0_avator_padding"
+            android:layout_marginEnd="@dimen/github_widget_0_avator_padding"
+            android:layout_marginTop="@dimen/github_widget_0_avator_padding"
+            />
+
+        <TextView
+            android:id="@+id/contributions_sum"
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="@dimen/github_widget_0_contributions_sum_text_size"
+            android:textColor="@color/default_text_color"/>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/contributions"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        />
+
+</LinearLayout>

@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">GithubWidget</string>
+
+    <string name="show_toast_title">Show Toast</string>
+    <string name="show_toast_content">Whether show toast when operating or error happening.</string>
+
+    <string name="refreshing">Refreshing&#8230;</string>
+    <string name="refresh_failed">Refresh failed!</string>
 </resources>

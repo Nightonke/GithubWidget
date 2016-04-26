@@ -20,7 +20,10 @@ import android.media.ThumbnailUtils;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.view.Display;
+import android.view.View;
 import android.view.WindowManager;
+
+import com.github.johnpersano.supertoasts.SuperToast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -412,7 +415,26 @@ public class Util {
         return output;
     }
 
-
+    public static int lastToast = -1;
+    public static void showToast(int text) {
+        if (!SettingsManager.getShowToast() || text == lastToast) return;
+        lastToast = text;
+        SuperToast.cancelAllSuperToasts();
+        SuperToast superToast = new SuperToast(GithubWidgetApplication.getAppContext());
+        superToast.setAnimations(SuperToast.Animations.FLYIN);
+        superToast.setDuration(SuperToast.Duration.SHORT);
+        superToast.setTextColor(Color.parseColor("#ffffff"));
+        superToast.setTextSize(SuperToast.TextSize.SMALL);
+        superToast.setText(GithubWidgetApplication.getAppContext().getResources().getString(text));
+        superToast.setBackground(SuperToast.Background.RED);
+        superToast.setOnDismissListener(new SuperToast.OnDismissListener() {
+            @Override
+            public void onDismiss(View view) {
+                lastToast = -1;
+            }
+        });
+        superToast.show();
+    }
 
 
 

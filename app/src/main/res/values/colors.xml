@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="default_text_color">#000000</color>
+    <color name="settings_title_color">#000000</color>
 </resources>

@@ -1,12 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.nightonke.githubwidget.SettingsActivity">
 
-</RelativeLayout>
+    <LinearLayout
+        android:id="@+id/show_toast_layout"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal"
+        android:clickable="true"
+        android:background="?android:selectableItemBackground"
+        >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/show_toast_title"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="@string/show_toast_title"
+                android:gravity="bottom|start"
+                android:maxLines="1"
+                android:textColor="@color/settings_title_color"
+                android:textSize="18sp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                />
+
+            <TextView
+                android:id="@+id/show_toast_content"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="@string/show_toast_content"
+                android:gravity="top|start"
+                android:maxLines="2"
+                android:textSize="12sp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                />
+
+        </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/show_toast_checkbox"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginRight="-30dp"
+            android:layout_marginEnd="-30dp"
+            />
+
+    </LinearLayout>
+
+</ScrollView>

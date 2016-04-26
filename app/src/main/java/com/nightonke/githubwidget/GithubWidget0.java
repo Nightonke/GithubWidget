@@ -27,6 +27,7 @@ public class GithubWidget0 extends AppWidgetProvider {
                 || intent.getAction().equals(Actions.CLICK_CONTRIBUTIONS_SUM)) {
             // just update
             if (BuildConfig.DEBUG) Log.d("GithubWidget", "Just update");
+            Util.showToast(R.string.refreshing);
             updateAll(context, -1);
         } else if (intent.getAction().equals(Actions.CLICK_CONTRIBUTIONS)) {
             if (BuildConfig.DEBUG) Log.d("GithubWidget", "Go to settings");

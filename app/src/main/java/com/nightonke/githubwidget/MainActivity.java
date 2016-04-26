@@ -3,7 +3,9 @@ package com.nightonke.githubwidget;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.DashPathEffect;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,28 +31,65 @@ public class MainActivity extends AppCompatActivity {
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
 
-        imageView.setImageBitmap(get2DBitmap(getTestData(), 0, 0, Color.parseColor("#000000")));
+        imageView.setImageBitmap(get3DBitmap(getTestData(), 0, SettingsManager.getBaseColor(), Color.parseColor("#000000"), true, true));
     }
 
-    private Bitmap get2DBitmap(
+    private Bitmap get3DBitmap(
             ArrayList<Day> contributions,
-            int startWeekDay,
+            int startWeekday,
             int baseColor,
-            int textColor) {
+            int textColor,
+            boolean drawMonthText,
+            boolean drawWeekdayText) {
         Bitmap bitmap;
         Canvas canvas;
         Paint blockPaint;
         Paint textPaint;
+        Paint dash;
 
         int bitmapWidth = Util.getScreenWidth(this);
-        int horizontalBlockNumber = Util.getContributionsColumnNumber(TEST_DATA);
-        int verticalBlockNumber = 7;
-        float ADJUST_VALUE = 0.8f;
-        float blockWidth = bitmapWidth / (ADJUST_VALUE + horizontalBlockNumber) * (1.0F - 0.1F);
-        float spaceWidth = bitmapWidth / (ADJUST_VALUE + horizontalBlockNumber) - blockWidth;
-        float textHeight = blockWidth * 1F;
-        float topMargin = 7f;
-        int bitmapHeight = (int)(textHeight + verticalBlockNumber * (blockWidth + spaceWidth) + 7);
+        int bitmapHeight = bitmapWidth;
+        int columnNumber = Util.getContributionsColumnNumber(TEST_DATA);
+        int n = columnNumber - 2;
+        float paddingLeft = 10f;
+        float paddingRight = 10f;
+        float paddingTop = 10f;
+        float maxHeight = 100f;
+        float emptyHeight = 5f;
+        float a1 = 28f;
+        float a2 = 32f;
+        float rate = 1 / 6f;
+        float cosa1 = (float)Math.cos(Math.toRadians(a1));
+        float cosa2 = (float)Math.cos(Math.toRadians(a2));
+        float ls = (bitmapWidth - paddingLeft - paddingRight)
+                /
+                ((1 / (1 + rate)) + 7 * cosa1 + (n + 1) * cosa2);
+        float lscosa1 = (float)Math.cos(Math.toRadians(a1)) * (ls);
+        float lscosa2 = (float)Math.cos(Math.toRadians(a2)) * (ls);
+        float lssina1 = (float)Math.sin(Math.toRadians(a1)) * (ls);
+        float lssina2 = (float)Math.sin(Math.toRadians(a2)) * (ls);
+        float l = ls / (1 + rate);
+        float lcosa1 = (float)Math.cos(Math.toRadians(a1)) * l;
+        float lcosa2 = (float)Math.cos(Math.toRadians(a2)) * l;
+        float lsina1 = (float)Math.sin(Math.toRadians(a1)) * l;
+        float lsina2 = (float)Math.sin(Math.toRadians(a2)) * l;
+        float s = l * rate;
+        float topFaceheight = lsina1 + lsina2;
+        float x6 = paddingLeft + lcosa2;
+        float x0 = x6 + 7 * lscosa1;
+        float y0 = paddingTop + topFaceheight + maxHeight + 2 * emptyHeight;
+        int currentWeekDay = Util.getWeekDayFromDate(
+                contributions.get(0).year,
+                contributions.get(0).month,
+                contributions.get(0).day);
+        float x = x0 - ((currentWeekDay - startWeekday + 7) % 7) * lscosa1;
+        float y = y0 + ((currentWeekDay - startWeekday + 7) % 7) * lssina1;
+        float textHeight = l;
+        float maxData = 0;
+        for (Day day : contributions) maxData = Math.max(maxData, day.data);
+        int endWeekday = (startWeekday - 1 + 7) % 7;
+        float dashLength = 45f;
+        float dashAndTextPadding = 10f;
 
         bitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.ARGB_8888);
         canvas = new Canvas(bitmap);
@@ -60,48 +99,65 @@ public class MainActivity extends AppCompatActivity {
         textPaint.setTextSize(textHeight);
         textPaint.setColor(textColor);
         textPaint.setTypeface(Typeface.create(Typeface.DEFAULT, 0));
+        dash = new Paint();
+        dash.setARGB(255, 0, 0,0);
+        dash.setStyle(Paint.Style.STROKE);
+        dash.setColor(textColor);
+        dash.setPathEffect(new DashPathEffect(new float[] {5, 5}, 0));
 
-        // draw the text for weekdays
-        float textStartHeight = textHeight + topMargin + blockWidth + spaceWidth;
-        Paint.FontMetricsInt fontMetrics = textPaint.getFontMetricsInt();
-        float baseline = (
-                textStartHeight + blockWidth +
-                textStartHeight -
-                fontMetrics.bottom - fontMetrics.top) / 2;
-        canvas.drawText(Util.getWeekDayFirstLetter((startWeekDay + 1) % 7),
-                0, baseline, textPaint);
-        canvas.drawText(Util.getWeekDayFirstLetter((startWeekDay + 3) % 7),
-                0, baseline + 2 * (blockWidth + spaceWidth), textPaint);
-        canvas.drawText(Util.getWeekDayFirstLetter((startWeekDay + 5) % 7),
-                0, baseline + 4 * (blockWidth + spaceWidth), textPaint);
-
-        // draw the blocks
-        int currentWeekDay = Util.getWeekDayFromDate(
-                contributions.get(0).year,
-                contributions.get(0).month,
-                contributions.get(0).day);
-        float x = textHeight + topMargin;
-        float y = (currentWeekDay - startWeekDay + 7) % 7
-                * (blockWidth + spaceWidth) + topMargin + textHeight;
         int lastMonth = contributions.get(0).month;
         for (Day day : contributions) {
-            blockPaint.setColor(Util.getLevelColor(baseColor, day.level));
-            canvas.drawRect(x, y, x + blockWidth, y + blockWidth, blockPaint);
+            float height;
+            if (day.data == 0) height = emptyHeight;
+            else height = maxHeight * day.data / maxData + 2 * emptyHeight;
+
+            // face right-bottom corner
+            blockPaint.setColor(
+                    Util.calculateShadowColorRightBottom(
+                            Util.calculateLevelColor(baseColor, day.level)));
+            Path path = new Path();
+            path.moveTo(x, y);
+            path.lineTo(x + lcosa1, y - lsina1);
+            path.lineTo(x + lcosa1, y - lsina1 - height);
+            path.lineTo(x, y - height);
+            path.lineTo(x, y);
+            canvas.drawPath(path, blockPaint);
+
+            blockPaint.setColor(
+                    Util.calculateShadowColorLeftBottom(
+                            Util.calculateLevelColor(baseColor, day.level)));
+            path = new Path();
+            path.moveTo(x, y);
+            path.lineTo(x - lcosa2, y - lsina2);
+            path.lineTo(x - lcosa2, y - lsina2 - height);
+            path.lineTo(x, y - height);
+            path.lineTo(x, y);
+            canvas.drawPath(path, blockPaint);
+
+            blockPaint.setColor(Util.calculateLevelColor(baseColor, day.level));
+            path = new Path();
+            path.moveTo(x, y - height);
+            path.lineTo(x + lcosa1, y - lsina1 - height);
+            path.lineTo(x + lcosa1 - lcosa2, y - lsina1 - height - lsina2);
+            path.lineTo(x - lcosa2, y - lsina2 - height);
+            path.lineTo(x, y - height);
+            canvas.drawPath(path, blockPaint);
 
             currentWeekDay = (currentWeekDay + 1) % 7;
-            if (currentWeekDay == startWeekDay) {
+            if (currentWeekDay == startWeekday) {
                 // another column
-                x += blockWidth + spaceWidth;
-                y = topMargin + textHeight;
-                if (day.month != lastMonth) {
-                    // judge whether we should draw the text of month
-                    canvas.drawText(
-                            Util.getMonthName(day.year, day.month, day.day),
-                            x, textHeight, textPaint);
+                x = x + 6 * lscosa1 + lscosa2;
+                y = y - 6 * lssina1 + lssina2;
+            } else {
+                x -= lscosa1;
+                y += lssina1;
+                if (currentWeekDay == endWeekday && day.month != lastMonth && drawMonthText) {
+                    canvas.drawLine(x - lcosa2, y - lsina2,
+                            x - lcosa2, y - lsina2 + dashLength, dash);
+                    canvas.drawText(Util.getMonthName(day.year, day.month, day.day),
+                            x - lcosa2 + dashAndTextPadding, y - lsina2 + dashLength, textPaint);
                     lastMonth = day.month;
                 }
-            } else {
-                y += blockWidth + spaceWidth;
             }
         }
 

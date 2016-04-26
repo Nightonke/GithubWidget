@@ -137,11 +137,9 @@ public class ContributionsTask extends AsyncTask<String, Void, String> {
         } else {
             if (BuildConfig.DEBUG)
                 Log.d("GithubWidget", "Get user contributions successfully: " + result);
-            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-            int startWeekDay = sp.getInt("START_WEEK_DAY", 0);
-            int baseColor = sp.getInt("BASE_COLOR", 0);
-            int textColor = sp.getInt("TEXT_COLOR",
-                    ContextCompat.getColor(context, R.color.default_text_color));
+            int startWeekDay = SettingsManager.getStartWeekDay();
+            int baseColor = SettingsManager.getBaseColor();
+            int textColor = SettingsManager.getTextColor();
             if (is2D) {
                 Bitmap bitmap = Util.get2DBitmap(context, result, startWeekDay,
                         baseColor, textColor, bitmapWidth, bitmapHeight);

@@ -133,24 +133,6 @@ public class Util {
     }
 
     /**
-     * Get the color of a certain level.
-     *
-     * @param baseColor The base color.
-     * @param level The level, from 0 to 4.
-     * @return The color of the input level.
-     */
-    public static int getLevelColor(int baseColor, int level) {
-        switch (level) {
-            case 0: return Color.parseColor("#eeeeee");
-            case 1: return Color.parseColor("#d6e685");
-            case 2: return Color.parseColor("#8cc665");
-            case 3: return Color.parseColor("#44a340");
-            case 4: return Color.parseColor("#1e6823");
-            default: return Color.parseColor("#eeeeee");
-        }
-    }
-
-    /**
      * Get the month name for a certain date.
      *
      * @param year The year of the date.
@@ -335,7 +317,7 @@ public class Util {
                 * (blockWidth + spaceWidth) + topMargin + monthTextHeight;
         int lastMonth = contributions.get(0).month;
         for (Day day : contributions) {
-            blockPaint.setColor(Util.getLevelColor(baseColor, day.level));
+            blockPaint.setColor(Util.calculateLevelColor(baseColor, day.level));
             canvas.drawRect(x, y, x + blockWidth, y + blockWidth, blockPaint);
 
             currentWeekDay = (currentWeekDay + 1) % 7;
@@ -415,7 +397,14 @@ public class Util {
         return output;
     }
 
+
     public static int lastToast = -1;
+
+    /**
+     * Show toast.
+     *
+     * @param text Resource id of the text.
+     */
     public static void showToast(int text) {
         if (!SettingsManager.getShowToast() || text == lastToast) return;
         lastToast = text;
@@ -436,7 +425,134 @@ public class Util {
         superToast.show();
     }
 
+    /**
+     * Get the number of weekdays in the first week.
+     *
+     * @param contributions Days.
+     * @param startWeekDay Start from this weekday.
+     * @return The number of weekdays in the first week.
+     */
+    public static int getFirstWeekDaysNumber(ArrayList<Day> contributions, WeekDay startWeekDay) {
+        int sum = 0;
+        for (Day day : contributions) {
+            sum++;
+            if (getWeekDayFromDate(day.year, day.month, day.day) == startWeekDay.v && sum != 0)
+                break;
+        }
+        return sum;
+    }
 
+    /**
+     * Get the number of weekdays in the last week.
+     *
+     * @param contributions Days.
+     * @param startWeekDay Start from this weekday.
+     * @return The number of weekdays in the last week.
+     */
+    public static int getLastWeekDaysNumber(ArrayList<Day> contributions, WeekDay startWeekDay) {
+        int sum = 0;
+        for (int i = contributions.size() - 1; i >= 0; i--) {
+            Day day = contributions.get(i);
+            sum++;
+            if (getWeekDayFromDate(day.year, day.month, day.day) == startWeekDay.v && sum != 0)
+                break;
+        }
+        return sum;
+    }
+
+    /**
+     * Calculate the red value for different level.
+     *
+     * @param baseR Red value of base color.
+     * @param level Level.
+     * @return The red value for the level of the base color.
+     */
+    public static int calculateR(int baseR, int level) {
+        switch (level) {
+            case 0: return 238;
+            case 1: return baseR;
+            case 2: return (int) (baseR * (9 + 46 + 15) / (37f + 9 + 46 + 15));
+            case 3: return (int) (baseR * (46 + 15) / (37f + 9 + 46 + 15));
+            case 4: return (int) (baseR * (15) / (37f + 9 + 46 + 15));
+            default: return 238;
+        }
+    }
+
+    /**
+     * Calculate the green value for different level.
+     *
+     * @param baseG Green value of base color.
+     * @param level Level.
+     * @return The green value for the level of the base color.
+     */
+    public static int calculateG(int baseG, int level) {
+        switch (level) {
+            case 0: return 238;
+            case 1: return baseG;
+            case 2: return (int) (baseG * (35 + 59 + 104) / (32f + 35 + 59 + 104));
+            case 3: return (int) (baseG * (59 + 104) / (32f + 35 + 59 + 104));
+            case 4: return (int) (baseG * (104) / (32f + 35 + 59 + 104));
+            default: return 238;
+        }
+    }
+
+    /**
+     * Calculate the blue value for different level.
+     *
+     * @param baseB Blue value of base color.
+     * @param level Level.
+     * @return The blue value for the level of the base color.
+     */
+    public static int calculateB(int baseB, int level) {
+        switch (level) {
+            case 0: return 238;
+            case 1: return baseB;
+            case 2: return (int) (baseB * (37 + 29 + 35) / (32f + 37 + 29 + 35));
+            case 3: return (int) (baseB * (29 + 35) / (32f + 37 + 29 + 35));
+            case 4: return (int) (baseB * (35) / (32f + 37 + 29 + 35));
+            default: return 238;
+        }
+    }
+
+    /**
+     * Calculate the value for different color.
+     *
+     * @param baseColor Value of base color.
+     * @param level Level.
+     * @return The value for the level of the base color.
+     */
+    public static int calculateLevelColor(int baseColor, int level) {
+        return Color.rgb(
+                calculateR(Color.red(baseColor), level),
+                calculateG(Color.green(baseColor), level),
+                calculateB(Color.blue(baseColor), level));
+    }
+
+    /**
+     * Calculate the shadow color face left-bottom corner.
+     *
+     * @param baseColor The base color.
+     * @return The shadow color.
+     */
+    public static int calculateShadowColorLeftBottom(int baseColor) {
+        return Color.rgb(
+                (int)(Color.red(baseColor) * 173f / 214),
+                (int)(Color.green(baseColor) * 209f / 230),
+                (int)(Color.blue(baseColor) * 113f / 133));
+    }
+
+    /**
+     * Calculate the shadow color face right-bottom corner.
+     *
+     * @param baseColor The base color.
+     * @return The shadow color.
+     */
+    public static int calculateShadowColorRightBottom(int baseColor) {
+        return Color.rgb(
+                (int)(Color.red(baseColor) * 193f / 214),
+                (int)(Color.green(baseColor) * 219f / 230),
+                (int)(Color.blue(baseColor) * 93f / 133));
+    }
 
 
 

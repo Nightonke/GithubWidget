@@ -6,4 +6,5 @@
 
     <color name="default_text_color">#000000</color>
     <color name="settings_title_color">#000000</color>
+    <color name="divider_color">#dddddd</color>
 </resources>

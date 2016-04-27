@@ -38,6 +38,7 @@ public class GithubWidget1 extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
+        context.startService(new Intent(context, GithubWidgetService.class));
 
         for (int appWidgetId : appWidgetIds) {
             updateAll(context, appWidgetId);

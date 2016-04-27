@@ -6,7 +6,7 @@
 
     <string name="reset_base_color">Reset Color</string>
 
-    <string name="show_toast_title">Show Toast</string>
+    <string name="show_toast_title">Show toast</string>
     <string name="show_toast_content">Whether show toast when operating or error happening.</string>
 
     <string name="show_month_dash_in_3d_title">Show month dash</string>
@@ -14,6 +14,12 @@
 
     <string name="show_weekday_dash_in_3d_title">Show weekday dash</string>
     <string name="show_weekday_dash_in_3d_content">Whether show weekday dash and text in 3D chart.</string>
+
+    <string name="start_from_sunday">Start from Sunday</string>
+    <string name="start_from_monday">Start from Monday</string>
+
+    <string name="update_every">Update every&#160;</string>
+    <string name="dot">.</string>
 
     <string name="refreshing">Refreshing&#8230;</string>
     <string name="refresh_failed">Refresh failed!</string>

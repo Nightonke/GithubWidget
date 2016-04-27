@@ -24,6 +24,8 @@
 
         </activity>
 
+        <service android:name=".GithubWidgetService"/>
+
         <receiver android:name=".GithubWidget0">
             <meta-data
                 android:name="android.appwidget.provider"

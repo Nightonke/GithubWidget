@@ -3,6 +3,7 @@ package com.nightonke.githubwidget;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 /**
  * Created by Weiping on 2016/4/26.
@@ -25,6 +26,8 @@ public class SettingsManager {
     private static boolean showMonthDashIn3D = false;
     
     private static boolean showWeekdayDashIn3D = false;
+    
+    private static int updateTime = Util.HALF_AN_HOUR;
 
     public static boolean getShowToast() {
         showToast = PreferenceManager.
@@ -160,6 +163,22 @@ public class SettingsManager {
         SharedPreferences.Editor editor = PreferenceManager
                 .getDefaultSharedPreferences(GithubWidgetApplication.getAppContext()).edit();
         editor.putBoolean("SHOW_WEEKDAY_DASH_IN_3D", showWeekdayDashIn3D);
+        editor.commit();
+    }
+
+    public static int getUpdateTime() {
+        updateTime = PreferenceManager.
+                getDefaultSharedPreferences(GithubWidgetApplication.getAppContext())
+                .getInt("UPDATE_TIME", updateTime);
+        return updateTime;
+    }
+
+    public static void setUpdateTime(int updateTime) {
+        if (BuildConfig.DEBUG) Log.d("GithubWidget", "Update every " + updateTime + " ms");
+        SettingsManager.updateTime = updateTime;
+        SharedPreferences.Editor editor = PreferenceManager
+                .getDefaultSharedPreferences(GithubWidgetApplication.getAppContext()).edit();
+        editor.putInt("UPDATE_TIME", updateTime);
         editor.commit();
     }
     

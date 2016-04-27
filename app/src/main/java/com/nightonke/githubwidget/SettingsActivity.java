@@ -17,6 +17,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -54,11 +55,20 @@ public class SettingsActivity extends AppCompatActivity
     private LinearLayout showWeekdayDashIn3DLayout;
     private CheckBox showWeekdayDashIn3DCheckBox;
 
+    private LinearLayout startFromLayout;
+    private RadioButton startFromSunday;
+    private RadioButton startFromMonday;
+
+    private SeekBar updateTimeSeekBar;
+    private TextView updateTimeText;
+
     private String oldUserName;
     private int oldBaseColor;
     private boolean oldShowToast;
     private boolean oldShowMonthDashIn3D;
     private boolean oldShowWeekdayDashIn3D;
+    private Weekday oldWeekday;
+    private int oldUpdateTime;
 
     private int newBaseColor;
 
@@ -128,6 +138,48 @@ public class SettingsActivity extends AppCompatActivity
         showWeekdayDashIn3DLayout.setOnClickListener(this);
         showWeekdayDashIn3DCheckBox.setOnClickListener(this);
         showWeekdayDashIn3DCheckBox.setChecked(SettingsManager.getShowWeekdayDashIn3D());
+
+        startFromLayout = findView(R.id.start_from_layout);
+        startFromSunday = findView(R.id.start_from_sunday);
+        startFromMonday = findView(R.id.start_from_monday);
+        startFromLayout.setOnClickListener(this);
+        startFromSunday.setOnClickListener(this);
+        startFromMonday.setOnClickListener(this);
+        startFromSunday.setChecked(SettingsManager.getStartWeekDay().equals(Weekday.SUN));
+        startFromMonday.setChecked(SettingsManager.getStartWeekDay().equals(Weekday.MON));
+
+        updateTimeSeekBar = findView(R.id.seek_bar_update_time);
+        updateTimeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    SettingsManager.setUpdateTime(
+                            Util.HALF_AN_HOUR * (updateTimeSeekBar.getProgress() + 1));
+                    setUpdateText();
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        updateTimeSeekBar.setProgress(SettingsManager.getUpdateTime() / Util.HALF_AN_HOUR - 1);
+        updateTimeText = findView(R.id.update_time_text);
+        setUpdateText();
+    }
+
+    private void setUpdateText() {
+        updateTimeText.setText(
+                Util.getString(R.string.update_every)
+                        + String.format("%.1f",
+                        (updateTimeSeekBar.getProgress() / 2f + 0.5f)) + "h"
+                        + Util.getString(R.string.dot));
     }
 
     private void setColor() {
@@ -204,6 +256,21 @@ public class SettingsActivity extends AppCompatActivity
             case R.id.show_weekday_dash_in_3d_checkbox:
                 SettingsManager.setShowWeekdayDashIn3D(showWeekdayDashIn3DCheckBox.isChecked());
                 break;
+            case R.id.start_from_layout:
+                SettingsManager.setStartWeekDay(1 - SettingsManager.getStartWeekDay().v);
+                startFromSunday.setChecked(SettingsManager.getStartWeekDay().equals(Weekday.SUN));
+                startFromMonday.setChecked(SettingsManager.getStartWeekDay().equals(Weekday.MON));
+                break;
+            case R.id.start_from_sunday:
+                SettingsManager.setStartWeekDay(Weekday.SUN.v);
+                startFromSunday.setChecked(SettingsManager.getStartWeekDay().equals(Weekday.SUN));
+                startFromMonday.setChecked(SettingsManager.getStartWeekDay().equals(Weekday.MON));
+                break;
+            case R.id.start_from_monday:
+                SettingsManager.setStartWeekDay(Weekday.MON.v);
+                startFromSunday.setChecked(SettingsManager.getStartWeekDay().equals(Weekday.SUN));
+                startFromMonday.setChecked(SettingsManager.getStartWeekDay().equals(Weekday.MON));
+                break;
         }
     }
 
@@ -219,6 +286,8 @@ public class SettingsActivity extends AppCompatActivity
         oldShowToast = SettingsManager.getShowToast();
         oldShowMonthDashIn3D = SettingsManager.getShowMonthDashIn3D();
         oldShowWeekdayDashIn3D = SettingsManager.getShowWeekdayDashIn3D();
+        oldWeekday = SettingsManager.getStartWeekDay();
+        oldUpdateTime = SettingsManager.getUpdateTime();
 
         userNameLayout.post(new Runnable() {
             @Override
@@ -249,6 +318,8 @@ public class SettingsActivity extends AppCompatActivity
         if (oldShowToast != SettingsManager.getShowToast()) changed = true;
         if (oldShowMonthDashIn3D != SettingsManager.getShowMonthDashIn3D()) changed = true;
         if (oldShowWeekdayDashIn3D != SettingsManager.getShowWeekdayDashIn3D()) changed = true;
+        if (!oldWeekday.equals(SettingsManager.getStartWeekDay())) changed = true;
+        if (oldUpdateTime != SettingsManager.getUpdateTime()) changed = true;
 
         if (changed) {
             Util.showToast(R.string.refreshing);

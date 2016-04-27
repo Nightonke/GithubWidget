@@ -40,6 +40,8 @@ import java.util.Locale;
 
 public class Util {
 
+    public static int HALF_AN_HOUR = 30 * 60 * 1000;
+
     public static int getScreenWidth(Context context) {
         Display localDisplay
                 = ((WindowManager)context.getSystemService(Context.WINDOW_SERVICE))

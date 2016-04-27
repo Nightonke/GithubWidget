@@ -243,6 +243,229 @@
             android:background="@color/divider_color"
             />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+
+                <ImageView
+                    android:id="@+id/three_d"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+
+                <ImageView
+                    android:id="@+id/color"
+                    android:layout_width="@dimen/github_widget_1_avator_size"
+                    android:layout_height="@dimen/github_widget_1_avator_size"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/color_image_background"
+                    android:layout_marginTop="@dimen/github_widget_1_avator_padding_top"
+                    android:layout_marginRight="@dimen/github_widget_1_avator_padding_right"
+                    android:layout_marginEnd="@dimen/github_widget_1_avator_padding_right"
+                    />
+
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/two_d"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
+                />
+
+            <TextView
+                android:id="@+id/color_edit_text"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
+                android:textCursorDrawable="@null"
+                android:background="@null"
+                android:gravity="center"
+                android:textSize="18sp"
+                />
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+                
+                <TextView
+                    android:id="@+id/seek_bar_min_a"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="0"
+                    android:textSize="18sp"
+                    android:gravity="center_vertical|end"
+                    android:paddingTop="2dp"
+                    />
+                
+                <com.nightonke.githubwidget.MySeekBar
+                    android:id="@+id/seek_bar_a"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="6"
+                    android:max="255"
+                    android:indeterminate="false" />
+
+                <TextView
+                    android:id="@+id/seek_bar_max_a"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="255"
+                    android:textSize="18sp"
+                    android:gravity="center_vertical|start"
+                    android:paddingTop="2dp"
+                    />
+                
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="15dp"
+                >
+
+                <TextView
+                    android:id="@+id/seek_bar_min_r"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="0"
+                    android:textSize="18sp"
+                    android:gravity="center_vertical|end"
+                    android:paddingTop="2dp"
+                    />
+
+                <com.nightonke.githubwidget.MySeekBar
+                    android:id="@+id/seek_bar_r"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="6"
+                    android:max="255"
+                    />
+
+                <TextView
+                    android:id="@+id/seek_bar_max_r"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="255"
+                    android:textSize="18sp"
+                    android:gravity="center_vertical|start"
+                    android:paddingTop="2dp"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="15dp"
+                >
+
+                <TextView
+                    android:id="@+id/seek_bar_min_g"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="0"
+                    android:textSize="18sp"
+                    android:gravity="center_vertical|end"
+                    android:paddingTop="2dp"
+                    />
+
+                <com.nightonke.githubwidget.MySeekBar
+                    android:id="@+id/seek_bar_g"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="6"
+                    android:max="255"
+                    />
+
+                <TextView
+                    android:id="@+id/seek_bar_max_g"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="255"
+                    android:textSize="18sp"
+                    android:gravity="center_vertical|start"
+                    android:paddingTop="2dp"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="15dp"
+                >
+
+                <TextView
+                    android:id="@+id/seek_bar_min_b"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="0"
+                    android:textSize="18sp"
+                    android:gravity="center_vertical|end"
+                    android:paddingTop="2dp"
+                    />
+
+                <com.nightonke.githubwidget.MySeekBar
+                    android:id="@+id/seek_bar_b"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="6"
+                    android:max="255"
+                    />
+
+                <TextView
+                    android:id="@+id/seek_bar_max_b"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="255"
+                    android:textSize="18sp"
+                    android:gravity="center_vertical|start"
+                    android:paddingTop="2dp"
+                    />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/reset_base_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/reset_base_color"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"
+                />
+
+        </LinearLayout>
+
     </LinearLayout>
 
 </ScrollView>

@@ -11,6 +11,7 @@ public class SettingsManager {
 
     private static boolean showToast = true;
 
+    private static int defaultBaseColor = Color.parseColor("#D6E685");
     private static int baseColor = Color.parseColor("#D6E685");
     
     private static int textColor = Color.parseColor("#000000");
@@ -53,6 +54,14 @@ public class SettingsManager {
                 .getDefaultSharedPreferences(GithubWidgetApplication.getAppContext()).edit();
         editor.putInt("BASE_COLOR", baseColor);
         editor.commit();
+    }
+
+    public static void resetBaseColor() {
+        setBaseColor(defaultBaseColor);
+    }
+
+    public static int getDefaultBaseColor() {
+        return defaultBaseColor;
     }
 
     public static int getTextColor() {

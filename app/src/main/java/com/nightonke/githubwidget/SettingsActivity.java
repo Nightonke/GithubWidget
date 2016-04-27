@@ -1,21 +1,50 @@
 package com.nightonke.githubwidget;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
-public class SettingsActivity extends AppCompatActivity implements View.OnClickListener {
+public class SettingsActivity extends AppCompatActivity
+        implements
+        View.OnClickListener {
 
     private LinearLayout userNameLayout;
     private EditText userNameEditText;
 
+    private ImageView imageView3D;
+    private ImageView imageView2D;
+    private ImageView colorImageView;
+    private TextView colorText;
+    private TextView seekBarMinA;
+    private TextView seekBarMaxA;
+    private MySeekBar seekBarA;
+    private TextView seekBarMinR;
+    private TextView seekBarMaxR;
+    private MySeekBar seekBarR;
+    private TextView seekBarMinG;
+    private TextView seekBarMaxG;
+    private MySeekBar seekBarG;
+    private TextView seekBarMinB;
+    private TextView seekBarMaxB;
+    private MySeekBar seekBarB;
+    private Button resetBaseColorButton;
+    
     private LinearLayout showToastLayout;
     private CheckBox showToastCheckBox;
     
@@ -26,9 +55,12 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     private CheckBox showWeekdayDashIn3DCheckBox;
 
     private String oldUserName;
+    private int oldBaseColor;
     private boolean oldShowToast;
     private boolean oldShowMonthDashIn3D;
     private boolean oldShowWeekdayDashIn3D;
+
+    private int newBaseColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +87,29 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
             }
         });
         userNameLayout.setOnClickListener(this);
+        
+        imageView3D = findView(R.id.three_d);
+        imageView2D = findView(R.id.two_d);
+        colorImageView = findView(R.id.color);
+        colorText = findView(R.id.color_edit_text);
+        seekBarMinA = findView(R.id.seek_bar_min_a);
+        seekBarMaxA = findView(R.id.seek_bar_max_a);
+        seekBarA = findView(R.id.seek_bar_a);
+        seekBarA.setOnSeekBarChangeListener(onSeekBarChangeListener);
+        seekBarMinR = findView(R.id.seek_bar_min_r);
+        seekBarMaxR = findView(R.id.seek_bar_max_r);
+        seekBarR = findView(R.id.seek_bar_r);
+        seekBarR.setOnSeekBarChangeListener(onSeekBarChangeListener);
+        seekBarMinG = findView(R.id.seek_bar_min_g);
+        seekBarMaxG = findView(R.id.seek_bar_max_g);
+        seekBarG = findView(R.id.seek_bar_g);
+        seekBarG.setOnSeekBarChangeListener(onSeekBarChangeListener);
+        seekBarMinB = findView(R.id.seek_bar_min_b);
+        seekBarMaxB = findView(R.id.seek_bar_max_b);
+        seekBarB = findView(R.id.seek_bar_b);
+        seekBarB.setOnSeekBarChangeListener(onSeekBarChangeListener);
+        resetBaseColorButton = findView(R.id.reset_base_color);
+        resetBaseColorButton.setOnClickListener(this);
 
         showToastLayout = findView(R.id.show_toast_layout);
         showToastCheckBox = findView(R.id.show_toast_checkbox);
@@ -75,6 +130,33 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         showWeekdayDashIn3DCheckBox.setChecked(SettingsManager.getShowWeekdayDashIn3D());
     }
 
+    private void setColor() {
+        newBaseColor = Color.argb(
+                seekBarA.getProgress(), seekBarR.getProgress(),
+                seekBarG.getProgress(), seekBarB.getProgress());
+        imageView3D.setImageBitmap(
+                Util.get3DBitmap(this, Util.SHOW_DATA, Weekday.SUN,
+                        newBaseColor, Color.parseColor("#000000"), false, false));
+        imageView2D.setImageBitmap(
+                Util.get2DBitmap(this, Util.SHOW_DATA, Weekday.SUN,
+                        newBaseColor, Color.parseColor("#000000"), Util.getScreenWidth(this), 0));
+        ((GradientDrawable)colorImageView.getBackground()).setColor(newBaseColor);
+        colorText.setText(""
+                + Util.decToHex(seekBarA.getProgress())
+                + Util.decToHex(seekBarR.getProgress())
+                + Util.decToHex(seekBarG.getProgress())
+                + Util.decToHex(seekBarB.getProgress()));
+        setSeekBarColor(seekBarA, newBaseColor);
+        setSeekBarColor(seekBarR, newBaseColor);
+        setSeekBarColor(seekBarG, newBaseColor);
+        setSeekBarColor(seekBarB, newBaseColor);
+    }
+
+    public void setSeekBarColor(MySeekBar seekBar, int newColor){
+        seekBar.getProgressDrawable().setColorFilter(newColor, PorterDuff.Mode.SRC_IN);
+        seekBar.getSeekBarThumb().setColorFilter(newColor, PorterDuff.Mode.SRC_IN);
+    }
+
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
@@ -92,6 +174,14 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         switch (v.getId()) {
             case R.id.user_name_layout:
                 showSoftKeyboard(userNameEditText);
+                break;
+            case R.id.reset_base_color:
+                newBaseColor = SettingsManager.getDefaultBaseColor();
+                seekBarA.setProgress(Color.alpha(newBaseColor));
+                seekBarR.setProgress(Color.red(newBaseColor));
+                seekBarG.setProgress(Color.green(newBaseColor));
+                seekBarB.setProgress(Color.blue(newBaseColor));
+                setColor();
                 break;
             case R.id.show_toast_layout:
                 showToastCheckBox.toggle();
@@ -125,9 +215,22 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     protected void onStart() {
         super.onStart();
         oldUserName = SettingsManager.getUserName();
+        oldBaseColor = SettingsManager.getBaseColor();
         oldShowToast = SettingsManager.getShowToast();
         oldShowMonthDashIn3D = SettingsManager.getShowMonthDashIn3D();
         oldShowWeekdayDashIn3D = SettingsManager.getShowWeekdayDashIn3D();
+
+        userNameLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                newBaseColor = oldBaseColor;
+                seekBarA.setProgress(Color.alpha(newBaseColor));
+                seekBarR.setProgress(Color.red(newBaseColor));
+                seekBarG.setProgress(Color.green(newBaseColor));
+                seekBarB.setProgress(Color.blue(newBaseColor));
+                setColor();
+            }
+        });
     }
 
     @Override
@@ -138,6 +241,10 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
             if (SettingsManager.getUserName() != null) changed = true;
         } else {
             if (!oldUserName.equals(SettingsManager.getUserName())) changed = true;
+        }
+        if (oldBaseColor != newBaseColor) {
+            SettingsManager.setBaseColor(newBaseColor);
+            changed = true;
         }
         if (oldShowToast != SettingsManager.getShowToast()) changed = true;
         if (oldShowMonthDashIn3D != SettingsManager.getShowMonthDashIn3D()) changed = true;
@@ -165,5 +272,23 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         view.requestFocus();
         inputMethodManager.showSoftInput(view, 0);
     }
+
+    private SeekBar.OnSeekBarChangeListener onSeekBarChangeListener
+            = new SeekBar.OnSeekBarChangeListener() {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            if (fromUser) setColor();
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+
+        }
+    };
 
 }

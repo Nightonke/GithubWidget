@@ -1196,7 +1196,137 @@ public class Util {
         return hex.length() == 1 ? "0" + hex : hex;
     }
 
+    /**
+     * Create a bitmap where there are sum and english.
+     *
+     * @param context Context.
+     * @param baseColor Base color.
+     * @param sum Sum.
+     * @param bitmapWidth Width.
+     * @param bitmapHeight Height.
+     * @return
+     */
+    public static Bitmap getContributionsSumWithLetterBitmap(
+            Context context, int baseColor, int sum, int bitmapWidth, int bitmapHeight) {
+        Bitmap bitmap;
+        Canvas canvas;
+        Paint mainPaint = getTextPaint(50f, calculateLevelColor(baseColor, 4),
+                Typeface.createFromAsset(context.getAssets(), "fonts/Lato-Light.ttf"));
+        Paint subPaint = getTextPaint(25f, calculateLevelColor(baseColor, 4),
+                Typeface.createFromAsset(context.getAssets(), "fonts/Lato-Light.ttf"));
 
+        bitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.ARGB_8888);
+        canvas = new Canvas(bitmap);
+
+        int xPos = (canvas.getWidth() / 2)
+                - getTextWidth(mainPaint, sum + "") / 2;
+        int yPos = getTextHeight(mainPaint, sum + "");
+        canvas.drawText(sum + "", xPos, yPos, mainPaint);
+
+        xPos = (canvas.getWidth() / 2)
+                - getTextWidth(subPaint, getString(R.string.one_year)) / 2;
+        canvas.drawText(getString(R.string.one_year),
+                xPos, yPos + getTextHeight(subPaint, getString(R.string.one_year)) + 10, subPaint);
+
+        return bitmap;
+    }
+
+    /**
+     * Get target dimen in px.
+     *
+     * @param resId Resource id.
+     * @return Px.
+     */
+    public static float getDimen(int resId) {
+        return GithubWidgetApplication.getAppContext().getResources().getDimensionPixelSize(resId);
+    }
+
+    /**
+     * Get today contributions from string.
+     *
+     * @param data Data in string.
+     * @return Contributions of today.
+     */
+    public static int getContributionsToday(String data) {
+        int index = data.lastIndexOf(DATA_STRING);
+        if (index != -1) {
+            int dataEndPos = data.indexOf("\"", index + DATA_STRING.length());
+            String dataString = data.substring(index + DATA_STRING.length(), dataEndPos);
+            return Integer.valueOf(dataString);
+        }
+        return 0;
+    }
+
+    /**
+     * Create a bitmap where there are contributions of today and english.
+     *
+     * @param context Context.
+     * @param baseColor Base color.
+     * @param today Sum.
+     * @param bitmapWidth Width.
+     * @param bitmapHeight Height.
+     * @return The bitmap.
+     */
+    public static Bitmap getContributionsTodayWithLetterBitmap(
+            Context context, int baseColor, int today, int bitmapWidth, int bitmapHeight) {
+        Bitmap bitmap;
+        Canvas canvas;
+        Paint mainPaint = getTextPaint(50f, calculateLevelColor(baseColor, 4),
+                Typeface.createFromAsset(context.getAssets(), "fonts/Lato-Light.ttf"));
+        Paint subPaint = getTextPaint(25f, calculateLevelColor(baseColor, 4),
+                Typeface.createFromAsset(context.getAssets(), "fonts/Lato-Light.ttf"));
+
+        bitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.ARGB_8888);
+        canvas = new Canvas(bitmap);
+
+        int xPos = (canvas.getWidth() / 2)
+                - getTextWidth(mainPaint, today + "") / 2;
+        int yPos = getTextHeight(mainPaint, today + "");
+        canvas.drawText(today + "", xPos, yPos, mainPaint);
+
+        xPos = (canvas.getWidth() / 2)
+                - getTextWidth(subPaint, getString(R.string.today)) / 2;
+        canvas.drawText(getString(R.string.today),
+                xPos, yPos + getTextHeight(subPaint, getString(R.string.today)) + 10, subPaint);
+
+        return bitmap;
+    }
+
+    /**
+     * Create a bitmap where there are current streak and english.
+     *
+     * @param context Context.
+     * @param baseColor Base color.
+     * @param days Sum.
+     * @param bitmapWidth Width.
+     * @param bitmapHeight Height.
+     * @return The bitmap.
+     */
+    public static Bitmap getCurrentStreakWithLetterBitmap(
+            Context context, int baseColor, int days, int bitmapWidth, int bitmapHeight) {
+        Bitmap bitmap;
+        Canvas canvas;
+        Paint mainPaint = getTextPaint(50f, calculateLevelColor(baseColor, 4),
+                Typeface.createFromAsset(context.getAssets(), "fonts/Lato-Light.ttf"));
+        Paint subPaint = getTextPaint(25f, calculateLevelColor(baseColor, 4),
+                Typeface.createFromAsset(context.getAssets(), "fonts/Lato-Light.ttf"));
+
+        bitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.ARGB_8888);
+        canvas = new Canvas(bitmap);
+
+        int xPos = (canvas.getWidth() / 2)
+                - getTextWidth(mainPaint, days + "") / 2;
+        int yPos = getTextHeight(mainPaint, days + "");
+        canvas.drawText(days + "", xPos, yPos, mainPaint);
+
+        xPos = (canvas.getWidth() / 2)
+                - getTextWidth(subPaint, getString(R.string.current)) / 2;
+        canvas.drawText(getString(R.string.current),
+                xPos, yPos + getTextHeight(subPaint, getString(R.string.current)) + 10,
+                subPaint);
+
+        return bitmap;
+    }
 
 
 

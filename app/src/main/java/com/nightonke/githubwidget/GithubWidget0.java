@@ -15,8 +15,6 @@ import android.widget.RemoteViews;
  */
 public class GithubWidget0 extends AppWidgetProvider {
 
-    private boolean updating = false;
-
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
@@ -55,7 +53,9 @@ public class GithubWidget0 extends AppWidgetProvider {
         new AvatarTask(remoteViews, context, componentName, appWidgetId)
                 .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "");
         // update contributions and contributions sum
-        new ContributionsTask(remoteViews, context, componentName, appWidgetId, true,
+        new ContributionsTask(
+                Widget.WIDGET_0, remoteViews,
+                context, componentName, appWidgetId, true,
                 Util.getScreenWidth(context)
                         - Util.dp2px(context.getResources().getDimension(
                         R.dimen.github_widget_0_avator_border_size)), 0)

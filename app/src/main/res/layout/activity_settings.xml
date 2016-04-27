@@ -28,6 +28,7 @@
                 android:hint="@string/user_name_title"
                 android:gravity="bottom|start"
                 android:maxLines="1"
+                android:singleLine="true"
                 android:textColor="@color/settings_title_color"
                 android:textSize="18sp"
                 android:layout_marginLeft="20dp"

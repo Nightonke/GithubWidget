@@ -13,7 +13,7 @@ import android.widget.RemoteViews;
 /**
  * Created by Weiping on 2016/4/26.
  */
-public class GithubWidget1 extends AppWidgetProvider {
+public class GithubWidget2 extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -46,19 +46,17 @@ public class GithubWidget1 extends AppWidgetProvider {
     private void updateAll(Context context, int appWidgetId) {
         if (BuildConfig.DEBUG) Log.d("GithubWidget", "Update all");
         RemoteViews remoteViews
-                = new RemoteViews(context.getPackageName(), R.layout.github_widget_1);
-        ComponentName componentName = new ComponentName(context, GithubWidget1.class);
+                = new RemoteViews(context.getPackageName(), R.layout.github_widget_2);
+        ComponentName componentName = new ComponentName(context, GithubWidget2.class);
 
         // update avatar
         new AvatarTask(remoteViews, context, componentName, appWidgetId)
                 .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "");
         // update contributions and contributions sum
         new ContributionsTask(
-                Widget.WIDGET_1, remoteViews,
+                Widget.WIDGET_2, remoteViews,
                 context, componentName, appWidgetId, false,
-                Util.getScreenWidth(context)
-                        - Util.dp2px(context.getResources().getDimension(
-                        R.dimen.github_widget_0_avator_border_size)), 0)
+                Util.getScreenWidth(context), 0)
                 .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "");
 
 
@@ -79,6 +77,36 @@ public class GithubWidget1 extends AppWidgetProvider {
         intent = new Intent(context, SettingsActivity.class);
         intent.setAction(Actions.CLICK_CONTRIBUTIONS);
         remoteViews.setOnClickPendingIntent(R.id.contributions,
+                PendingIntent.getActivity(context, 0, intent, 0));
+
+        intent = new Intent(context, SettingsActivity.class);
+        intent.setAction(Actions.CLICK_MOTTO);
+        remoteViews.setOnClickPendingIntent(R.id.motto,
+                PendingIntent.getActivity(context, 0, intent, 0));
+
+        intent = new Intent(context, SettingsActivity.class);
+        intent.setAction(Actions.CLICK_FOLLOWERS);
+        remoteViews.setOnClickPendingIntent(R.id.followers,
+                PendingIntent.getActivity(context, 0, intent, 0));
+
+        intent = new Intent(context, SettingsActivity.class);
+        intent.setAction(Actions.CLICK_CONTRIBUTIONS_SUM);
+        remoteViews.setOnClickPendingIntent(R.id.contributions_sum,
+                PendingIntent.getActivity(context, 0, intent, 0));
+
+        intent = new Intent(context, SettingsActivity.class);
+        intent.setAction(Actions.CLICK_CONTRIBUTIONS_TODAY);
+        remoteViews.setOnClickPendingIntent(R.id.contributions_today,
+                PendingIntent.getActivity(context, 0, intent, 0));
+
+        intent = new Intent(context, SettingsActivity.class);
+        intent.setAction(Actions.CLICK_CURRENT_STREAK);
+        remoteViews.setOnClickPendingIntent(R.id.current_streak,
+                PendingIntent.getActivity(context, 0, intent, 0));
+
+        intent = new Intent(context, SettingsActivity.class);
+        intent.setAction(Actions.CLICK_STARS_TODAY);
+        remoteViews.setOnClickPendingIntent(R.id.stars_today,
                 PendingIntent.getActivity(context, 0, intent, 0));
 
         intent = new Intent(context, SettingsActivity.class);

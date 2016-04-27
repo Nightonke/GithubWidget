@@ -3,13 +3,8 @@ package com.nightonke.githubwidget;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -25,6 +20,7 @@ import java.net.URL;
 
 public class ContributionsTask extends AsyncTask<String, Void, String> {
 
+    private Widget widget;
     private RemoteViews remoteViews;
     private Context context;
     private ComponentName componentName;
@@ -34,6 +30,7 @@ public class ContributionsTask extends AsyncTask<String, Void, String> {
     private int bitmapHeight = 0;
 
     public ContributionsTask(
+            Widget widget,
             RemoteViews remoteViews,
             Context context,
             ComponentName componentName,
@@ -41,6 +38,7 @@ public class ContributionsTask extends AsyncTask<String, Void, String> {
             boolean is2D,
             int bitmapWidth,
             int bitmapHeight) {
+        this.widget = widget;
         this.remoteViews = remoteViews;
         this.context = context;
         this.componentName = componentName;
@@ -125,36 +123,76 @@ public class ContributionsTask extends AsyncTask<String, Void, String> {
         return null;
     }
 
+    // Todo simplify this
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
 
-        if (result == null) {
-            if (SettingsManager.getUserName() == null) {
-                remoteViews.setImageViewBitmap(R.id.contributions,
-                        Util.getInputUserNameBitmap(context, SettingsManager.getBaseColor()));
-            } else {
-                if (BuildConfig.DEBUG) Log.d("GithubWidget", "Get user contributions failed");
+        if (SettingsManager.getUserName() == null) {
+            switch (widget) {
+                case WIDGET_0:
+                    remoteViews.setImageViewBitmap(R.id.contributions,
+                            Util.getInputUserNameBitmap(
+                                    context, SettingsManager.getBaseColor()));
+                    break;
+                case WIDGET_1:
+                    remoteViews.setImageViewBitmap(R.id.contributions,
+                            Util.getInputUserNameBitmap(
+                                    context, SettingsManager.getBaseColor()));
+                    break;
+                case WIDGET_2:
+                    remoteViews.setImageViewBitmap(R.id.motto,
+                            Util.getInputUserNameBitmap(
+                                    context, SettingsManager.getBaseColor()));
+                    break;
             }
         } else {
-            if (BuildConfig.DEBUG)
-                Log.d("GithubWidget", "Get user contributions successfully");
-            Weekday startWeekDay = SettingsManager.getStartWeekDay();
-            int baseColor = SettingsManager.getBaseColor();
-            int textColor = SettingsManager.getTextColor();
-            if (is2D) {
-                Bitmap bitmap = Util.get2DBitmap(context, result, startWeekDay,
-                        baseColor, textColor, bitmapWidth, bitmapHeight);
-                remoteViews.setImageViewBitmap(R.id.contributions, bitmap);
-                remoteViews.setImageViewBitmap(R.id.contributions_sum,
-                        Util.getContributionsSumBitmap(context, SettingsManager.getBaseColor(),
-                                Util.getContributionsSum(result)));
+            if (result == null) {
+                if (BuildConfig.DEBUG) Log.d("GithubWidget", "Get user contributions failed");
             } else {
-                Bitmap bitmap = Util.get3DBitmap(context, result, startWeekDay,
-                        baseColor, textColor,
-                        SettingsManager.getShowMonthDashIn3D(),
-                        SettingsManager.getShowWeekdayDashIn3D());
-                remoteViews.setImageViewBitmap(R.id.contributions, bitmap);
+                if (BuildConfig.DEBUG)
+                    Log.d("GithubWidget", "Get user contributions successfully");
+                Weekday startWeekDay = SettingsManager.getStartWeekDay();
+                int baseColor = SettingsManager.getBaseColor();
+                int textColor = SettingsManager.getTextColor();
+                Bitmap bitmap = null;
+                switch (widget) {
+                    case WIDGET_0:
+                        bitmap = Util.get2DBitmap(context, result, startWeekDay,
+                                baseColor, textColor, bitmapWidth, bitmapHeight);
+                        remoteViews.setImageViewBitmap(R.id.contributions, bitmap);
+                        remoteViews.setImageViewBitmap(R.id.contributions_sum,
+                                Util.getContributionsSumBitmap(context, SettingsManager.getBaseColor(),
+                                        Util.getContributionsSum(result)));
+                        break;
+                    case WIDGET_1:
+                        bitmap = Util.get3DBitmap(context, result, startWeekDay,
+                                baseColor, textColor,
+                                SettingsManager.getShowMonthDashIn3D(),
+                                SettingsManager.getShowWeekdayDashIn3D());
+                        remoteViews.setImageViewBitmap(R.id.contributions, bitmap);
+                        break;
+                    case WIDGET_2:
+                        bitmap = Util.get2DBitmap(context, result, startWeekDay,
+                                baseColor, textColor, bitmapWidth, bitmapHeight);
+                        remoteViews.setImageViewBitmap(R.id.contributions, bitmap);
+                        float height = bitmap.getHeight() * 0.8f;
+                        remoteViews.setImageViewBitmap(R.id.contributions_sum,
+                                Util.getContributionsSumWithLetterBitmap(context, baseColor,
+                                        Util.getContributionsSum(result),
+                                        Util.getScreenWidth(context) / 5, (int) height));
+                        remoteViews.setImageViewBitmap(R.id.contributions_today,
+                                Util.getContributionsTodayWithLetterBitmap(context, baseColor,
+                                        Util.getContributionsToday(result),
+                                        Util.getScreenWidth(context) / 5, (int) height));
+                        remoteViews.setImageViewBitmap(R.id.current_streak,
+                                Util.getCurrentStreakWithLetterBitmap(context, baseColor,
+                                        Integer.valueOf(
+                                                Util.getCurrentStreak(
+                                                        Util.getContributionsFromString(result))[0]),
+                                        Util.getScreenWidth(context) / 5, (int) height));
+                        break;
+                }
             }
         }
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);

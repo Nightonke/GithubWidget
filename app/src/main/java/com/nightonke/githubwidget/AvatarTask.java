@@ -49,18 +49,16 @@ public class AvatarTask extends AsyncTask<String, Void, Boolean> {
     protected Boolean doInBackground(String... params) {
         if (BuildConfig.DEBUG) Log.d("GithubWidget", "Execute AvatarTask");
         // check whether the user id is got
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        String userName = sp.getString("USER_NAME", null);
-        userName = "Nightonke";
+        String userName = SettingsManager.getUserName();
         if (userName == null) {
             // user didn't set the user name
             // we just use the default picture
             return false;
         } else {
-            String userId = sp.getString("USED_ID", null);
+            int userId = SettingsManager.getUserId();
             URL url = null;
             HttpURLConnection httpURLConnection = null;
-            if (userId == null) {
+            if (userId == -1) {
                 // we haven't got the user id
                 try {
                     url = new URL("https://api.github.com/users/" + userName);
@@ -88,8 +86,7 @@ public class AvatarTask extends AsyncTask<String, Void, Boolean> {
             }
             try {
                 String urlString = "https://avatars.githubusercontent.com/u/"
-                        + sp.getInt("USER_ID", -1) + "?s="
-                        + Util.dp2px(context.getResources().getDimension(
+                        + SettingsManager.getUserId() + "?s=" + Util.dp2px(context.getResources().getDimension(
                         R.dimen.github_widget_0_avator_size));
                 if (BuildConfig.DEBUG) Log.d("GithubWidget", "Get avatar bitmap: " + urlString);
                 url = new URL(urlString);

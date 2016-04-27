@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/base_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/github_widget_background"
+    >
+
+    <ImageView
+        android:id="@+id/contributions"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+    <ImageView
+        android:id="@+id/avatar"
+        android:layout_width="@dimen/github_widget_1_avator_size"
+        android:layout_height="@dimen/github_widget_1_avator_size"
+        android:src="@drawable/default_avatar"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/github_widget_1_avator_padding_top"
+        android:layout_marginRight="@dimen/github_widget_1_avator_padding_right"
+        android:layout_marginEnd="@dimen/github_widget_1_avator_padding_right"
+        />
+
+</RelativeLayout>

@@ -59,18 +59,16 @@ public class ContributionsTask extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... params) {
         if (BuildConfig.DEBUG) Log.d("GithubWidget", "Execute ContributionsTask");
         // check whether the user id is got
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        String userName = sp.getString("USER_NAME", null);
-        userName = "Nightonke";
+        String userName = SettingsManager.getUserName();
         if (userName == null) {
             // user didn't set the user name
             // we just use the default picture
             return null;
         } else {
-            String userId = sp.getString("USED_ID", null);
+            int userId = SettingsManager.getUserId();
             URL url = null;
             HttpURLConnection httpURLConnection = null;
-            if (userId == null) {
+            if (userId == -1) {
                 // we haven't got the user id
                 try {
                     url = new URL("https://api.github.com/users/" + userName);
@@ -98,8 +96,7 @@ public class ContributionsTask extends AsyncTask<String, Void, String> {
             }
 
             try {
-                String urlString = "https://github.com/users/"
-                        + userName + "/contributions";
+                String urlString = "https://github.com/users/" + userName + "/contributions";
                 if (BuildConfig.DEBUG)
                     Log.d("GithubWidget", "Get user contributions: " + urlString);
                 url = new URL(urlString);
@@ -137,7 +134,7 @@ public class ContributionsTask extends AsyncTask<String, Void, String> {
         } else {
             if (BuildConfig.DEBUG)
                 Log.d("GithubWidget", "Get user contributions successfully: " + result);
-            int startWeekDay = SettingsManager.getStartWeekDay();
+            Weekday startWeekDay = SettingsManager.getStartWeekDay();
             int baseColor = SettingsManager.getBaseColor();
             int textColor = SettingsManager.getTextColor();
             if (is2D) {
@@ -146,6 +143,10 @@ public class ContributionsTask extends AsyncTask<String, Void, String> {
                 remoteViews.setImageViewBitmap(R.id.contributions, bitmap);
                 remoteViews.setTextViewText(R.id.contributions_sum,
                         Util.getContributionsSum(result) + "");
+            } else {
+                Bitmap bitmap = Util.get3DBitmap(context, result, startWeekDay,
+                        baseColor, textColor, false, false);
+                remoteViews.setImageViewBitmap(R.id.contributions, bitmap);
             }
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             if (appWidgetId == -1) {

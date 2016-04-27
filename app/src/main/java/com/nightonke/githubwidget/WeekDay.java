@@ -3,7 +3,7 @@ package com.nightonke.githubwidget;
 /**
  * Created by Weiping on 2016/4/26.
  */
-public enum WeekDay {
+public enum Weekday {
 
     SUN(0),
     MON(1),
@@ -15,7 +15,7 @@ public enum WeekDay {
 
     int v;
 
-    WeekDay(int v) {
+    Weekday(int v) {
         this.v = v;
     }
 }

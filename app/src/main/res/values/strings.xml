@@ -6,4 +6,19 @@
 
     <string name="refreshing">Refreshing&#8230;</string>
     <string name="refresh_failed">Refresh failed!</string>
+
+    <string name="one_year_total">1 year total</string>
+    <string name="busiest_day">Busiest day</string>
+    <string name="longest_streak">Longest streak</string>
+    <string name="no_contributions_this_year">No contributions this year</string>
+    <string name="last_contributed">Last contributed&#160;</string>
+    <string name="days_ago">&#160;days ago</string>
+    <string name="day_ago">&#160;day ago</string>
+    <string name="current_streak">Current streak</string>
+    <string name="days">days</string>
+    <string name="day">day</string>
+    <string name="contributions">contributions</string>
+    <string name="contribution">contribution</string>
+    <string name="remark_to">&#160;-&#160;</string>
+
 </resources>

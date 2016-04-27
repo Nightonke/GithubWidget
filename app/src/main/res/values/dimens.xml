@@ -7,4 +7,10 @@
     <dimen name="github_widget_0_avator_padding">5dp</dimen>
     <dimen name="github_widget_0_avator_size">40dp</dimen>
     <dimen name="github_widget_0_contributions_sum_text_size">12sp</dimen>
+
+    <dimen name="github_widget_1_avator_border_size">60dp</dimen>
+    <dimen name="github_widget_1_avator_padding_top">15dp</dimen>
+    <dimen name="github_widget_1_avator_padding_right">15dp</dimen>
+    <dimen name="github_widget_1_avator_size">50dp</dimen>
+
 </resources>

@@ -3,6 +3,8 @@
 
     <string name="show_toast_title">Show Toast</string>
     <string name="show_toast_content">Whether show toast when operating or error happening.</string>
+    <string name="user_name_title">User name</string>
+    <string name="user_name_content">Input your user name in github.</string>
 
     <string name="refreshing">Refreshing&#8230;</string>
     <string name="refresh_failed">Refresh failed!</string>
@@ -20,5 +22,7 @@
     <string name="contributions">contributions</string>
     <string name="contribution">contribution</string>
     <string name="remark_to">&#160;-&#160;</string>
+
+    <string name="click_to_set">Click to set user name</string>
 
 </resources>

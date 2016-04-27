@@ -177,6 +177,22 @@ public class Util {
     }
 
     /**
+     * Get the short year, month and day name for a certain date.
+     *
+     * @param year The year of the date.
+     * @param month The month of the date.
+     * @param day The day of the date.
+     * @return The short name of the year, month and day.
+     */
+    public static String getShortDateName(int year, int month, int day) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month - 1, day);
+        calendar.add(Calendar.SECOND, 0);
+        SimpleDateFormat month_date = new SimpleDateFormat("MMM", Locale.US);
+        return month_date.format(calendar.getTime()) + " " + day + ", " + year;
+    }
+
+    /**
      * Get the first letter of a weekday.
      *
      * @param weekDay Integer from 0 to 6 for weekday.
@@ -654,7 +670,7 @@ public class Util {
             if (day.level == 0 || i == contributions.size() - 1) {
                 if (streak > longestStreak) {
                     longestStreak = streak;
-                    longestEnd = i - 1;
+                    longestEnd = day.level == 0 ? i - 1 : i;
                     longestStart = longestEnd - longestStreak + 1;
                 }
                 streak = 0;
@@ -692,7 +708,7 @@ public class Util {
             if (contributions.get(i).level != 0) {
                 streak++;
             } else {
-                currentStreakStart = i;
+                currentStreakStart = i + 1;
                 break;
             }
         }
@@ -733,12 +749,12 @@ public class Util {
         int total = 0;
         for (Day day : contributions) total += day.data;
 
-        String remarkString = Util.getFullMonthDayName(
+        String remarkString = Util.getShortDateName(
                 contributions.get(0).year,
                 contributions.get(0).month,
                 contributions.get(0).day)
                 + getString(R.string.remark_to)
-                + Util.getFullMonthDayName(
+                + Util.getShortDateName(
                 contributions.get(contributions.size() - 1).year,
                 contributions.get(contributions.size() - 1).month,
                 contributions.get(contributions.size() - 1).day);
@@ -777,6 +793,18 @@ public class Util {
         return new String[]{max + "", remarkString, contributionsString};
     }
 
+    /**
+     * Todo
+     *
+     * @param context
+     * @param data
+     * @param startWeekday
+     * @param baseColor
+     * @param textColor
+     * @param drawMonthText
+     * @param drawWeekdayText
+     * @return
+     */
     public static Bitmap get3DBitmap(
             Context context,
             String data,
@@ -1096,6 +1124,33 @@ public class Util {
                 paddingTop + titleHeight + 2 * titleAndNumberPadding + 2 * numberHeight
                         - remarkHeight - unitAndRemarkPadding + partPadding,
                 remarkPaint);
+
+        return bitmap;
+    }
+
+    /**
+     * Get a bitmap to guide user to set their user name.
+     *
+     * @param context Context.
+     * @param baseColor Base color.
+     * @return The bitmap.
+     */
+    public static Bitmap getInputUserNameBitmap(Context context, int baseColor) {
+        Bitmap bitmap;
+        Canvas canvas;
+        Paint paint = getTextPaint(40f, calculateLevelColor(baseColor, 4),
+                Typeface.createFromAsset(context.getAssets(), "fonts/Lato-Light.ttf"));
+
+        int bitmapWidth = getScreenWidth(context);
+        int bitmapHeight = dp2px(30);
+
+        bitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.ARGB_8888);
+        canvas = new Canvas(bitmap);
+        int xPos = (canvas.getWidth() / 2)
+                - getTextWidth(paint, getString(R.string.click_to_set)) / 2;
+        int yPos = (int) ((canvas.getHeight() / 2) - ((paint.descent() + paint.ascent()) / 2)) ;
+
+        canvas.drawText(getString(R.string.click_to_set), xPos, yPos, paint);
 
         return bitmap;
     }

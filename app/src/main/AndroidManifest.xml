@@ -18,7 +18,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SettingsActivity"></activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:windowSoftInputMode="stateHidden">
+
+        </activity>
 
         <receiver android:name=".GithubWidget0">
             <meta-data

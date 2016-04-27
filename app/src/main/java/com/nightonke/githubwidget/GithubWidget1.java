@@ -62,10 +62,18 @@ public class GithubWidget1 extends AppWidgetProvider {
 
 
         // set click intent
-        Intent intent = new Intent();
-        intent.setAction(Actions.CLICK_AVATAR);
-        remoteViews.setOnClickPendingIntent(R.id.avatar,
-                PendingIntent.getBroadcast(context, 0, intent, 0));
+        Intent intent;
+        if (SettingsManager.getUserName() == null) {
+            intent = new Intent(context, SettingsActivity.class);
+            intent.setAction(Actions.CLICK_AVATAR);
+            remoteViews.setOnClickPendingIntent(R.id.avatar,
+                    PendingIntent.getActivity(context, 0, intent, 0));
+        } else {
+            intent = new Intent();
+            intent.setAction(Actions.CLICK_AVATAR);
+            remoteViews.setOnClickPendingIntent(R.id.avatar,
+                    PendingIntent.getBroadcast(context, 0, intent, 0));
+        }
 
         intent = new Intent(context, SettingsActivity.class);
         intent.setAction(Actions.CLICK_CONTRIBUTIONS);

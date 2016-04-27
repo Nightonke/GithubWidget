@@ -3,11 +3,9 @@ package com.nightonke.githubwidget;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -21,7 +19,7 @@ import java.net.URL;
  * Created by Weiping on 2016/4/26.
  */
 
-public class AvatarTask extends AsyncTask<String, Void, Boolean> {
+public class AvatarTask extends AsyncTask<String, Void, State> {
 
     private RemoteViews remoteViews;
     private Context context;
@@ -46,14 +44,14 @@ public class AvatarTask extends AsyncTask<String, Void, Boolean> {
     }
 
     @Override
-    protected Boolean doInBackground(String... params) {
+    protected State doInBackground(String... params) {
         if (BuildConfig.DEBUG) Log.d("GithubWidget", "Execute AvatarTask");
         // check whether the user id is got
         String userName = SettingsManager.getUserName();
         if (userName == null) {
             // user didn't set the user name
             // we just use the default picture
-            return false;
+            return State.FIRST_TIME;
         } else {
             int userId = SettingsManager.getUserId();
             URL url = null;
@@ -97,30 +95,35 @@ public class AvatarTask extends AsyncTask<String, Void, Boolean> {
                 InputStream in = httpURLConnection.getInputStream();
                 if (BuildConfig.DEBUG) Log.d("GithubWidget", "Get the avatar bitmap");
                 bitmap = BitmapFactory.decodeStream(in);
-                return true;
+                return State.SUCCESS;
             } catch (IOException i) {
                 i.printStackTrace();
             } finally{
                 if (httpURLConnection != null) httpURLConnection.disconnect();
             }
         }
-        return false;
+        return State.FAIL;
     }
 
     @Override
-    protected void onPostExecute(Boolean ok) {
-        super.onPostExecute(ok);
-        if (ok) remoteViews.setImageViewBitmap(R.id.avatar,
-                Util.getRoundBitmap(bitmap));
-        else remoteViews.setImageViewBitmap(R.id.avatar,
-                Util.getRoundBitmap(
-                        Util.decodeSampledBitmapFromResource(
-                                context.getResources(),
-                                R.drawable.default_avatar,
-                                Util.dp2px(context.getResources().getDimension(
-                                        R.dimen.github_widget_0_avator_size)),
-                                Util.dp2px(context.getResources().getDimension(
-                                        R.dimen.github_widget_0_avator_size)))));
+    protected void onPostExecute(State state) {
+        super.onPostExecute(state);
+        if (state.equals(State.SUCCESS)) {
+            remoteViews.setImageViewBitmap(R.id.avatar,
+                    Util.getRoundBitmap(bitmap));
+        } else if (state.equals(State.FIRST_TIME)) {
+            remoteViews.setImageViewBitmap(R.id.avatar,
+                    Util.getRoundBitmap(
+                            Util.decodeSampledBitmapFromResource(
+                                    context.getResources(),
+                                    R.drawable.default_avatar,
+                                    Util.dp2px(context.getResources().getDimension(
+                                            R.dimen.github_widget_0_avator_size)),
+                                    Util.dp2px(context.getResources().getDimension(
+                                            R.dimen.github_widget_0_avator_size)))));
+        } else if (state.equals(State.FAIL)) {
+            // don't do anything
+        }
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         if (appWidgetId == -1) {
             appWidgetManager.updateAppWidget(componentName, remoteViews);

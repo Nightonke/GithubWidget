@@ -130,10 +130,15 @@ public class ContributionsTask extends AsyncTask<String, Void, String> {
         super.onPostExecute(result);
 
         if (result == null) {
-            if (BuildConfig.DEBUG) Log.d("GithubWidget", "Get user contributions failed");
+            if (SettingsManager.getUserName() == null) {
+                remoteViews.setImageViewBitmap(R.id.contributions,
+                        Util.getInputUserNameBitmap(context, SettingsManager.getBaseColor()));
+            } else {
+                if (BuildConfig.DEBUG) Log.d("GithubWidget", "Get user contributions failed");
+            }
         } else {
             if (BuildConfig.DEBUG)
-                Log.d("GithubWidget", "Get user contributions successfully: " + result);
+                Log.d("GithubWidget", "Get user contributions successfully");
             Weekday startWeekDay = SettingsManager.getStartWeekDay();
             int baseColor = SettingsManager.getBaseColor();
             int textColor = SettingsManager.getTextColor();
@@ -148,12 +153,12 @@ public class ContributionsTask extends AsyncTask<String, Void, String> {
                         baseColor, textColor, false, false);
                 remoteViews.setImageViewBitmap(R.id.contributions, bitmap);
             }
-            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-            if (appWidgetId == -1) {
-                appWidgetManager.updateAppWidget(componentName, remoteViews);
-            } else {
-                appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
-            }
+        }
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        if (appWidgetId == -1) {
+            appWidgetManager.updateAppWidget(componentName, remoteViews);
+        } else {
+            appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
         }
     }
 

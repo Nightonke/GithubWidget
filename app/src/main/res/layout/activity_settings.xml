@@ -12,6 +12,55 @@
         >
 
         <LinearLayout
+            android:id="@+id/user_name_layout"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:orientation="vertical"
+            android:clickable="true"
+            android:background="?android:selectableItemBackground"
+            >
+
+            <EditText
+                android:id="@+id/user_name_title"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:hint="@string/user_name_title"
+                android:gravity="bottom|start"
+                android:maxLines="1"
+                android:textColor="@color/settings_title_color"
+                android:textSize="18sp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@null"
+                />
+
+            <TextView
+                android:id="@+id/user_name_content"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="@string/user_name_content"
+                android:gravity="top|start"
+                android:maxLines="2"
+                android:textSize="12sp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginEnd="20dp"
+                />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/divider_color"
+            />
+
+        <LinearLayout
             android:id="@+id/show_toast_layout"
             android:layout_width="match_parent"
             android:layout_height="80dp"
@@ -31,27 +80,27 @@
                     android:id="@+id/show_toast_title"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="6"
+                    android:layout_weight="1"
                     android:text="@string/show_toast_title"
                     android:gravity="bottom|start"
                     android:maxLines="1"
                     android:textColor="@color/settings_title_color"
                     android:textSize="18sp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginStart="20dp"
                     />
 
                 <TextView
                     android:id="@+id/show_toast_content"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="4"
+                    android:layout_weight="1"
                     android:text="@string/show_toast_content"
                     android:gravity="top|start"
                     android:maxLines="2"
                     android:textSize="12sp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginStart="20dp"
                     />
 
             </LinearLayout>

@@ -20,6 +20,10 @@ public class SettingsManager {
     private static String userName = null;
     
     private static int userId = -1;
+    
+    private static boolean showMonthDashIn3D = false;
+    
+    private static boolean showWeekdayDashIn3D = false;
 
     public static boolean getShowToast() {
         showToast = PreferenceManager.
@@ -117,6 +121,36 @@ public class SettingsManager {
         SharedPreferences.Editor editor = PreferenceManager
                 .getDefaultSharedPreferences(GithubWidgetApplication.getAppContext()).edit();
         editor.putInt("USER_ID", userId);
+        editor.commit();
+    }
+
+    public static boolean getShowMonthDashIn3D() {
+        showMonthDashIn3D = PreferenceManager.
+                getDefaultSharedPreferences(GithubWidgetApplication.getAppContext())
+                .getBoolean("SHOW_MONTH_DASH_IN_3D", showMonthDashIn3D);
+        return showMonthDashIn3D;
+    }
+
+    public static void setShowMonthDashIn3D(boolean showMonthDashIn3D) {
+        SettingsManager.showMonthDashIn3D = showMonthDashIn3D;
+        SharedPreferences.Editor editor = PreferenceManager
+                .getDefaultSharedPreferences(GithubWidgetApplication.getAppContext()).edit();
+        editor.putBoolean("SHOW_MONTH_DASH_IN_3D", showMonthDashIn3D);
+        editor.commit();
+    }
+
+    public static boolean getShowWeekdayDashIn3D() {
+        showWeekdayDashIn3D = PreferenceManager.
+                getDefaultSharedPreferences(GithubWidgetApplication.getAppContext())
+                .getBoolean("SHOW_WEEKDAY_DASH_IN_3D", showWeekdayDashIn3D);
+        return showWeekdayDashIn3D;
+    }
+
+    public static void setShowWeekdayDashIn3D(boolean showWeekdayDashIn3D) {
+        SettingsManager.showWeekdayDashIn3D = showWeekdayDashIn3D;
+        SharedPreferences.Editor editor = PreferenceManager
+                .getDefaultSharedPreferences(GithubWidgetApplication.getAppContext()).edit();
+        editor.putBoolean("SHOW_WEEKDAY_DASH_IN_3D", showWeekdayDashIn3D);
         editor.commit();
     }
     

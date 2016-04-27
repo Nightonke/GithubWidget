@@ -1,10 +1,17 @@
 <resources>
     <string name="app_name">GithubWidget</string>
 
-    <string name="show_toast_title">Show Toast</string>
-    <string name="show_toast_content">Whether show toast when operating or error happening.</string>
     <string name="user_name_title">User name</string>
     <string name="user_name_content">Input your user name in github.</string>
+
+    <string name="show_toast_title">Show Toast</string>
+    <string name="show_toast_content">Whether show toast when operating or error happening.</string>
+
+    <string name="show_month_dash_in_3d_title">Show month dash</string>
+    <string name="show_month_dash_in_3d_content">Whether show month dash and text in 3D chart.</string>
+
+    <string name="show_weekday_dash_in_3d_title">Show weekday dash in 3D picture</string>
+    <string name="show_weekday_dash_in_3d_content">Whether show weekday dash and text in 3D chart.</string>
 
     <string name="refreshing">Refreshing&#8230;</string>
     <string name="refresh_failed">Refresh failed!</string>

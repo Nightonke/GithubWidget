@@ -1155,6 +1155,34 @@ public class Util {
         return bitmap;
     }
 
+    /**
+     * Get the bitmap of contributions sum.
+     *
+     * @param context Context.
+     * @param baseColor Base color.
+     * @param sum Sum.
+     * @return The bitmap.
+     */
+    public static Bitmap getContributionsSumBitmap(Context context, int baseColor, int sum) {
+        Bitmap bitmap;
+        Canvas canvas;
+        Paint paint = getTextPaint(30f, calculateLevelColor(baseColor, 4),
+                Typeface.createFromAsset(context.getAssets(), "fonts/Lato-Light.ttf"));
+
+        int bitmapWidth = dp2px(60);
+        int bitmapHeight = dp2px(20);
+
+        bitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.ARGB_8888);
+        canvas = new Canvas(bitmap);
+        int xPos = (canvas.getWidth() / 2)
+                - getTextWidth(paint, sum + "") / 2;
+        int yPos = (int) ((canvas.getHeight() / 2) - ((paint.descent() + paint.ascent()) / 2)) ;
+
+        canvas.drawText(sum + "", xPos, yPos, paint);
+
+        return bitmap;
+    }
+
 
 
 

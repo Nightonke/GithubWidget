@@ -26,14 +26,12 @@
             android:layout_marginTop="@dimen/github_widget_0_avator_padding"
             />
 
-        <TextView
+        <ImageView
             android:id="@+id/contributions_sum"
             android:layout_height="0dp"
             android:layout_width="match_parent"
             android:layout_weight="1"
-            android:gravity="center"
-            android:textSize="@dimen/github_widget_0_contributions_sum_text_size"
-            android:textColor="@color/default_text_color"/>
+            android:gravity="center"/>
 
     </LinearLayout>
 

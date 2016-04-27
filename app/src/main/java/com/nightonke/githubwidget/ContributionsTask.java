@@ -146,11 +146,14 @@ public class ContributionsTask extends AsyncTask<String, Void, String> {
                 Bitmap bitmap = Util.get2DBitmap(context, result, startWeekDay,
                         baseColor, textColor, bitmapWidth, bitmapHeight);
                 remoteViews.setImageViewBitmap(R.id.contributions, bitmap);
-                remoteViews.setTextViewText(R.id.contributions_sum,
-                        Util.getContributionsSum(result) + "");
+                remoteViews.setImageViewBitmap(R.id.contributions_sum,
+                        Util.getContributionsSumBitmap(context, SettingsManager.getBaseColor(),
+                                Util.getContributionsSum(result)));
             } else {
                 Bitmap bitmap = Util.get3DBitmap(context, result, startWeekDay,
-                        baseColor, textColor, false, false);
+                        baseColor, textColor,
+                        SettingsManager.getShowMonthDashIn3D(),
+                        SettingsManager.getShowWeekdayDashIn3D());
                 remoteViews.setImageViewBitmap(R.id.contributions, bitmap);
             }
         }

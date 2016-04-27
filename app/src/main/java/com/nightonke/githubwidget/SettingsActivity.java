@@ -1,6 +1,5 @@
 package com.nightonke.githubwidget;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -19,9 +18,17 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
     private LinearLayout showToastLayout;
     private CheckBox showToastCheckBox;
+    
+    private LinearLayout showMonthDashIn3DLayout;
+    private CheckBox showMonthDashIn3DCheckBox;
+    
+    private LinearLayout showWeekdayDashIn3DLayout;
+    private CheckBox showWeekdayDashIn3DCheckBox;
 
     private String oldUserName;
     private boolean oldShowToast;
+    private boolean oldShowMonthDashIn3D;
+    private boolean oldShowWeekdayDashIn3D;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +61,18 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         showToastLayout.setOnClickListener(this);
         showToastCheckBox.setOnClickListener(this);
         showToastCheckBox.setChecked(SettingsManager.getShowToast());
+        
+        showMonthDashIn3DLayout = findView(R.id.show_month_dash_in_3d_layout);
+        showMonthDashIn3DCheckBox = findView(R.id.show_month_dash_in_3d_checkbox);
+        showMonthDashIn3DLayout.setOnClickListener(this);
+        showMonthDashIn3DCheckBox.setOnClickListener(this);
+        showMonthDashIn3DCheckBox.setChecked(SettingsManager.getShowMonthDashIn3D());
+
+        showWeekdayDashIn3DLayout = findView(R.id.show_weekday_dash_in_3d_layout);
+        showWeekdayDashIn3DCheckBox = findView(R.id.show_weekday_dash_in_3d_checkbox);
+        showWeekdayDashIn3DLayout.setOnClickListener(this);
+        showWeekdayDashIn3DCheckBox.setOnClickListener(this);
+        showWeekdayDashIn3DCheckBox.setChecked(SettingsManager.getShowWeekdayDashIn3D());
     }
 
     @Override
@@ -71,6 +90,9 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.user_name_layout:
+                showSoftKeyboard(userNameEditText);
+                break;
             case R.id.show_toast_layout:
                 showToastCheckBox.toggle();
                 SettingsManager.setShowToast(showToastCheckBox.isChecked());
@@ -78,8 +100,19 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
             case R.id.show_toast_checkbox:
                 SettingsManager.setShowToast(showToastCheckBox.isChecked());
                 break;
-            case R.id.user_name_layout:
-                showSoftKeyboard(userNameEditText);
+            case R.id.show_month_dash_in_3d_layout:
+                showMonthDashIn3DCheckBox.toggle();
+                SettingsManager.setShowMonthDashIn3D(showMonthDashIn3DCheckBox.isChecked());
+                break;
+            case R.id.show_month_dash_in_3d_checkbox:
+                SettingsManager.setShowMonthDashIn3D(showMonthDashIn3DCheckBox.isChecked());
+                break;
+            case R.id.show_weekday_dash_in_3d_layout:
+                showWeekdayDashIn3DCheckBox.toggle();
+                SettingsManager.setShowWeekdayDashIn3D(showWeekdayDashIn3DCheckBox.isChecked());
+                break;
+            case R.id.show_weekday_dash_in_3d_checkbox:
+                SettingsManager.setShowWeekdayDashIn3D(showWeekdayDashIn3DCheckBox.isChecked());
                 break;
         }
     }
@@ -93,6 +126,8 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         super.onStart();
         oldUserName = SettingsManager.getUserName();
         oldShowToast = SettingsManager.getShowToast();
+        oldShowMonthDashIn3D = SettingsManager.getShowMonthDashIn3D();
+        oldShowWeekdayDashIn3D = SettingsManager.getShowWeekdayDashIn3D();
     }
 
     @Override
@@ -105,6 +140,8 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
             if (!oldUserName.equals(SettingsManager.getUserName())) changed = true;
         }
         if (oldShowToast != SettingsManager.getShowToast()) changed = true;
+        if (oldShowMonthDashIn3D != SettingsManager.getShowMonthDashIn3D()) changed = true;
+        if (oldShowWeekdayDashIn3D != SettingsManager.getShowWeekdayDashIn3D()) changed = true;
 
         if (changed) {
             Util.showToast(R.string.refreshing);

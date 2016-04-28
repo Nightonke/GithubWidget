@@ -199,6 +199,9 @@ public class ContributionsTask extends AsyncTask<String, Void, String> {
                         new FollowersTask(widget, remoteViews, context, componentName, appWidgetId,
                                 Util.getScreenWidth(context) / 5, (int) height)
                                 .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "");
+                        new StarsTask(widget, remoteViews, context, componentName, appWidgetId,
+                                Util.getScreenWidth(context) / 5, (int) height)
+                                .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "");
                         break;
                 }
             }

@@ -17,7 +17,7 @@ import java.net.URL;
  * Created by Weiping on 2016/4/26.
  */
 
-public class FollowersTask extends AsyncTask<String, Void, String> {
+public class StarsTask extends AsyncTask<String, Void, String> {
 
     private Widget widget;
     private RemoteViews remoteViews;
@@ -27,7 +27,7 @@ public class FollowersTask extends AsyncTask<String, Void, String> {
     private int bitmapWidth = 0;
     private int bitmapHeight = 0;
 
-    public FollowersTask(
+    public StarsTask(
             Widget widget,
             RemoteViews remoteViews,
             Context context,
@@ -51,7 +51,7 @@ public class FollowersTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... params) {
-        if (BuildConfig.DEBUG) Log.d("GithubWidget", "Execute FollowersTask");
+        if (BuildConfig.DEBUG) Log.d("GithubWidget", "Execute StarsTask");
         // check whether the user id is got
         String userName = SettingsManager.getUserName();
         if (userName == null) {
@@ -90,33 +90,33 @@ public class FollowersTask extends AsyncTask<String, Void, String> {
                 } finally{
                     if (httpURLConnection != null) httpURLConnection.disconnect();
                 }
-            } else {
-                try {
-                    String urlString = "https://api.github.com/users/" + userName;
-                    if (BuildConfig.DEBUG)
-                        Log.d("GithubWidget", "Get user followers: " + urlString);
-                    url = new URL(urlString);
-                    httpURLConnection = (HttpURLConnection) url.openConnection();
-                    httpURLConnection.setRequestMethod("GET");
-                    httpURLConnection.setConnectTimeout(5000);
-                    httpURLConnection.connect();
-                    if(httpURLConnection.getResponseCode() == 200){
-                        InputStream in = httpURLConnection.getInputStream();
-                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                        byte[] buffer = new byte[1024];
-                        int len = 0;
-                        while((len = in.read(buffer)) != -1) {
-                            byteArrayOutputStream.write(buffer, 0, len);
-                        }
-                        return byteArrayOutputStream.toString();
-                    } else {
-                        return null;
+            }
+            try {
+                String urlString = "https://api.github.com/users/" + userName
+                        + "/received_events?per_page=" + SettingsManager.getReceivedEventPerPage();
+                if (BuildConfig.DEBUG)
+                    Log.d("GithubWidget", "Get user stars: " + urlString);
+                url = new URL(urlString);
+                httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("GET");
+                httpURLConnection.setConnectTimeout(5000);
+                httpURLConnection.connect();
+                if(httpURLConnection.getResponseCode() == 200){
+                    InputStream in = httpURLConnection.getInputStream();
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    byte[] buffer = new byte[1024];
+                    int len = 0;
+                    while((len = in.read(buffer)) != -1) {
+                        byteArrayOutputStream.write(buffer, 0, len);
                     }
-                } catch (IOException i) {
-                    i.printStackTrace();
-                } finally{
-                    if (httpURLConnection != null) httpURLConnection.disconnect();
+                    return byteArrayOutputStream.toString();
+                } else {
+                    return null;
                 }
+            } catch (IOException i) {
+                i.printStackTrace();
+            } finally{
+                if (httpURLConnection != null) httpURLConnection.disconnect();
             }
         }
         return null;
@@ -137,18 +137,18 @@ public class FollowersTask extends AsyncTask<String, Void, String> {
             }
         } else {
             if (result == null) {
-                if (BuildConfig.DEBUG) Log.d("GithubWidget", "Get user followers failed " + result);
+                if (BuildConfig.DEBUG) Log.d("GithubWidget", "Get user stars failed " + result);
             } else {
                 if (BuildConfig.DEBUG)
-                    Log.d("GithubWidget", "Get user followers successfully");
-                if (BuildConfig.DEBUG) Log.d("GithubWidget", "Write followers: " + result);
-                String followers = Util.writeFollowers(result);
+                    Log.d("GithubWidget", "Get user stars successfully");
+                if (BuildConfig.DEBUG) Log.d("GithubWidget", "Write stars: " + result);
+                String stars = Util.writeStars(result);
                 int baseColor = SettingsManager.getBaseColor();
                 switch (widget) {
                     case WIDGET_2:
-                        remoteViews.setImageViewBitmap(R.id.followers,
-                                Util.getFollowersWithLetterBitmap(context, baseColor,
-                                        followers, bitmapWidth, bitmapHeight));
+                        remoteViews.setImageViewBitmap(R.id.stars_today,
+                                Util.getStarsWithLetterBitmap(context, baseColor,
+                                        stars, bitmapWidth, bitmapHeight));
                         break;
                 }
             }

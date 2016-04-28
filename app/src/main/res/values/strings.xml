@@ -44,9 +44,10 @@
 
     <string name="click_to_set">Click to set user name</string>
 
-    <string name="one_year">1 year</string>
+    <string name="one_year">1 Year</string>
     <string name="today">Today</string>
     <string name="current">Days</string>
     <string name="followers">Followers</string>
+    <string name="stars">Stars</string>
 
 </resources>

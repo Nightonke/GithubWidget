@@ -19,33 +19,41 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/github_widget_2_avator_size"
+        android:layout_marginTop="@dimen/github_widget_2_avator_padding_top"
         android:orientation="horizontal"
+        android:layout_marginLeft="@dimen/github_widget_2_avator_padding_left"
+        android:layout_marginStart="@dimen/github_widget_2_avator_padding_left"
+        android:layout_marginRight="@dimen/github_widget_2_avator_padding_left"
+        android:layout_marginEnd="@dimen/github_widget_2_avator_padding_left"
         >
 
-        <ImageView
-            android:id="@+id/avatar"
-            android:layout_width="@dimen/github_widget_2_avator_size"
+        <FrameLayout
+            android:layout_width="0dp"
             android:layout_height="@dimen/github_widget_2_avator_size"
-            android:src="@drawable/default_avatar"
-            android:layout_marginTop="@dimen/github_widget_2_avator_padding_top"
-            android:layout_marginLeft="@dimen/github_widget_2_avator_padding_left"
-            android:layout_marginStart="@dimen/github_widget_2_avator_padding_left"
-            android:layout_marginRight="@dimen/github_widget_2_avator_padding_left"
-            android:layout_marginEnd="@dimen/github_widget_2_avator_padding_left"
-            android:layout_gravity="left|top"
-            />
+            android:layout_weight="1"
+            >
+
+            <ImageView
+                android:id="@+id/avatar"
+                android:layout_width="@dimen/github_widget_2_avator_size"
+                android:layout_height="@dimen/github_widget_2_avator_size"
+                android:src="@drawable/default_avatar"
+                android:layout_gravity="center"
+                />
+
+        </FrameLayout>
 
         <ImageView
             android:id="@+id/motto"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/github_widget_2_avator_size"
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:gravity="center"
-            android:layout_marginTop="@dimen/github_widget_2_avator_padding_top"
-            android:layout_marginRight="@dimen/github_widget_2_avator_padding_left"
-            android:layout_marginEnd="@dimen/github_widget_2_avator_padding_left"/>
+            android:layout_weight="4"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:layout_marginLeft="@dimen/github_widget_2_avator_padding_left"
+            android:layout_marginStart="@dimen/github_widget_2_avator_padding_left"
+            />
 
     </LinearLayout>
 

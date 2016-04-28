@@ -35,6 +35,14 @@ public class SettingsManager {
     
     private static long lastUpdateFollowersTime = -1;
 
+    private static String lastUpdateStarsId = null;
+    
+    private static String lastUpdateStarsDate = null;
+    
+    private static int todayStars = 0;
+
+    private static int receivedEventPerPage = 30;
+
     public static boolean getShowToast() {
         showToast = PreferenceManager.
                 getDefaultSharedPreferences(GithubWidgetApplication.getAppContext())
@@ -229,6 +237,66 @@ public class SettingsManager {
         SharedPreferences.Editor editor = PreferenceManager
                 .getDefaultSharedPreferences(GithubWidgetApplication.getAppContext()).edit();
         editor.putLong("LAST_UPDATE_FOLLOWERS_TIME", lastUpdateFollowersTime);
+        editor.commit();
+    }
+
+    public static String getLastUpdateStarsId() {
+        lastUpdateStarsId = PreferenceManager
+                .getDefaultSharedPreferences(GithubWidgetApplication.getAppContext())
+                .getString("LAST_UPDATE_STARS_ID", lastUpdateStarsId);
+        return lastUpdateStarsId;
+    }
+
+    public static void setLastUpdateStarsId(String lastUpdateStarsId) {
+        SettingsManager.lastUpdateStarsId = lastUpdateStarsId;
+        SharedPreferences.Editor editor = PreferenceManager
+                .getDefaultSharedPreferences(GithubWidgetApplication.getAppContext()).edit();
+        editor.putString("LAST_UPDATE_STARS_ID", lastUpdateStarsId);
+        editor.commit();
+    }
+
+    public static String getLastUpdateStarsDate() {
+        lastUpdateStarsDate = PreferenceManager
+                .getDefaultSharedPreferences(GithubWidgetApplication.getAppContext())
+                .getString("LAST_UPDATE_STARS_DATE", lastUpdateStarsDate);
+        return lastUpdateStarsDate;
+    }
+
+    public static void setLastUpdateStarsDate(String lastUpdateStarsDate) {
+        SettingsManager.lastUpdateStarsDate = lastUpdateStarsDate;
+        SharedPreferences.Editor editor = PreferenceManager
+                .getDefaultSharedPreferences(GithubWidgetApplication.getAppContext()).edit();
+        editor.putString("LAST_UPDATE_STARS_DATE", lastUpdateStarsDate);
+        editor.commit();
+    }
+
+    public static int getTodayStars() {
+        todayStars = PreferenceManager.
+                getDefaultSharedPreferences(GithubWidgetApplication.getAppContext())
+                .getInt("TODAY_STARS", todayStars);
+        return todayStars;
+    }
+
+    public static void setTodayStars(int todayStars) {
+        SettingsManager.todayStars = todayStars;
+        SharedPreferences.Editor editor = PreferenceManager
+                .getDefaultSharedPreferences(GithubWidgetApplication.getAppContext()).edit();
+        editor.putInt("TODAY_STARS", todayStars);
+        editor.commit();
+    }
+    
+    public static int getReceivedEventPerPage() {
+        receivedEventPerPage = PreferenceManager.
+                getDefaultSharedPreferences(GithubWidgetApplication.getAppContext())
+                .getInt("RECEIVED_EVENT_PER_PAGE", receivedEventPerPage);
+        return followers;
+    }
+
+    public static void setReceivedEventPerPage(int receivedEventPerPage) {
+        SettingsManager.receivedEventPerPage = receivedEventPerPage;
+        SharedPreferences.Editor editor = PreferenceManager
+                .getDefaultSharedPreferences(GithubWidgetApplication.getAppContext()).edit();
+        editor.putInt("RECEIVED_EVENT_PER_PAGE", receivedEventPerPage);
         editor.commit();
     }
     

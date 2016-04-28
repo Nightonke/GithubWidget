@@ -16,12 +16,12 @@ public class LimitedEditText extends EditText {
     /**
      * Max lines to be present in editable text field
      */
-    private int maxLines = 1;
+    private int maxLines = 2;
 
     /**
      * Max characters to be present in editable text field
      */
-    private int maxCharacters = 50;
+    private int maxCharacters = Integer.MAX_VALUE;
 
     /**
      * application context;
@@ -107,8 +107,6 @@ public class LimitedEditText extends EditText {
                 if (s.toString().length() > maxCharacters) {
                     LimitedEditText.this.setText(text);
                     LimitedEditText.this.setSelection(beforeCursorPosition);
-                    Toast.makeText(context, "text too long", Toast.LENGTH_SHORT)
-                            .show();
                 }
 
             /* turning on listener */

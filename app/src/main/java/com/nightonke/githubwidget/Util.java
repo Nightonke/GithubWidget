@@ -20,13 +20,13 @@ import android.graphics.Typeface;
 import android.media.ThumbnailUtils;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 
 import com.github.johnpersano.supertoasts.SuperToast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -42,6 +42,9 @@ import java.util.Locale;
 public class Util {
 
     public static int HALF_AN_HOUR = 30 * 60 * 1000;
+    public static float WIDGET_2_NUMBER_HEIGHT = 50f;
+    public static float WIDGET_2_LETTER_HEIGHT = 25f;
+    public static float WIDGET_2_LETTER_PADDING_BOTTOM = 20f;
 
     public static int getScreenWidth(Context context) {
         Display localDisplay
@@ -1211,9 +1214,9 @@ public class Util {
             Context context, int baseColor, int sum, int bitmapWidth, int bitmapHeight) {
         Bitmap bitmap;
         Canvas canvas;
-        Paint mainPaint = getTextPaint(50f, calculateLevelColor(baseColor, 4),
+        Paint mainPaint = getTextPaint(WIDGET_2_NUMBER_HEIGHT, calculateLevelColor(baseColor, 4),
                 Typeface.createFromAsset(context.getAssets(), "fonts/Lato-Light.ttf"));
-        Paint subPaint = getTextPaint(25f, calculateLevelColor(baseColor, 4),
+        Paint subPaint = getTextPaint(WIDGET_2_LETTER_HEIGHT, calculateLevelColor(baseColor, 4),
                 Typeface.createFromAsset(context.getAssets(), "fonts/Lato-Light.ttf"));
 
         bitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.ARGB_8888);
@@ -1227,7 +1230,7 @@ public class Util {
         xPos = (canvas.getWidth() / 2)
                 - getTextWidth(subPaint, getString(R.string.one_year)) / 2;
         canvas.drawText(getString(R.string.one_year),
-                xPos, yPos + getTextHeight(subPaint, getString(R.string.one_year)) + 10, subPaint);
+                xPos, canvas.getHeight() - WIDGET_2_LETTER_PADDING_BOTTOM, subPaint);
 
         return bitmap;
     }
@@ -1272,9 +1275,9 @@ public class Util {
             Context context, int baseColor, int today, int bitmapWidth, int bitmapHeight) {
         Bitmap bitmap;
         Canvas canvas;
-        Paint mainPaint = getTextPaint(50f, calculateLevelColor(baseColor, 4),
+        Paint mainPaint = getTextPaint(WIDGET_2_NUMBER_HEIGHT, calculateLevelColor(baseColor, 4),
                 Typeface.createFromAsset(context.getAssets(), "fonts/Lato-Light.ttf"));
-        Paint subPaint = getTextPaint(25f, calculateLevelColor(baseColor, 4),
+        Paint subPaint = getTextPaint(WIDGET_2_LETTER_HEIGHT, calculateLevelColor(baseColor, 4),
                 Typeface.createFromAsset(context.getAssets(), "fonts/Lato-Light.ttf"));
 
         bitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.ARGB_8888);
@@ -1288,7 +1291,7 @@ public class Util {
         xPos = (canvas.getWidth() / 2)
                 - getTextWidth(subPaint, getString(R.string.today)) / 2;
         canvas.drawText(getString(R.string.today),
-                xPos, yPos + getTextHeight(subPaint, getString(R.string.today)) + 10, subPaint);
+                xPos, canvas.getHeight() - WIDGET_2_LETTER_PADDING_BOTTOM, subPaint);
 
         return bitmap;
     }
@@ -1307,9 +1310,9 @@ public class Util {
             Context context, int baseColor, int days, int bitmapWidth, int bitmapHeight) {
         Bitmap bitmap;
         Canvas canvas;
-        Paint mainPaint = getTextPaint(50f, calculateLevelColor(baseColor, 4),
+        Paint mainPaint = getTextPaint(WIDGET_2_NUMBER_HEIGHT, calculateLevelColor(baseColor, 4),
                 Typeface.createFromAsset(context.getAssets(), "fonts/Lato-Light.ttf"));
-        Paint subPaint = getTextPaint(25f, calculateLevelColor(baseColor, 4),
+        Paint subPaint = getTextPaint(WIDGET_2_LETTER_HEIGHT, calculateLevelColor(baseColor, 4),
                 Typeface.createFromAsset(context.getAssets(), "fonts/Lato-Light.ttf"));
 
         bitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.ARGB_8888);
@@ -1323,7 +1326,7 @@ public class Util {
         xPos = (canvas.getWidth() / 2)
                 - getTextWidth(subPaint, getString(R.string.current)) / 2;
         canvas.drawText(getString(R.string.current),
-                xPos, yPos + getTextHeight(subPaint, getString(R.string.current)) + 10,
+                xPos, canvas.getHeight() - WIDGET_2_LETTER_PADDING_BOTTOM,
                 subPaint);
 
         return bitmap;
@@ -1443,9 +1446,9 @@ public class Util {
             Context context, int baseColor, String followers, int bitmapWidth, int bitmapHeight) {
         Bitmap bitmap;
         Canvas canvas;
-        Paint mainPaint = getTextPaint(50f, calculateLevelColor(baseColor, 4),
+        Paint mainPaint = getTextPaint(WIDGET_2_NUMBER_HEIGHT, calculateLevelColor(baseColor, 4),
                 Typeface.createFromAsset(context.getAssets(), "fonts/Lato-Light.ttf"));
-        Paint subPaint = getTextPaint(25f, calculateLevelColor(baseColor, 4),
+        Paint subPaint = getTextPaint(WIDGET_2_LETTER_HEIGHT, calculateLevelColor(baseColor, 4),
                 Typeface.createFromAsset(context.getAssets(), "fonts/Lato-Light.ttf"));
 
         bitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.ARGB_8888);
@@ -1463,10 +1466,125 @@ public class Util {
         xPos = (canvas.getWidth() / 2)
                 - getTextWidth(subPaint, getString(R.string.followers)) / 2;
         canvas.drawText(getString(R.string.followers),
-                xPos, yPos + getTextHeight(subPaint, getString(R.string.followers)) + 10,
+                xPos, canvas.getHeight() - WIDGET_2_LETTER_PADDING_BOTTOM,
                 subPaint);
 
         return bitmap;
+    }
+
+    /**
+     * Create a bitmap where there are stars and english.
+     *
+     * @param context Context.
+     * @param baseColor Base color.
+     * @param stars String of stars.
+     * @param bitmapWidth Width.
+     * @param bitmapHeight Height.
+     * @return The bitmap.
+     */
+    public static Bitmap getStarsWithLetterBitmap(
+            Context context, int baseColor, String stars, int bitmapWidth, int bitmapHeight) {
+        Bitmap bitmap;
+        Canvas canvas;
+        Paint mainPaint = getTextPaint(WIDGET_2_NUMBER_HEIGHT, calculateLevelColor(baseColor, 4),
+                Typeface.createFromAsset(context.getAssets(), "fonts/Lato-Light.ttf"));
+        Paint subPaint = getTextPaint(WIDGET_2_LETTER_HEIGHT, calculateLevelColor(baseColor, 4),
+                Typeface.createFromAsset(context.getAssets(), "fonts/Lato-Light.ttf"));
+
+        bitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.ARGB_8888);
+        canvas = new Canvas(bitmap);
+
+        int xPos = (canvas.getWidth() / 2)
+                - getTextWidth(mainPaint, stars + "") / 2;
+        int yPos = getTextHeight(mainPaint, stars + "");
+        canvas.drawText(stars + "", xPos, yPos, mainPaint);
+
+        xPos = (canvas.getWidth() / 2)
+                - getTextWidth(subPaint, getString(R.string.stars)) / 2;
+        canvas.drawText(getString(R.string.stars),
+                xPos, canvas.getHeight() - WIDGET_2_LETTER_PADDING_BOTTOM,
+                subPaint);
+
+        return bitmap;
+    }
+
+    /**
+     * Write the star update time and get the string of stars.
+     *
+     * @param result The string of result.
+     * @return The string of stars.
+     */
+    public static String writeStars(String result) {
+        SharedPreferences.Editor editor = PreferenceManager
+                .getDefaultSharedPreferences(GithubWidgetApplication.getAppContext()).edit();
+        JSONArray jsonArray = null;
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        String nowDateString = format.format(Calendar.getInstance().getTime());
+        boolean thisIsANewDay = false;
+        if (SettingsManager.getLastUpdateStarsDate() == null
+                || !SettingsManager.getLastUpdateStarsDate().equals(nowDateString)) {
+            thisIsANewDay = true;
+        }
+        if (thisIsANewDay) SettingsManager.setTodayStars(0);
+
+        try {
+            jsonArray = new JSONArray(result);
+            String lastId = SettingsManager.getLastUpdateStarsId();
+            int stars = SettingsManager.getTodayStars();
+            boolean first = true;
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                if (jsonObject == null) continue;
+
+                // if we found the record we already deal
+                if (jsonObject.has("id") && jsonObject.getString("id").equals(lastId)) break;
+
+                // record the first id we already deal
+                if (first) {
+                    if (jsonObject.has("id")) {
+                        SettingsManager.setLastUpdateStarsId(jsonObject.getString("id"));
+                        SettingsManager.setLastUpdateStarsDate(
+                                jsonObject.getString("created_at").substring(0, 10));
+                        first = false;
+                    }
+                }
+
+                // whether this event is created today
+                if (nowDateString.equals(jsonObject.getString("created_at").substring(0, 10))) {
+                    // whether this is a watcher event
+                    if (jsonObject.has("type") && jsonObject.getString("type").equals("WatchEvent")) {
+                        JSONObject payload = jsonObject.getJSONObject("payload");
+                        // whether this is a star event
+                        if (payload.has("action") && payload.getString("action").equals("started")) {
+                            JSONObject repo = jsonObject.getJSONObject("repo");
+                            // whether the repository starred is belong to user
+                            if (repo != null && repo.has("name")) {
+                                String repoName = repo.getString("name");
+                                if (repoName != null) repoName = repoName.toLowerCase();
+                                String userName = SettingsManager.getUserName();
+                                if (userName != null) userName = userName.toLowerCase();
+                                if (repoName != null && userName != null) {
+                                    if (repoName.indexOf(userName) == 0) {
+                                        stars++;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            SettingsManager.setTodayStars(stars);
+
+            return "+" + stars;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return "+" + 0;
+        } finally {
+            editor.commit();
+        }
     }
 
 

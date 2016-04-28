@@ -247,13 +247,8 @@ public class SettingsActivity extends AppCompatActivity
         } else {
             showSoftKeyboard(userNameEditText);
         }
-        if (SettingsManager.getMotto() != null) {
-            hideSoftKeyboard();
-            mottoEditText.setText(SettingsManager.getMotto());
-            mottoEditText.setSelection(mottoEditText.getText().toString().length());
-        } else {
-            showSoftKeyboard(mottoEditText);
-        }
+        mottoEditText.setText(SettingsManager.getMotto());
+        mottoEditText.setSelection(mottoEditText.getText().toString().length());
     }
 
     @Override

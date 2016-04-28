@@ -47,7 +47,7 @@ import java.util.Locale;
 
 public class Util {
 
-    public static int HALF_AN_HOUR = 3 * 60 * 1000;
+    public static int HALF_AN_HOUR = 30 * 60 * 1000;
     public static float WIDGET_2_NUMBER_HEIGHT = 50f;
     public static float WIDGET_2_LETTER_HEIGHT = 25f;
     public static float WIDGET_2_LETTER_PADDING_BOTTOM = 20f;
@@ -852,7 +852,7 @@ public class Util {
 
         int bitmapWidth = Util.getScreenWidth(context);
         // Todo calculate the height
-        int bitmapHeight = bitmapWidth * 3 / 4;
+        int bitmapHeight = (int) (bitmapWidth * 0.75f);
         int columnNumber = Util.getContributionsColumnNumber(data);
         int n = columnNumber - 2;
         float paddingLeft = 10f;

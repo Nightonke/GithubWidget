@@ -82,7 +82,7 @@ public class AvatarTask extends AsyncTask<String, Void, State> {
                     if (httpURLConnection != null) httpURLConnection.disconnect();
                 }
             }
-            if (userId == -1) return State.FAIL;
+            if (SettingsManager.getUserId() == -1) return null;
             try {
                 String urlString = "https://avatars.githubusercontent.com/u/"
                         + SettingsManager.getUserId() + "?s=" + Util.dp2px(context.getResources().getDimension(

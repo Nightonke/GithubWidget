@@ -92,7 +92,7 @@ public class ContributionsTask extends AsyncTask<String, Void, String> {
                     if (httpURLConnection != null) httpURLConnection.disconnect();
                 }
             }
-            if (userId == -1) return null;
+            if (SettingsManager.getUserId() == -1) return null;
             try {
                 String urlString = "https://github.com/users/" + userName + "/contributions";
                 if (BuildConfig.DEBUG)
@@ -142,6 +142,7 @@ public class ContributionsTask extends AsyncTask<String, Void, String> {
                     break;
                 case WIDGET_2:
                 case WIDGET_3:
+                case WIDGET_4:
                     remoteViews.setImageViewBitmap(R.id.motto,
                             Util.getInputUserNameBitmap(
                                     context, SettingsManager.getBaseColor()));
@@ -157,6 +158,7 @@ public class ContributionsTask extends AsyncTask<String, Void, String> {
                 int baseColor = SettingsManager.getBaseColor();
                 int textColor = SettingsManager.getTextColor();
                 Bitmap bitmap = null;
+                float height;
                 switch (widget) {
                     case WIDGET_0:
                         bitmap = Util.get2DBitmap(context, result, startWeekDay,
@@ -175,10 +177,21 @@ public class ContributionsTask extends AsyncTask<String, Void, String> {
                         break;
                     case WIDGET_2:
                     case WIDGET_3:
-                        bitmap = Util.get2DBitmap(context, result, startWeekDay,
-                                baseColor, textColor, bitmapWidth, bitmapHeight, widget.equals(Widget.WIDGET_3));
+                    case WIDGET_4:
+                        if (widget.equals(Widget.WIDGET_2) || widget.equals(Widget.WIDGET_3)) {
+                            bitmap = Util.get2DBitmap(context, result, startWeekDay,
+                                    baseColor, textColor, bitmapWidth, bitmapHeight,
+                                    widget.equals(Widget.WIDGET_3));
+                            height = bitmap.getHeight() * 0.8f;
+                        } else {
+                            bitmap = Util.get3DBitmap(context, result, startWeekDay,
+                                    baseColor, textColor,
+                                    SettingsManager.getShowMonthDashIn3D(),
+                                    SettingsManager.getShowWeekdayDashIn3D(),
+                                    false);
+                            height = bitmap.getHeight() * 0.2f;
+                        }
                         remoteViews.setImageViewBitmap(R.id.contributions, bitmap);
-                        float height = bitmap.getHeight() * 0.8f;
                         remoteViews.setImageViewBitmap(R.id.contributions_sum,
                                 Util.getContributionsSumWithLetterBitmap(context, baseColor,
                                         Util.getContributionsSum(result),

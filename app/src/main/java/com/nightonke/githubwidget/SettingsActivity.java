@@ -416,7 +416,7 @@ public class SettingsActivity extends AppCompatActivity
             sendBroadcast(intent);
         } else {
             if (mottoChanged) {
-                Util.showToast(R.string.refreshing);
+                Util.showToast(R.string.refreshing_motto);
                 Intent intent = new Intent();
                 intent.setAction(Actions.UPDATE_MOTTO);
                 sendBroadcast(intent);

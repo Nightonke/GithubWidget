@@ -1,6 +1,8 @@
 package com.nightonke.githubwidget;
 
 import android.annotation.SuppressLint;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -23,6 +25,7 @@ import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.RemoteViews;
 
 import com.github.johnpersano.supertoasts.SuperToast;
 
@@ -311,7 +314,8 @@ public class Util {
             int baseColor,
             int textColor,
             int bitmapWidth,
-            int bitmapHeight) {
+            int bitmapHeight,
+            boolean monthBelow) {
         Bitmap bitmap;
         Canvas canvas;
         Paint blockPaint;
@@ -326,8 +330,9 @@ public class Util {
         float spaceWidth = bitmapWidth / (ADJUST_VALUE + horizontalBlockNumber) - blockWidth;
         float monthTextHeight = blockWidth * 1.5F;
         float weekTextHeight = blockWidth;
-        float topMargin = 7f;
-        bitmapHeight = (int)(monthTextHeight + verticalBlockNumber * (blockWidth + spaceWidth) + 7);
+        float topMargin = monthBelow ? 15f : 7f;
+        bitmapHeight = (int)(monthTextHeight + topMargin
+                + verticalBlockNumber * (blockWidth + spaceWidth));
 
         bitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.ARGB_8888);
         canvas = new Canvas(bitmap);
@@ -347,7 +352,8 @@ public class Util {
                 Typeface.createFromAsset(context.getAssets(), "fonts/Lato-Light.ttf"));
 
         // draw the text for weekdays
-        float textStartHeight = monthTextHeight + topMargin + blockWidth + spaceWidth;
+        float textStartHeight = (monthBelow ? 0 : monthTextHeight + topMargin)
+                + blockWidth + spaceWidth;
         Paint.FontMetricsInt fontMetrics = monthTextPaint.getFontMetricsInt();
         float baseline = (
                 textStartHeight + blockWidth +
@@ -367,7 +373,8 @@ public class Util {
                 contributions.get(0).day);
         float x = weekTextHeight + topMargin;
         float y = (currentWeekDay - startWeekDay.v + 7) % 7
-                * (blockWidth + spaceWidth) + topMargin + monthTextHeight;
+                * (blockWidth + spaceWidth)
+                + (monthBelow ? 0 : topMargin + monthTextHeight);
         int lastMonth = contributions.get(0).month;
         for (Day day : contributions) {
             blockPaint.setColor(Util.calculateLevelColor(baseColor, day.level));
@@ -377,8 +384,8 @@ public class Util {
             if (currentWeekDay == startWeekDay.v) {
                 // another column
                 x += blockWidth + spaceWidth;
-                y = topMargin + monthTextHeight;
-                if (day.month != lastMonth) {
+                y = monthBelow ? 0 : topMargin + monthTextHeight;
+                if (!monthBelow && day.month != lastMonth) {
                     // judge whether we should draw the text of month
                     canvas.drawText(
                             Util.getShortMonthName(day.year, day.month, day.day),
@@ -387,6 +394,14 @@ public class Util {
                 }
             } else {
                 y += blockWidth + spaceWidth;
+                if (monthBelow && currentWeekDay == (startWeekDay.v + 6) % 7
+                        && day.month != lastMonth) {
+                    // judge whether we should draw the text of month
+                    canvas.drawText(
+                            Util.getShortMonthName(day.year, day.month, day.day),
+                            x, y + monthTextHeight + topMargin, monthTextPaint);
+                    lastMonth = day.month;
+                }
             }
         }
 
@@ -1355,6 +1370,8 @@ public class Util {
         canvas = new Canvas(bitmap);
 
         String content = SettingsManager.getMotto();
+        if ("".equals(content) && SettingsManager.getUserName() != null)
+            content = SettingsManager.getUserName();
         boolean isTwoLines = content.contains("\n");
         if (isTwoLines) {
             canvas.drawText(
@@ -1585,6 +1602,26 @@ public class Util {
         } finally {
             editor.commit();
         }
+    }
+
+    /**
+     * Update a motto on a widget.
+     *
+     * @param c The class of the widget.
+     * @param remoteViewsId The layout resourece id of the widget.
+     * @param context Context.
+     * @param bitmapWidth Motto width.
+     * @param bitmapHeight Motto height.
+     */
+    public static void updateMotto(Class c, int remoteViewsId, Context context,
+                                   int bitmapWidth, int bitmapHeight) {
+        RemoteViews remoteViews
+                = new RemoteViews(context.getPackageName(), remoteViewsId);
+        remoteViews.setImageViewBitmap(R.id.motto,
+                Util.getMottoBitmap(context, SettingsManager.getBaseColor(),
+                        bitmapWidth, bitmapHeight));
+        AppWidgetManager.getInstance(context).updateAppWidget(
+                new ComponentName(context, c), remoteViews);
     }
 
 

@@ -219,7 +219,8 @@ public class SettingsActivity extends AppCompatActivity
                         newBaseColor, Color.parseColor("#000000"), false, false));
         imageView2D.setImageBitmap(
                 Util.get2DBitmap(this, Util.SHOW_DATA, Weekday.SUN,
-                        newBaseColor, Color.parseColor("#000000"), Util.getScreenWidth(this), 0));
+                        newBaseColor, Color.parseColor("#000000"),
+                        Util.getScreenWidth(this), 0, false));
         ((GradientDrawable)colorImageView.getBackground()).setColor(newBaseColor);
         colorText.setText(""
                 + Util.decToHex(seekBarA.getProgress())
@@ -340,15 +341,16 @@ public class SettingsActivity extends AppCompatActivity
     protected void onStop() {
         super.onStop();
         boolean changed = false;
+        boolean mottoChanged = false;
         if (oldUserName == null) {
             if (SettingsManager.getUserName() != null) changed = true;
         } else {
             if (!oldUserName.equals(SettingsManager.getUserName())) changed = true;
         }
         if (oldMotto == null) {
-            if (SettingsManager.getMotto() != null) changed = true;
+            if (SettingsManager.getMotto() != null) mottoChanged = true;
         } else {
-            if (!oldMotto.equals(SettingsManager.getMotto())) changed = true;
+            if (!oldMotto.equals(SettingsManager.getMotto())) mottoChanged = true;
         }
         if (oldBaseColor != newBaseColor) {
             SettingsManager.setBaseColor(newBaseColor);
@@ -365,7 +367,15 @@ public class SettingsActivity extends AppCompatActivity
             Intent intent = new Intent();
             intent.setAction(Actions.CLICK_AVATAR);
             sendBroadcast(intent);
+        } else {
+            if (mottoChanged) {
+                Util.showToast(R.string.refreshing);
+                Intent intent = new Intent();
+                intent.setAction(Actions.UPDATE_MOTTO);
+                sendBroadcast(intent);
+            }
         }
+
 
         finish();
     }

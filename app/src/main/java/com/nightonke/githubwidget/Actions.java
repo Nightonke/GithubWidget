@@ -15,6 +15,7 @@ public class Actions {
     public static final String CLICK_STARS_TODAY = PREFIX + "CLICK_STARS_TODAY";
     public static final String CLICK_MOTTO = PREFIX + "CLICK_MOTTO";
     public static final String CLICK_CURRENT_STREAK = PREFIX + "CLICK_CURRENT_STREAK";
+    public static final String UPDATE_MOTTO = PREFIX + "UPDATE_MOTTO";
 
 
 

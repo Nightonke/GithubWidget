@@ -141,6 +141,7 @@ public class ContributionsTask extends AsyncTask<String, Void, String> {
                                     context, SettingsManager.getBaseColor()));
                     break;
                 case WIDGET_2:
+                case WIDGET_3:
                     remoteViews.setImageViewBitmap(R.id.motto,
                             Util.getInputUserNameBitmap(
                                     context, SettingsManager.getBaseColor()));
@@ -159,7 +160,7 @@ public class ContributionsTask extends AsyncTask<String, Void, String> {
                 switch (widget) {
                     case WIDGET_0:
                         bitmap = Util.get2DBitmap(context, result, startWeekDay,
-                                baseColor, textColor, bitmapWidth, bitmapHeight);
+                                baseColor, textColor, bitmapWidth, bitmapHeight, false);
                         remoteViews.setImageViewBitmap(R.id.contributions, bitmap);
                         remoteViews.setImageViewBitmap(R.id.contributions_sum,
                                 Util.getContributionsSumBitmap(context, SettingsManager.getBaseColor(),
@@ -173,8 +174,9 @@ public class ContributionsTask extends AsyncTask<String, Void, String> {
                         remoteViews.setImageViewBitmap(R.id.contributions, bitmap);
                         break;
                     case WIDGET_2:
+                    case WIDGET_3:
                         bitmap = Util.get2DBitmap(context, result, startWeekDay,
-                                baseColor, textColor, bitmapWidth, bitmapHeight);
+                                baseColor, textColor, bitmapWidth, bitmapHeight, widget.equals(Widget.WIDGET_3));
                         remoteViews.setImageViewBitmap(R.id.contributions, bitmap);
                         float height = bitmap.getHeight() * 0.8f;
                         remoteViews.setImageViewBitmap(R.id.contributions_sum,

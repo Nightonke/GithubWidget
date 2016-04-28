@@ -27,7 +27,7 @@
 
         <receiver
             android:name=".GithubWidget0"
-            android:label="Github 4×1">
+            android:label="4×1">
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/appwidget_provider_0">
@@ -43,7 +43,7 @@
 
         <receiver
             android:name=".GithubWidget1"
-            android:label="Github 4×3">
+            android:label="4×3">
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/appwidget_provider_1">
@@ -58,7 +58,7 @@
 
         <receiver
             android:name=".GithubWidget2"
-            android:label="Github 4×2">
+            android:label="4×2-1">
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/appwidget_provider_2">
@@ -73,6 +73,29 @@
                 <action android:name="com.nightonke.githubwidget.action.CLICK_FOLLOWERS"/>
                 <action android:name="com.nightonke.githubwidget.action.CLICK_STARS_TODAY"/>
                 <action android:name="com.nightonke.githubwidget.action.CLICK_CURRENT_STREAK"/>
+                <action android:name="com.nightonke.githubwidget.action.UPDATE_MOTTO"/>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".GithubWidget3"
+            android:label="4×2-2">
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/appwidget_provider_3">
+            </meta-data>
+            <intent-filter>
+                <action android:name="com.nightonke.githubwidget.action.CLICK_ALL"/>
+                <action android:name="com.nightonke.githubwidget.action.CLICK_AVATAR"/>
+                <action android:name="com.nightonke.githubwidget.action.CLICK_MOTTO"/>
+                <action android:name="com.nightonke.githubwidget.action.CLICK_CONTRIBUTIONS"/>
+                <action android:name="com.nightonke.githubwidget.action.CLICK_CONTRIBUTIONS_SUM"/>
+                <action android:name="com.nightonke.githubwidget.action.CLICK_CONTRIBUTIONS_TODAY"/>
+                <action android:name="com.nightonke.githubwidget.action.CLICK_FOLLOWERS"/>
+                <action android:name="com.nightonke.githubwidget.action.CLICK_STARS_TODAY"/>
+                <action android:name="com.nightonke.githubwidget.action.CLICK_CURRENT_STREAK"/>
+                <action android:name="com.nightonke.githubwidget.action.UPDATE_MOTTO"/>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
         </receiver>

@@ -289,7 +289,7 @@ public class SettingsManager {
         receivedEventPerPage = PreferenceManager.
                 getDefaultSharedPreferences(GithubWidgetApplication.getAppContext())
                 .getInt("RECEIVED_EVENT_PER_PAGE", receivedEventPerPage);
-        return followers;
+        return receivedEventPerPage;
     }
 
     public static void setReceivedEventPerPage(int receivedEventPerPage) {

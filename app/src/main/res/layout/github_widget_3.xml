@@ -8,39 +8,27 @@
     android:background="@drawable/github_widget_background"
     >
 
-    <ImageView
-        android:id="@+id/contributions"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="@dimen/github_widget_2_contributions_padding_left"
-        android:layout_marginStart="@dimen/github_widget_2_contributions_padding_left"
-        android:layout_marginRight="@dimen/github_widget_2_contributions_padding_right"
-        android:layout_marginEnd="@dimen/github_widget_2_contributions_padding_right"
-        android:layout_marginTop="@dimen/github_widget_2_avator_padding_top"
-        />
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/github_widget_2_avator_size"
-        android:layout_marginTop="@dimen/github_widget_2_avator_padding_top"
+        android:layout_height="@dimen/github_widget_3_avator_size"
+        android:layout_marginTop="@dimen/github_widget_3_avator_padding_top"
         android:orientation="horizontal"
-        android:layout_marginLeft="@dimen/github_widget_2_avator_padding_left"
-        android:layout_marginStart="@dimen/github_widget_2_avator_padding_left"
-        android:layout_marginRight="@dimen/github_widget_2_avator_padding_left"
-        android:layout_marginEnd="@dimen/github_widget_2_avator_padding_left"
+        android:layout_marginLeft="@dimen/github_widget_3_avator_padding_left"
+        android:layout_marginStart="@dimen/github_widget_3_avator_padding_left"
+        android:layout_marginRight="@dimen/github_widget_3_avator_padding_left"
+        android:layout_marginEnd="@dimen/github_widget_3_avator_padding_left"
         >
 
         <FrameLayout
             android:layout_width="0dp"
-            android:layout_height="@dimen/github_widget_2_avator_size"
+            android:layout_height="@dimen/github_widget_3_avator_size"
             android:layout_weight="1"
             >
 
             <ImageView
                 android:id="@+id/avatar"
-                android:layout_width="@dimen/github_widget_2_avator_size"
-                android:layout_height="@dimen/github_widget_2_avator_size"
+                android:layout_width="@dimen/github_widget_3_avator_size"
+                android:layout_height="@dimen/github_widget_3_avator_size"
                 android:src="@drawable/default_avatar"
                 android:layout_gravity="center"
                 />
@@ -49,13 +37,13 @@
 
         <ImageView
             android:id="@+id/motto"
-            android:layout_height="@dimen/github_widget_2_avator_size"
+            android:layout_height="@dimen/github_widget_3_avator_size"
             android:layout_width="0dp"
             android:layout_weight="4"
             android:layout_gravity="center"
             android:scaleType="fitCenter"
-            android:layout_marginLeft="@dimen/github_widget_2_avator_padding_left"
-            android:layout_marginStart="@dimen/github_widget_2_avator_padding_left"
+            android:layout_marginLeft="@dimen/github_widget_3_avator_padding_left"
+            android:layout_marginStart="@dimen/github_widget_3_avator_padding_left"
             />
 
     </LinearLayout>
@@ -65,6 +53,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal"
+        android:layout_marginTop="5dp"
         >
 
         <ImageView
@@ -74,8 +63,8 @@
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:gravity="center"
-            android:layout_marginLeft="@dimen/github_widget_2_avator_padding_left"
-            android:layout_marginStart="@dimen/github_widget_2_avator_padding_left"/>
+            android:layout_marginLeft="@dimen/github_widget_3_avator_padding_left"
+            android:layout_marginStart="@dimen/github_widget_3_avator_padding_left"/>
 
         <ImageView
             android:id="@+id/contributions_sum"
@@ -108,9 +97,20 @@
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:gravity="center"
-            android:layout_marginRight="@dimen/github_widget_2_avator_padding_left"
-            android:layout_marginEnd="@dimen/github_widget_2_avator_padding_left"/>
+            android:layout_marginRight="@dimen/github_widget_3_avator_padding_left"
+            android:layout_marginEnd="@dimen/github_widget_3_avator_padding_left"/>
 
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/contributions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/github_widget_3_contributions_padding_left"
+        android:layout_marginStart="@dimen/github_widget_3_contributions_padding_left"
+        android:layout_marginRight="@dimen/github_widget_3_contributions_padding_right"
+        android:layout_marginEnd="@dimen/github_widget_3_contributions_padding_right"
+        />
 
 </LinearLayout>

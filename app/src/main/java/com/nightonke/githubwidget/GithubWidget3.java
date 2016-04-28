@@ -13,16 +13,16 @@ import android.widget.RemoteViews;
 /**
  * Created by Weiping on 2016/4/26.
  */
-public class GithubWidget2 extends AppWidgetProvider {
+public class GithubWidget3 extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
 
         if (AppWidgetManager.getInstance(context).getAppWidgetIds(
-                new ComponentName(context, GithubWidget2.class)).length == 0) return;
+                new ComponentName(context, GithubWidget3.class)).length == 0) return;
 
-        if (BuildConfig.DEBUG) Log.d("GithubWidget", "Receive in widget 2: " + intent.getAction());
+        if (BuildConfig.DEBUG) Log.d("GithubWidget", "Receive in widget 3: " + intent.getAction());
 
         context.startService(new Intent(context, GithubWidgetService.class));
 
@@ -34,10 +34,10 @@ public class GithubWidget2 extends AppWidgetProvider {
             updateAll(context, -1);
         } else if (intent.getAction().equals(Actions.UPDATE_MOTTO)) {
             if (BuildConfig.DEBUG) Log.d("GithubWidget", "Update motto");
-            Util.updateMotto(GithubWidget2.class, R.layout.github_widget_2, context,
+            Util.updateMotto(GithubWidget3.class, R.layout.github_widget_3, context,
                     (int) (Util.getScreenWidth(context)
-                            - Util.getDimen(R.dimen.github_widget_2_avator_size)),
-                    (int )Util.getDimen(R.dimen.github_widget_2_avator_size));
+                            - Util.getDimen(R.dimen.github_widget_3_avator_size)),
+                    (int )Util.getDimen(R.dimen.github_widget_3_avator_size));
         }
     }
 
@@ -54,15 +54,15 @@ public class GithubWidget2 extends AppWidgetProvider {
     private void updateAll(Context context, int appWidgetId) {
         if (BuildConfig.DEBUG) Log.d("GithubWidget", "Update all");
         RemoteViews remoteViews
-                = new RemoteViews(context.getPackageName(), R.layout.github_widget_2);
-        ComponentName componentName = new ComponentName(context, GithubWidget2.class);
+                = new RemoteViews(context.getPackageName(), R.layout.github_widget_3);
+        ComponentName componentName = new ComponentName(context, GithubWidget3.class);
 
         // update avatar
         new AvatarTask(remoteViews, context, componentName, appWidgetId)
                 .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "");
         // update contributions and contributions sum
         new ContributionsTask(
-                Widget.WIDGET_2, remoteViews,
+                Widget.WIDGET_3, remoteViews,
                 context, componentName, appWidgetId, false,
                 Util.getScreenWidth(context), 0)
                 .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "");

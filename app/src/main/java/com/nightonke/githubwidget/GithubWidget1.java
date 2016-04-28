@@ -24,6 +24,8 @@ public class GithubWidget1 extends AppWidgetProvider {
 
         if (BuildConfig.DEBUG) Log.d("GithubWidget", "Receive in widget 1: " + intent.getAction());
 
+        context.startService(new Intent(context, GithubWidgetService.class));
+
         if (intent.getAction().equals(Actions.CLICK_AVATAR)
                 || intent.getAction().equals(Actions.CLICK_CONTRIBUTIONS_SUM)) {
             // just update

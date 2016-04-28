@@ -130,6 +130,7 @@ public class FollowersTask extends AsyncTask<String, Void, String> {
         if (SettingsManager.getUserName() == null) {
             switch (widget) {
                 case WIDGET_2:
+                case WIDGET_3:
                     remoteViews.setImageViewBitmap(R.id.motto,
                             Util.getInputUserNameBitmap(
                                     context, SettingsManager.getBaseColor()));
@@ -146,6 +147,7 @@ public class FollowersTask extends AsyncTask<String, Void, String> {
                 int baseColor = SettingsManager.getBaseColor();
                 switch (widget) {
                     case WIDGET_2:
+                    case WIDGET_3:
                         remoteViews.setImageViewBitmap(R.id.followers,
                                 Util.getFollowersWithLetterBitmap(context, baseColor,
                                         followers, bitmapWidth, bitmapHeight));

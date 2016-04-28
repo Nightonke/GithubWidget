@@ -14,10 +14,19 @@
     <dimen name="github_widget_1_avator_size">50dp</dimen>
 
     <dimen name="github_widget_2_avator_border_size">60dp</dimen>
-    <dimen name="github_widget_2_avator_padding_top">10dp</dimen>
+    <dimen name="github_widget_2_avator_padding_top">5dp</dimen>
     <dimen name="github_widget_2_avator_padding_left">10dp</dimen>
+    <dimen name="github_widget_2_contributions_padding_top">5dp</dimen>
     <dimen name="github_widget_2_contributions_padding_left">5dp</dimen>
     <dimen name="github_widget_2_contributions_padding_right">5dp</dimen>
     <dimen name="github_widget_2_avator_size">50dp</dimen>
+
+    <dimen name="github_widget_3_avator_border_size">60dp</dimen>
+    <dimen name="github_widget_3_avator_padding_top">5dp</dimen>
+    <dimen name="github_widget_3_avator_padding_left">10dp</dimen>
+    <dimen name="github_widget_3_contributions_padding_top">5dp</dimen>
+    <dimen name="github_widget_3_contributions_padding_left">5dp</dimen>
+    <dimen name="github_widget_3_contributions_padding_right">5dp</dimen>
+    <dimen name="github_widget_3_avator_size">50dp</dimen>
 
 </resources>

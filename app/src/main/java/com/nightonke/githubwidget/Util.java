@@ -44,7 +44,7 @@ import java.util.Locale;
 
 public class Util {
 
-    public static int HALF_AN_HOUR = 30 * 60 * 1000;
+    public static int HALF_AN_HOUR = 3 * 60 * 1000;
     public static float WIDGET_2_NUMBER_HEIGHT = 50f;
     public static float WIDGET_2_LETTER_HEIGHT = 25f;
     public static float WIDGET_2_LETTER_PADDING_BOTTOM = 20f;
@@ -833,7 +833,8 @@ public class Util {
             int baseColor,
             int textColor,
             boolean drawMonthText,
-            boolean drawWeekdayText) {
+            boolean drawWeekdayText,
+            boolean containsAvatar) {
         Bitmap bitmap;
         Canvas canvas;
         Paint blockPaint;
@@ -1034,7 +1035,7 @@ public class Util {
         float titleAndNumberPadding = 8f;
         float numberAndRemarkPadding = 10f;
         float unitAndRemarkPadding = 5f;
-        float avatarWidth = bitmapWidth / 4.5f;
+        float avatarWidth = containsAvatar ? bitmapWidth / 4.5f : 0;
 
         // draw current streak text
         String[] currentStreaks = Util.getCurrentStreak(contributions);

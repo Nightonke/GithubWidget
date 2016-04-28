@@ -1,5 +1,6 @@
 package com.nightonke.githubwidget;
 
+import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -10,10 +11,14 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import java.util.Calendar;
+
 /**
  * Created by Weiping on 2016/4/26.
  */
 public class GithubWidget2 extends AppWidgetProvider {
+
+    private PendingIntent servicePendingIntent = null;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -33,7 +38,7 @@ public class GithubWidget2 extends AppWidgetProvider {
             Util.showToast(R.string.refreshing);
             updateAll(context, -1);
         } else if (intent.getAction().equals(Actions.UPDATE_MOTTO)) {
-            if (BuildConfig.DEBUG) Log.d("GithubWidget", "Update motto");
+            if (BuildConfig.DEBUG) Log.d("GithubWidget", "Update mot");
             Util.updateMotto(GithubWidget2.class, R.layout.github_widget_2, context,
                     (int) (Util.getScreenWidth(context)
                             - Util.getDimen(R.dimen.github_widget_2_avator_size)),
@@ -49,6 +54,29 @@ public class GithubWidget2 extends AppWidgetProvider {
         for (int appWidgetId : appWidgetIds) {
             updateAll(context, appWidgetId);
         }
+
+        final AlarmManager m = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        final Calendar TIME = Calendar.getInstance();
+        TIME.set(Calendar.MINUTE, 0);
+        TIME.set(Calendar.SECOND, 0);
+        TIME.set(Calendar.MILLISECOND, 0);
+
+        final Intent i = new Intent(context, GithubWidgetService.class);
+
+        if (servicePendingIntent == null) {
+            servicePendingIntent = PendingIntent.getService(context, 0, i,
+                    PendingIntent.FLAG_CANCEL_CURRENT);
+        }
+
+        m.setRepeating(AlarmManager.RTC, TIME.getTime().getTime(),
+                SettingsManager.getUpdateTime(), servicePendingIntent);
+    }
+
+    @Override
+    public void onDisabled(Context context) {
+        final AlarmManager m = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        m.cancel(servicePendingIntent);
     }
 
     private void updateAll(Context context, int appWidgetId) {

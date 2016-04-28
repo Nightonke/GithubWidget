@@ -170,7 +170,7 @@ public class ContributionsTask extends AsyncTask<String, Void, String> {
                         bitmap = Util.get3DBitmap(context, result, startWeekDay,
                                 baseColor, textColor,
                                 SettingsManager.getShowMonthDashIn3D(),
-                                SettingsManager.getShowWeekdayDashIn3D());
+                                SettingsManager.getShowWeekdayDashIn3D(), true);
                         remoteViews.setImageViewBitmap(R.id.contributions, bitmap);
                         break;
                     case WIDGET_2:

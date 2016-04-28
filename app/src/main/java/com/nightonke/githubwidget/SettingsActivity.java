@@ -216,7 +216,7 @@ public class SettingsActivity extends AppCompatActivity
                 seekBarG.getProgress(), seekBarB.getProgress());
         imageView3D.setImageBitmap(
                 Util.get3DBitmap(this, Util.SHOW_DATA, Weekday.SUN,
-                        newBaseColor, Color.parseColor("#000000"), false, false));
+                        newBaseColor, Color.parseColor("#000000"), false, false, true));
         imageView2D.setImageBitmap(
                 Util.get2DBitmap(this, Util.SHOW_DATA, Weekday.SUN,
                         newBaseColor, Color.parseColor("#000000"),

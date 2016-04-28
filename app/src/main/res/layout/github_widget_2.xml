@@ -43,6 +43,7 @@
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:gravity="center"
+            android:layout_marginTop="@dimen/github_widget_2_avator_padding_top"
             android:layout_marginRight="@dimen/github_widget_2_avator_padding_left"
             android:layout_marginEnd="@dimen/github_widget_2_avator_padding_left"/>
 

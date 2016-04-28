@@ -4,7 +4,6 @@
     android:initialLayout="@layout/github_widget_2"
     android:minWidth="250dp"
     android:minHeight="110dp"
-    android:updatePeriodMillis="1800000"
     >
 
 </appwidget-provider>

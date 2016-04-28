@@ -191,6 +191,14 @@ public class ContributionsTask extends AsyncTask<String, Void, String> {
                                                 Util.getCurrentStreak(
                                                         Util.getContributionsFromString(result))[0]),
                                         Util.getScreenWidth(context) / 5, (int) height));
+                        remoteViews.setImageViewBitmap(R.id.motto,
+                                Util.getMottoBitmap(context, baseColor,
+                                        (int) (Util.getScreenWidth(context)
+                                                - Util.getDimen(R.dimen.github_widget_2_avator_size)),
+                                        (int )Util.getDimen(R.dimen.github_widget_2_avator_size)));
+                        new FollowersTask(widget, remoteViews, context, componentName, appWidgetId,
+                                Util.getScreenWidth(context) / 5, (int) height)
+                                .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "");
                         break;
                 }
             }

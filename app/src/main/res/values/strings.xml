@@ -4,6 +4,9 @@
     <string name="user_name_title">User name</string>
     <string name="user_name_content">Input your user name in github.</string>
 
+    <string name="motto_title">Motto</string>
+    <string name="motto_content">Input your motto.</string>
+
     <string name="reset_base_color">Reset Color</string>
 
     <string name="show_toast_title">Show toast</string>
@@ -20,6 +23,7 @@
 
     <string name="update_every">Update every&#160;</string>
     <string name="dot">.</string>
+    <string name="dont_update">Manually update when click the avatar.</string>
 
     <string name="refreshing">Refreshing&#8230;</string>
     <string name="refresh_failed">Refresh failed!</string>
@@ -43,5 +47,6 @@
     <string name="one_year">1 year</string>
     <string name="today">Today</string>
     <string name="current">Days</string>
+    <string name="followers">Followers</string>
 
 </resources>

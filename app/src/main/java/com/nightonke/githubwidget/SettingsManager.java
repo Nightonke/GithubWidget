@@ -29,6 +29,12 @@ public class SettingsManager {
     
     private static int updateTime = Util.HALF_AN_HOUR;
 
+    private static String motto = "";
+    
+    private static int followers = -1;
+    
+    private static long lastUpdateFollowersTime = -1;
+
     public static boolean getShowToast() {
         showToast = PreferenceManager.
                 getDefaultSharedPreferences(GithubWidgetApplication.getAppContext())
@@ -174,11 +180,55 @@ public class SettingsManager {
     }
 
     public static void setUpdateTime(int updateTime) {
-        if (BuildConfig.DEBUG) Log.d("GithubWidget", "Update every " + updateTime + " ms");
         SettingsManager.updateTime = updateTime;
         SharedPreferences.Editor editor = PreferenceManager
                 .getDefaultSharedPreferences(GithubWidgetApplication.getAppContext()).edit();
         editor.putInt("UPDATE_TIME", updateTime);
+        editor.commit();
+    }
+
+    public static String getMotto() {
+        motto = PreferenceManager
+                .getDefaultSharedPreferences(GithubWidgetApplication.getAppContext())
+                .getString("MOTTO", motto);
+        return motto;
+    }
+
+    public static void setMotto(String motto) {
+        SettingsManager.motto = motto;
+        SharedPreferences.Editor editor = PreferenceManager
+                .getDefaultSharedPreferences(GithubWidgetApplication.getAppContext()).edit();
+        editor.putString("MOTTO", motto);
+        editor.commit();
+    }
+
+    public static int getFollowers() {
+        followers = PreferenceManager.
+                getDefaultSharedPreferences(GithubWidgetApplication.getAppContext())
+                .getInt("FOLLOWERS", followers);
+        return followers;
+    }
+
+    public static void setFollowers(int followers) {
+        SettingsManager.followers = followers;
+        SharedPreferences.Editor editor = PreferenceManager
+                .getDefaultSharedPreferences(GithubWidgetApplication.getAppContext()).edit();
+        editor.putInt("FOLLOWERS", followers);
+        editor.commit();
+    }
+
+    public static int getLastUpdateFollowersTime() {
+        lastUpdateFollowersTime = PreferenceManager.
+                getDefaultSharedPreferences(GithubWidgetApplication.getAppContext())
+                .getLong("LAST_UPDATE_FOLLOWERS_TIME", lastUpdateFollowersTime);
+        return followers;
+    }
+
+    public static void setLastUpdateFollowersTime(long lastUpdateFollowersTime) {
+        SettingsManager.lastUpdateFollowersTime = lastUpdateFollowersTime;
+        SharedPreferences.Editor editor = PreferenceManager
+                .getDefaultSharedPreferences(GithubWidgetApplication.getAppContext()).edit();
+        editor.putLong("LAST_UPDATE_FOLLOWERS_TIME", lastUpdateFollowersTime);
         editor.commit();
     }
     

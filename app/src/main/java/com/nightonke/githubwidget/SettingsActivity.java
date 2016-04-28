@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -27,6 +28,9 @@ public class SettingsActivity extends AppCompatActivity
 
     private LinearLayout userNameLayout;
     private EditText userNameEditText;
+
+    private RelativeLayout mottoLayout;
+    private LimitedEditText mottoEditText;
 
     private ImageView imageView3D;
     private ImageView imageView2D;
@@ -63,6 +67,7 @@ public class SettingsActivity extends AppCompatActivity
     private TextView updateTimeText;
 
     private String oldUserName;
+    private String oldMotto;
     private int oldBaseColor;
     private boolean oldShowToast;
     private boolean oldShowMonthDashIn3D;
@@ -97,6 +102,17 @@ public class SettingsActivity extends AppCompatActivity
             }
         });
         userNameLayout.setOnClickListener(this);
+
+        mottoLayout = findView(R.id.motto_layout);
+        mottoEditText = findView(R.id.motto_title);
+        mottoEditText.setMaxLines(2);
+        mottoEditText.setOnTextChangedListener(new LimitedEditText.OnTextChangedListener() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                SettingsManager.setMotto(mottoEditText.getText().toString());
+            }
+        });
+        mottoLayout.setOnClickListener(this);
         
         imageView3D = findView(R.id.three_d);
         imageView2D = findView(R.id.two_d);
@@ -153,8 +169,12 @@ public class SettingsActivity extends AppCompatActivity
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
-                    SettingsManager.setUpdateTime(
-                            Util.HALF_AN_HOUR * (updateTimeSeekBar.getProgress() + 1));
+                    if (progress == updateTimeSeekBar.getMax()) {
+                        SettingsManager.setUpdateTime(Integer.MAX_VALUE);
+                    } else {
+                        SettingsManager.setUpdateTime(
+                                Util.HALF_AN_HOUR * (updateTimeSeekBar.getProgress() + 1));
+                    }
                     setUpdateText();
                 }
             }
@@ -169,17 +189,25 @@ public class SettingsActivity extends AppCompatActivity
 
             }
         });
-        updateTimeSeekBar.setProgress(SettingsManager.getUpdateTime() / Util.HALF_AN_HOUR - 1);
+        if (SettingsManager.getUpdateTime() == Integer.MAX_VALUE) {
+            updateTimeSeekBar.setProgress(updateTimeSeekBar.getMax());
+        } else {
+            updateTimeSeekBar.setProgress(SettingsManager.getUpdateTime() / Util.HALF_AN_HOUR - 1);
+        }
         updateTimeText = findView(R.id.update_time_text);
         setUpdateText();
     }
 
     private void setUpdateText() {
-        updateTimeText.setText(
-                Util.getString(R.string.update_every)
-                        + String.format("%.1f",
-                        (updateTimeSeekBar.getProgress() / 2f + 0.5f)) + "h"
-                        + Util.getString(R.string.dot));
+        if (updateTimeSeekBar.getProgress() == updateTimeSeekBar.getMax()) {
+            updateTimeText.setText(R.string.dont_update);
+        } else {
+            updateTimeText.setText(
+                    Util.getString(R.string.update_every)
+                            + String.format("%.1f",
+                            (updateTimeSeekBar.getProgress() / 2f + 0.5f)) + "h"
+                            + Util.getString(R.string.dot));
+        }
     }
 
     private void setColor() {
@@ -219,6 +247,13 @@ public class SettingsActivity extends AppCompatActivity
         } else {
             showSoftKeyboard(userNameEditText);
         }
+        if (SettingsManager.getMotto() != null) {
+            hideSoftKeyboard();
+            mottoEditText.setText(SettingsManager.getMotto());
+            mottoEditText.setSelection(mottoEditText.getText().toString().length());
+        } else {
+            showSoftKeyboard(mottoEditText);
+        }
     }
 
     @Override
@@ -226,6 +261,9 @@ public class SettingsActivity extends AppCompatActivity
         switch (v.getId()) {
             case R.id.user_name_layout:
                 showSoftKeyboard(userNameEditText);
+                break;
+            case R.id.motto_layout:
+                showSoftKeyboard(mottoEditText);
                 break;
             case R.id.reset_base_color:
                 newBaseColor = SettingsManager.getDefaultBaseColor();
@@ -282,6 +320,7 @@ public class SettingsActivity extends AppCompatActivity
     protected void onStart() {
         super.onStart();
         oldUserName = SettingsManager.getUserName();
+        oldMotto =  SettingsManager.getMotto();
         oldBaseColor = SettingsManager.getBaseColor();
         oldShowToast = SettingsManager.getShowToast();
         oldShowMonthDashIn3D = SettingsManager.getShowMonthDashIn3D();
@@ -311,6 +350,11 @@ public class SettingsActivity extends AppCompatActivity
         } else {
             if (!oldUserName.equals(SettingsManager.getUserName())) changed = true;
         }
+        if (oldMotto == null) {
+            if (SettingsManager.getMotto() != null) changed = true;
+        } else {
+            if (!oldMotto.equals(SettingsManager.getMotto())) changed = true;
+        }
         if (oldBaseColor != newBaseColor) {
             SettingsManager.setBaseColor(newBaseColor);
             changed = true;
@@ -332,7 +376,7 @@ public class SettingsActivity extends AppCompatActivity
     }
 
     public void hideSoftKeyboard() {
-        if(getCurrentFocus()!=null) {
+        if(getCurrentFocus() != null) {
             InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         }

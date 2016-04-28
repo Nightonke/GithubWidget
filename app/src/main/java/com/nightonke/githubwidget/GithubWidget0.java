@@ -19,7 +19,10 @@ public class GithubWidget0 extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
 
-        if (BuildConfig.DEBUG) Log.d("GithubWidget", "Receive: " + intent.getAction());
+        if (AppWidgetManager.getInstance(context).getAppWidgetIds(
+                new ComponentName(context, GithubWidget0.class)).length == 0) return;
+
+        if (BuildConfig.DEBUG) Log.d("GithubWidget", "Receive in widget 0: " + intent.getAction());
 
         if (intent.getAction().equals(Actions.CLICK_AVATAR)
                 || intent.getAction().equals(Actions.CLICK_CONTRIBUTIONS_SUM)) {

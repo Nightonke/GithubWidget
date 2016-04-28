@@ -20,6 +20,7 @@ import android.graphics.Typeface;
 import android.media.ThumbnailUtils;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
@@ -1323,6 +1324,146 @@ public class Util {
                 - getTextWidth(subPaint, getString(R.string.current)) / 2;
         canvas.drawText(getString(R.string.current),
                 xPos, yPos + getTextHeight(subPaint, getString(R.string.current)) + 10,
+                subPaint);
+
+        return bitmap;
+    }
+
+    /**
+     * Get the motto bitmap.
+     *
+     * @param context Context.
+     * @param baseColor Base color.
+     * @param bitmapWidth Width of bitmap.
+     * @param bitmapHeight Height of bitmap.
+     * @return The bitmap.
+     */
+    public static Bitmap getMottoBitmap(
+            Context context, int baseColor, int bitmapWidth, int bitmapHeight) {
+        Bitmap bitmap;
+        Canvas canvas;
+        float textHeight = 40f;
+        float textPadding = 5f;
+        float xPos = 0;
+
+        Paint mainPaint = getTextPaint(textHeight, calculateLevelColor(baseColor, 4),
+                Typeface.createFromAsset(context.getAssets(), "fonts/Lato-Light.ttf"));
+        bitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.ARGB_8888);
+        canvas = new Canvas(bitmap);
+
+        String content = SettingsManager.getMotto();
+        boolean isTwoLines = content.contains("\n");
+        if (isTwoLines) {
+            canvas.drawText(
+                    content.substring(0, content.indexOf("\n")),
+                    xPos, canvas.getHeight() / 2 - textPadding, mainPaint);
+            canvas.drawText(
+                    content.substring(content.indexOf("\n") + 1, content.length()),
+                    xPos, canvas.getHeight() / 2 + textPadding + textHeight, mainPaint);
+        } else {
+            canvas.drawText(
+                    content,
+                    xPos, canvas.getHeight() / 2 + textHeight / 2, mainPaint);
+        }
+
+        return bitmap;
+    }
+
+    /**
+     * At first, I wanna calculate the diff of followers increase a day.
+     * But I leave it to Todo.
+     *
+     * @param result The result from https://api.github.com/users/username.
+     * @return The string of followers.
+     */
+    public static String writeFollowers(String result) {
+        SharedPreferences.Editor editor = PreferenceManager
+                .getDefaultSharedPreferences(GithubWidgetApplication.getAppContext()).edit();
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = new JSONObject(result);
+
+            int lastFollowers = SettingsManager.getFollowers();
+            long lastUpdateFollowersTime = SettingsManager.getLastUpdateFollowersTime();
+            int nowFollowers = jsonObject.getInt("followers");
+
+            if (lastUpdateFollowersTime == -1 || lastFollowers == -1) {
+                // first time
+                SettingsManager.setFollowers(nowFollowers);
+                SettingsManager.setLastUpdateFollowersTime(
+                        Calendar.getInstance().getTime().getTime());
+                return nowFollowers + "";
+            } else {
+                int diff = 0;
+                if (lastFollowers != -1) diff = nowFollowers - lastFollowers;
+                if (diff > 0) {
+                    return shortNumber(nowFollowers) + "+" + diff;
+                } else if (diff < 0) {
+                    return shortNumber(nowFollowers) + "-" + (-diff);
+                } else {
+                    return shortNumber(nowFollowers) + "";
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            int lastFollowers = SettingsManager.getFollowers();
+            if (lastFollowers != -1) return shortNumber(lastFollowers) + "";
+            else return "";
+        } finally {
+            editor.commit();
+        }
+    }
+
+    /**
+     * 1000 -> 1k, 1100->1.1k
+     *
+     * @param number The input number.
+     * @return The string.
+     */
+    public static String shortNumber(int number) {
+        if (number >= 1000) {
+            int hundred = number % 1000 / 100;
+            if (hundred != 0) return String.format("%.1f", number / 1000) + "k";
+            else return (number / 1000) + "k";
+        }
+        else return number + "";
+    }
+
+    /**
+     * Create a bitmap where there are followers and english.
+     *
+     * @param context Context.
+     * @param baseColor Base color.
+     * @param followers String of followers.
+     * @param bitmapWidth Width.
+     * @param bitmapHeight Height.
+     * @return The bitmap.
+     */
+    public static Bitmap getFollowersWithLetterBitmap(
+            Context context, int baseColor, String followers, int bitmapWidth, int bitmapHeight) {
+        Bitmap bitmap;
+        Canvas canvas;
+        Paint mainPaint = getTextPaint(50f, calculateLevelColor(baseColor, 4),
+                Typeface.createFromAsset(context.getAssets(), "fonts/Lato-Light.ttf"));
+        Paint subPaint = getTextPaint(25f, calculateLevelColor(baseColor, 4),
+                Typeface.createFromAsset(context.getAssets(), "fonts/Lato-Light.ttf"));
+
+        bitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.ARGB_8888);
+        canvas = new Canvas(bitmap);
+
+        // I decide not to draw this
+        if (followers.contains("+")) followers = followers.substring(0, followers.indexOf("+"));
+        if (followers.contains("-")) followers = followers.substring(0, followers.indexOf("-"));
+
+        int xPos = (canvas.getWidth() / 2)
+                - getTextWidth(mainPaint, followers + "") / 2;
+        int yPos = getTextHeight(mainPaint, followers + "");
+        canvas.drawText(followers + "", xPos, yPos, mainPaint);
+
+        xPos = (canvas.getWidth() / 2)
+                - getTextWidth(subPaint, getString(R.string.followers)) / 2;
+        canvas.drawText(getString(R.string.followers),
+                xPos, yPos + getTextHeight(subPaint, getString(R.string.followers)) + 10,
                 subPaint);
 
         return bitmap;

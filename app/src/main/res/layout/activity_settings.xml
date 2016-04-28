@@ -61,6 +61,38 @@
             android:background="@color/divider_color"
             />
 
+        <RelativeLayout
+            android:id="@+id/motto_layout"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:clickable="true"
+            android:background="?android:selectableItemBackground"
+            >
+
+            <com.nightonke.githubwidget.LimitedEditText
+                android:id="@+id/motto_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:hint="@string/motto_content"
+                android:maxLines="2"
+                android:textColor="@color/settings_title_color"
+                android:textSize="18sp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@null"
+                />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/divider_color"
+            />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -546,14 +578,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="6"
-                    android:max="47"
+                    android:max="48"
                     />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="24h"
+                    android:text="∞"
                     android:textSize="18sp"
                     android:gravity="center_vertical|start"
                     android:paddingTop="2dp"

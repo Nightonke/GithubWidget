@@ -1,9 +1,12 @@
 package com.nightonke.githubwidget;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -1623,6 +1626,31 @@ public class Util {
                         bitmapWidth, bitmapHeight));
         AppWidgetManager.getInstance(context).updateAppWidget(
                 new ComponentName(context, c), remoteViews);
+    }
+
+    /**
+     * Set a alarm to wake the service.
+     *
+     * @param context Context.
+     * @param servicePendingIntent PendingIntent for service.
+     */
+    public static void addAlarmService(Context context, PendingIntent servicePendingIntent) {
+        final AlarmManager m = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        final Calendar TIME = Calendar.getInstance();
+        TIME.set(Calendar.MINUTE, 0);
+        TIME.set(Calendar.SECOND, 0);
+        TIME.set(Calendar.MILLISECOND, 0);
+
+        final Intent i = new Intent(context, GithubWidgetService.class);
+
+        if (servicePendingIntent == null) {
+            servicePendingIntent = PendingIntent.getService(context, 0, i,
+                    PendingIntent.FLAG_CANCEL_CURRENT);
+        }
+
+        m.setRepeating(AlarmManager.RTC, TIME.getTime().getTime(),
+                SettingsManager.getUpdateTime(), servicePendingIntent);
     }
 
 

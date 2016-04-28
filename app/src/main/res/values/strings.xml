@@ -24,6 +24,9 @@
     <string name="update_every">Update every&#160;</string>
     <string name="dot">.</string>
     <string name="dont_update">Manually update when click the avatar.</string>
+    <string name="event_per_page">&#160;event per page.</string>
+    <string name="events_per_page">&#160;events per page.</string>
+    <string name="received_event_per_page">This value determines how many events are gotten from internet. The larger, the counting for stars are more accurate but more network flow is needed.</string>
 
     <string name="refreshing">Refreshing&#8230;</string>
     <string name="refresh_failed">Refresh failed!</string>

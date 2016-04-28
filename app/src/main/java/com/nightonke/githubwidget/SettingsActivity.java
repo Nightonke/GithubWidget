@@ -66,6 +66,9 @@ public class SettingsActivity extends AppCompatActivity
     private SeekBar updateTimeSeekBar;
     private TextView updateTimeText;
 
+    private SeekBar receivedEventPerPageSeekBar;
+    private TextView receivedEventPerPageTextView;
+
     private String oldUserName;
     private String oldMotto;
     private int oldBaseColor;
@@ -74,6 +77,7 @@ public class SettingsActivity extends AppCompatActivity
     private boolean oldShowWeekdayDashIn3D;
     private Weekday oldWeekday;
     private int oldUpdateTime;
+    private int oldReceivedEventPerPage;
 
     private int newBaseColor;
 
@@ -196,6 +200,30 @@ public class SettingsActivity extends AppCompatActivity
         }
         updateTimeText = findView(R.id.update_time_text);
         setUpdateText();
+
+        receivedEventPerPageSeekBar = findView(R.id.seek_bar_received_event_per_page);
+        receivedEventPerPageSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    SettingsManager.setReceivedEventPerPage(progress + 1);
+                    setReceivedEventPerPageText();
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        receivedEventPerPageSeekBar.setProgress(SettingsManager.getReceivedEventPerPage() - 1);
+        receivedEventPerPageTextView = findView(R.id.received_event_per_page_text);
+        setReceivedEventPerPageText();
     }
 
     private void setUpdateText() {
@@ -207,6 +235,15 @@ public class SettingsActivity extends AppCompatActivity
                             + String.format("%.1f",
                             (updateTimeSeekBar.getProgress() / 2f + 0.5f)) + "h"
                             + Util.getString(R.string.dot));
+        }
+    }
+
+    private void setReceivedEventPerPageText() {
+        if (receivedEventPerPageSeekBar.getProgress() == 0) {
+            receivedEventPerPageTextView.setText("1" + Util.getString(R.string.event_per_page));
+        } else {
+            receivedEventPerPageTextView.setText((receivedEventPerPageSeekBar.getProgress() + 1)
+                    + Util.getString(R.string.events_per_page));
         }
     }
 
@@ -323,6 +360,7 @@ public class SettingsActivity extends AppCompatActivity
         oldShowWeekdayDashIn3D = SettingsManager.getShowWeekdayDashIn3D();
         oldWeekday = SettingsManager.getStartWeekDay();
         oldUpdateTime = SettingsManager.getUpdateTime();
+        oldReceivedEventPerPage = SettingsManager.getReceivedEventPerPage();
 
         userNameLayout.post(new Runnable() {
             @Override
@@ -342,6 +380,7 @@ public class SettingsActivity extends AppCompatActivity
         super.onStop();
         boolean changed = false;
         boolean mottoChanged = false;
+        boolean receivedEventPerPageChanged = false;
         if (oldUserName == null) {
             if (SettingsManager.getUserName() != null) changed = true;
         } else {
@@ -361,6 +400,14 @@ public class SettingsActivity extends AppCompatActivity
         if (oldShowWeekdayDashIn3D != SettingsManager.getShowWeekdayDashIn3D()) changed = true;
         if (!oldWeekday.equals(SettingsManager.getStartWeekDay())) changed = true;
         if (oldUpdateTime != SettingsManager.getUpdateTime()) changed = true;
+        if (oldReceivedEventPerPage != SettingsManager.getReceivedEventPerPage())
+            receivedEventPerPageChanged = true;
+
+        if (receivedEventPerPageChanged) {
+            SettingsManager.setLastUpdateStarsDate(null);
+            SettingsManager.setLastUpdateStarsId(null);
+            changed = true;
+        }
 
         if (changed) {
             Util.showToast(R.string.refreshing);
@@ -375,7 +422,6 @@ public class SettingsActivity extends AppCompatActivity
                 sendBroadcast(intent);
             }
         }
-
 
         finish();
     }

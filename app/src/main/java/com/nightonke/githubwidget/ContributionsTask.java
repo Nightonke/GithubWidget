@@ -92,7 +92,7 @@ public class ContributionsTask extends AsyncTask<String, Void, String> {
                     if (httpURLConnection != null) httpURLConnection.disconnect();
                 }
             }
-
+            if (userId == -1) return null;
             try {
                 String urlString = "https://github.com/users/" + userName + "/contributions";
                 if (BuildConfig.DEBUG)

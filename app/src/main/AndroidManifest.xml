@@ -37,6 +37,7 @@
                 <action android:name="com.nightonke.githubwidget.action.CLICK_AVATAR"/>
                 <action android:name="com.nightonke.githubwidget.action.CLICK_CONTRIBUTIONS"/>
                 <action android:name="com.nightonke.githubwidget.action.CLICK_CONTRIBUTIONS_SUM"/>
+                <action android:name="com.nightonke.githubwidget.action.UPDATE_FROM_SERVICE"/>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
         </receiver>
@@ -52,6 +53,7 @@
                 <action android:name="com.nightonke.githubwidget.action.CLICK_ALL"/>
                 <action android:name="com.nightonke.githubwidget.action.CLICK_AVATAR"/>
                 <action android:name="com.nightonke.githubwidget.action.CLICK_CONTRIBUTIONS"/>
+                <action android:name="com.nightonke.githubwidget.action.UPDATE_FROM_SERVICE"/>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
         </receiver>
@@ -74,6 +76,7 @@
                 <action android:name="com.nightonke.githubwidget.action.CLICK_STARS_TODAY"/>
                 <action android:name="com.nightonke.githubwidget.action.CLICK_CURRENT_STREAK"/>
                 <action android:name="com.nightonke.githubwidget.action.UPDATE_MOTTO"/>
+                <action android:name="com.nightonke.githubwidget.action.UPDATE_FROM_SERVICE"/>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
         </receiver>
@@ -96,6 +99,7 @@
                 <action android:name="com.nightonke.githubwidget.action.CLICK_STARS_TODAY"/>
                 <action android:name="com.nightonke.githubwidget.action.CLICK_CURRENT_STREAK"/>
                 <action android:name="com.nightonke.githubwidget.action.UPDATE_MOTTO"/>
+                <action android:name="com.nightonke.githubwidget.action.UPDATE_FROM_SERVICE"/>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
         </receiver>

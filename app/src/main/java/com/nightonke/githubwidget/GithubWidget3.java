@@ -29,48 +29,38 @@ public class GithubWidget3 extends AppWidgetProvider {
 
         if (BuildConfig.DEBUG) Log.d("GithubWidget", "Receive in widget 3: " + intent.getAction());
 
-        context.startService(new Intent(context, GithubWidgetService.class));
-
-        if (intent.getAction().equals(Actions.CLICK_AVATAR)
-                || intent.getAction().equals(Actions.CLICK_CONTRIBUTIONS_SUM)) {
-            // just update
-            if (BuildConfig.DEBUG) Log.d("GithubWidget", "Just update");
-            Util.showToast(R.string.refreshing);
-            updateAll(context, -1);
-        } else if (intent.getAction().equals(Actions.UPDATE_MOTTO)) {
-            if (BuildConfig.DEBUG) Log.d("GithubWidget", "Update motto");
-            Util.updateMotto(GithubWidget3.class, R.layout.github_widget_3, context,
-                    (int) (Util.getScreenWidth(context)
-                            - Util.getDimen(R.dimen.github_widget_3_avator_size)),
-                    (int )Util.getDimen(R.dimen.github_widget_3_avator_size));
+        switch (intent.getAction()) {
+            case Actions.UPDATE_FROM_SERVICE:
+                if (BuildConfig.DEBUG)
+                    Log.d("GithubWidget", "Receive in widget 3: Update from service");
+                updateAll(context, -1);
+                break;
+            case Actions.CLICK_AVATAR:
+                if (BuildConfig.DEBUG)
+                    Log.d("GithubWidget", "Receive in widget 3: Update from manual");
+                Util.showToast(R.string.refreshing);
+                updateAll(context, -1);
+                break;
+            case Actions.UPDATE_MOTTO:
+                if (BuildConfig.DEBUG)
+                    Log.d("GithubWidget", "Receive in widget 3: Update motto");
+                Util.updateMotto(GithubWidget3.class, R.layout.github_widget_3, context,
+                        (int) (Util.getScreenWidth(context)
+                                - Util.getDimen(R.dimen.github_widget_3_avator_size)),
+                        (int )Util.getDimen(R.dimen.github_widget_3_avator_size));
+                break;
         }
     }
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
-        context.startService(new Intent(context, GithubWidgetService.class));
 
         for (int appWidgetId : appWidgetIds) {
             updateAll(context, appWidgetId);
         }
 
-        final AlarmManager m = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-
-        final Calendar TIME = Calendar.getInstance();
-        TIME.set(Calendar.MINUTE, 0);
-        TIME.set(Calendar.SECOND, 0);
-        TIME.set(Calendar.MILLISECOND, 0);
-
-        final Intent i = new Intent(context, GithubWidgetService.class);
-
-        if (servicePendingIntent == null) {
-            servicePendingIntent = PendingIntent.getService(context, 0, i,
-                    PendingIntent.FLAG_CANCEL_CURRENT);
-        }
-
-        m.setRepeating(AlarmManager.RTC, TIME.getTime().getTime(),
-                SettingsManager.getUpdateTime(), servicePendingIntent);
+        Util.addAlarmService(context, servicePendingIntent);
     }
 
     @Override

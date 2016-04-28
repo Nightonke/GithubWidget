@@ -45,24 +45,28 @@ public class GithubWidgetService extends Service {
     private void updateWidget() {
         if (BuildConfig.DEBUG) Log.d("GithubWidget", "Send broadcast in service");
 
-        long lastUpdateFromServiceTime = PreferenceManager
-                .getDefaultSharedPreferences(GithubWidgetApplication.getAppContext())
-                .getLong("LAST_UPDATE_FROM_SERVICE_TIME", -1);
+        Intent intent = new Intent();
+        intent.setAction(Actions.UPDATE_FROM_SERVICE);
+        sendBroadcast(intent);
 
-        long nowTime = Calendar.getInstance().getTime().getTime();
-
-        if (lastUpdateFromServiceTime != -1
-                && nowTime - lastUpdateFromServiceTime < SettingsManager.getUpdateTime()) {
-            if (BuildConfig.DEBUG) Log.d("GithubWidget", "Wait for sending broadcast in service");
-        } else {
-            Intent intent = new Intent();
-            intent.setAction(Actions.CLICK_AVATAR);
-            sendBroadcast(intent);
-
-            SharedPreferences.Editor editor = PreferenceManager
-                    .getDefaultSharedPreferences(GithubWidgetApplication.getAppContext()).edit();
-            editor.putLong("LAST_UPDATE_FROM_SERVICE_TIME", nowTime);
-            editor.commit();
-        }
+//        long lastUpdateFromServiceTime = PreferenceManager
+//                .getDefaultSharedPreferences(GithubWidgetApplication.getAppContext())
+//                .getLong("LAST_UPDATE_FROM_SERVICE_TIME", -1);
+//
+//        long nowTime = Calendar.getInstance().getTime().getTime();
+//
+//        if (lastUpdateFromServiceTime != -1
+//                && nowTime - lastUpdateFromServiceTime < SettingsManager.getUpdateTime()) {
+//            if (BuildConfig.DEBUG) Log.d("GithubWidget", "Wait for sending broadcast in service");
+//        } else {
+//            Intent intent = new Intent();
+//            intent.setAction(Actions.UPDATE_FROM_SERVICE);
+//            sendBroadcast(intent);
+//
+//            SharedPreferences.Editor editor = PreferenceManager
+//                    .getDefaultSharedPreferences(GithubWidgetApplication.getAppContext()).edit();
+//            editor.putLong("LAST_UPDATE_FROM_SERVICE_TIME", nowTime);
+//            editor.commit();
+//        }
     }
 }

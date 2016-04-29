@@ -3,7 +3,6 @@ package com.nightonke.githubwidget;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -59,6 +58,8 @@ public class SettingsActivity extends AppCompatActivity
     private LinearLayout showWeekdayDashIn3DLayout;
     private CheckBox showWeekdayDashIn3DCheckBox;
 
+    private Button loginButton;
+
     private LinearLayout startFromLayout;
     private RadioButton startFromSunday;
     private RadioButton startFromMonday;
@@ -72,6 +73,7 @@ public class SettingsActivity extends AppCompatActivity
     private String oldUserName;
     private String oldMotto;
     private int oldBaseColor;
+    private boolean oldUserLogin;
     private boolean oldShowToast;
     private boolean oldShowMonthDashIn3D;
     private boolean oldShowWeekdayDashIn3D;
@@ -140,6 +142,8 @@ public class SettingsActivity extends AppCompatActivity
         seekBarB.setOnSeekBarChangeListener(onSeekBarChangeListener);
         resetBaseColorButton = findView(R.id.reset_base_color);
         resetBaseColorButton.setOnClickListener(this);
+
+        loginButton = findView(R.id.login);
 
         showToastLayout = findView(R.id.show_toast_layout);
         showToastCheckBox = findView(R.id.show_toast_checkbox);
@@ -224,6 +228,33 @@ public class SettingsActivity extends AppCompatActivity
         receivedEventPerPageSeekBar.setProgress(SettingsManager.getReceivedEventPerPage() - 1);
         receivedEventPerPageTextView = findView(R.id.received_event_per_page_text);
         setReceivedEventPerPageText();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void setLoginButtonText() {
+        if (!Util.getLoggedIn()) {
+            loginButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent().setClassName(SettingsActivity.this, "com.nightonke.githubwidget.LoginActivity");
+                    startActivity(intent);
+                }
+            });
+            loginButton.setText(R.string.login);
+        } else {
+            loginButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Util.clearCookies();
+                    loginButton.setText(R.string.login);
+                }
+            });
+            loginButton.setText(R.string.logout);
+        }
     }
 
     private void setUpdateText() {
@@ -355,6 +386,7 @@ public class SettingsActivity extends AppCompatActivity
         oldUserName = SettingsManager.getUserName();
         oldMotto =  SettingsManager.getMotto();
         oldBaseColor = SettingsManager.getBaseColor();
+        oldUserLogin = Util.getLoggedIn();
         oldShowToast = SettingsManager.getShowToast();
         oldShowMonthDashIn3D = SettingsManager.getShowMonthDashIn3D();
         oldShowWeekdayDashIn3D = SettingsManager.getShowWeekdayDashIn3D();
@@ -373,6 +405,8 @@ public class SettingsActivity extends AppCompatActivity
                 setColor();
             }
         });
+
+        setLoginButtonText();
     }
 
     @Override

@@ -43,7 +43,8 @@ public class GithubWidgetService extends Service {
     }
 
     private void updateWidget() {
-        if (BuildConfig.DEBUG) Log.d("GithubWidget", "Send broadcast in service");
+        if (BuildConfig.DEBUG) Log.d("GithubWidget", "----------------------------------------" +
+                "Send broadcast in service");
 
         Intent intent = new Intent();
         intent.setAction(Actions.UPDATE_FROM_SERVICE);

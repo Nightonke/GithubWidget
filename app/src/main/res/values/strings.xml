@@ -9,6 +9,12 @@
 
     <string name="reset_base_color">Reset Color</string>
 
+    <string name="login">Sign In</string>
+    <string name="login_to">Sign in to get statistics for your private repositories and more api request times.</string>
+    <string name="login_to_github">Sign In</string>
+    <string name="login_url">https://github.com/login</string>
+    <string name="logout">Sign Out</string>
+
     <string name="show_toast_title">Show toast</string>
     <string name="show_toast_content">Whether show toast when operating or error happening.</string>
 
@@ -31,6 +37,7 @@
     <string name="refreshing">Refreshing&#8230;</string>
     <string name="refreshing_motto">Refreshing motto&#8230;</string>
     <string name="refresh_failed">Refresh failed!</string>
+    <string name="refresh_too_frequently">Refresh too frequently! Sign in or wait some time.</string>
 
     <string name="one_year_total">1 year total</string>
     <string name="busiest_day">Busiest day</string>

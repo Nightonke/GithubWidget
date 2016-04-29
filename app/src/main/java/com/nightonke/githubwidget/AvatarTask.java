@@ -64,7 +64,7 @@ public class AvatarTask extends AsyncTask<String, Void, State> {
                     httpURLConnection.setRequestMethod("GET");
                     httpURLConnection.setConnectTimeout(5000);
                     httpURLConnection.connect();
-                    if(httpURLConnection.getResponseCode() == 200){
+                    if (httpURLConnection.getResponseCode() == 200){
                         InputStream in = httpURLConnection.getInputStream();
                         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                         byte[] buffer = new byte[1024];
@@ -75,6 +75,13 @@ public class AvatarTask extends AsyncTask<String, Void, State> {
                         if (BuildConfig.DEBUG) Log.d("GithubWidget", "Write user basic data: "
                                 + byteArrayOutputStream.toString());
                         Util.writeUserBasicData(context, byteArrayOutputStream.toString());
+                    } else {
+                        if (httpURLConnection.getResponseCode() == 403) {
+                            Util.showToast(R.string.refresh_too_frequently);
+                        } else {
+                            if (BuildConfig.DEBUG) Log.d("GithubWidget",
+                                    "Get user id failed: " + httpURLConnection.getResponseCode());
+                        }
                     }
                 } catch (IOException i) {
                     i.printStackTrace();
@@ -82,7 +89,7 @@ public class AvatarTask extends AsyncTask<String, Void, State> {
                     if (httpURLConnection != null) httpURLConnection.disconnect();
                 }
             }
-            if (SettingsManager.getUserId() == -1) return null;
+            if (SettingsManager.getUserId() == -1) return State.FAIL;
             try {
                 String urlString = "https://avatars.githubusercontent.com/u/"
                         + SettingsManager.getUserId() + "?s=" + Util.dp2px(context.getResources().getDimension(

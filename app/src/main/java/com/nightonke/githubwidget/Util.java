@@ -23,11 +23,14 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.media.ThumbnailUtils;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.widget.RemoteViews;
 
 import com.github.johnpersano.supertoasts.SuperToast;
@@ -40,6 +43,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.regex.PatternSyntaxException;
 
 /**
  * Created by Weiping on 2016/4/25.
@@ -950,6 +954,7 @@ public class Util {
             path.lineTo(x, y);
             canvas.drawPath(path, blockPaint);
 
+            // face left-bottom corner
             blockPaint.setColor(
                     Util.calculateShadowColorLeftBottom(
                             Util.calculateLevelColor(baseColor, day.level)));
@@ -961,6 +966,7 @@ public class Util {
             path.lineTo(x, y);
             canvas.drawPath(path, blockPaint);
 
+            // face top
             blockPaint.setColor(Util.calculateLevelColor(baseColor, day.level));
             path = new Path();
             path.moveTo(x, y - height);
@@ -1653,6 +1659,37 @@ public class Util {
                 SettingsManager.getUpdateTime(), servicePendingIntent);
     }
 
+    public static String getLoginCookie() {
+        return CookieManager.getInstance().getCookie(Util.getString(R.string.login_url));
+    }
+
+    public static boolean getLoggedIn() {
+        String cookie = getLoginCookie();
+        try {
+            return cookie != null && cookie.split(";")[0].equals("logged_in=yes");
+        } catch (PatternSyntaxException p) {
+            p.printStackTrace();
+            return false;
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    public static void clearCookies() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            CookieManager.getInstance().removeAllCookies(null);
+            CookieManager.getInstance().flush();
+        } else {
+            CookieSyncManager localCookieSyncManager
+                    = CookieSyncManager.createInstance(GithubWidgetApplication.getAppContext());
+            localCookieSyncManager.startSync();
+            CookieManager localCookieManager = CookieManager.getInstance();
+            localCookieManager.removeAllCookie();
+            localCookieManager.removeSessionCookie();
+            localCookieSyncManager.stopSync();
+            localCookieSyncManager.sync();
+        }
+
+    }
 
 
 

@@ -74,7 +74,7 @@ public class ContributionsTask extends AsyncTask<String, Void, String> {
                     httpURLConnection.setRequestMethod("GET");
                     httpURLConnection.setConnectTimeout(5000);
                     httpURLConnection.connect();
-                    if(httpURLConnection.getResponseCode() == 200){
+                    if (httpURLConnection.getResponseCode() == 200){
                         InputStream in = httpURLConnection.getInputStream();
                         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                         byte[] buffer = new byte[1024];
@@ -85,6 +85,13 @@ public class ContributionsTask extends AsyncTask<String, Void, String> {
                         if (BuildConfig.DEBUG) Log.d("GithubWidget", "Write user basic data: "
                                 + byteArrayOutputStream.toString());
                         Util.writeUserBasicData(context, byteArrayOutputStream.toString());
+                    } else {
+                        if (httpURLConnection.getResponseCode() == 403) {
+                            Util.showToast(R.string.refresh_too_frequently);
+                        } else {
+                            if (BuildConfig.DEBUG) Log.d("GithubWidget",
+                                    "Get user id failed: " + httpURLConnection.getResponseCode());
+                        }
                     }
                 } catch (IOException i) {
                     i.printStackTrace();
@@ -99,6 +106,13 @@ public class ContributionsTask extends AsyncTask<String, Void, String> {
                     Log.d("GithubWidget", "Get user contributions: " + urlString);
                 url = new URL(urlString);
                 httpURLConnection = (HttpURLConnection) url.openConnection();
+
+                String cookie = Util.getLoginCookie();
+                if (Util.getLoggedIn()) {
+                    if (BuildConfig.DEBUG) Log.d("GithubWidget", "Cookie found: " + cookie);
+                    httpURLConnection.setRequestProperty("Cookie", cookie);
+                }
+
                 httpURLConnection.setRequestMethod("GET");
                 httpURLConnection.setConnectTimeout(5000);
                 httpURLConnection.connect();

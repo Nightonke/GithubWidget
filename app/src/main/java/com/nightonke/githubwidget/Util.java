@@ -24,7 +24,6 @@ import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.media.ThumbnailUtils;
 import android.os.Build;
-import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -44,6 +43,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.regex.PatternSyntaxException;
 
@@ -53,10 +53,14 @@ import java.util.regex.PatternSyntaxException;
 
 public class Util {
 
-    public static int HALF_AN_HOUR = 30 * 60 * 1000;
-    public static float WIDGET_2_NUMBER_HEIGHT = 50f;
-    public static float WIDGET_2_LETTER_HEIGHT = 25f;
-    public static float WIDGET_2_LETTER_PADDING_BOTTOM = 20f;
+    public static final int HALF_AN_HOUR = 30 * 60 * 1000;
+    public static final float WIDGET_2_NUMBER_HEIGHT = 50f;
+    public static final float WIDGET_2_LETTER_HEIGHT = 25f;
+    public static final float WIDGET_2_LETTER_PADDING_BOTTOM = 20f;
+
+    public static final String TAG = "GithubWidget";
+
+    public static final String LIST_VIEW_CONTENTS_URL_PREFIX = "https://github.com/";
 
     public static int getScreenWidth(Context context) {
         Display localDisplay
@@ -1667,15 +1671,33 @@ public class Util {
                 SettingsManager.getUpdateTime(), servicePendingIntent);
     }
 
+    /**
+     * Check whether a pendingIntent is register in alarmManager.
+     * There may be something wrong in this method.
+     *
+     * @param context The context.
+     * @param servicePendingIntent The pendingIntent;
+     * @return Result.
+     */
     public static boolean checkAlarmService(Context context, PendingIntent servicePendingIntent) {
         final Intent i = new Intent(context, GithubWidgetService.class);
         return PendingIntent.getService(context, 0, i, PendingIntent.FLAG_NO_CREATE) != null;
     }
 
+    /**
+     * Get the login cookie.
+     *
+     * @return The login cookie.
+     */
     public static String getLoginCookie() {
         return CookieManager.getInstance().getCookie(Util.getString(R.string.login_url));
     }
 
+    /**
+     * Whether the user has already signed in.
+     *
+     * @return Result.
+     */
     public static boolean getLoggedIn() {
         String cookie = getLoginCookie();
         try {
@@ -1686,6 +1708,9 @@ public class Util {
         }
     }
 
+    /**
+     * Clean the cookies.
+     */
     @SuppressWarnings("deprecation")
     public static void clearCookies() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -1704,6 +1729,71 @@ public class Util {
 
     }
 
+    /**
+     * Log.
+     *
+     * @param content The content.
+     */
+    public static void log(String content) {
+        if (BuildConfig.DEBUG) Log.d(TAG, content);
+    }
+
+    public static Bitmap getTrendingBitmap(int index) {
+        Util.log("Get trending bitmap " + index);
+        Bitmap bitmap = Bitmap.createBitmap(
+                (int) (dp2px(250)
+                        - getDimen(R.dimen.github_widget_6_listview_padding_left)
+                        - getDimen(R.dimen.github_widget_6_listview_padding_right)),
+                (int) getDimen(R.dimen.list_view_content_item_height),
+                Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        Paint titlePaint = getTextPaint(35f, SettingsManager.getBaseColor(),
+                Typeface.createFromAsset(GithubWidgetApplication.getAppContext().getAssets(),
+                        "fonts/Lato-Light.ttf"));
+        Paint contentPaint = getTextPaint(15f, SettingsManager.getBaseColor(),
+                Typeface.createFromAsset(GithubWidgetApplication.getAppContext().getAssets(),
+                        "fonts/Lato-Light.ttf"));
+        Paint cornerPaint = getTextPaint(15f, SettingsManager.getBaseColor(),
+                Typeface.createFromAsset(GithubWidgetApplication.getAppContext().getAssets(),
+                        "fonts/Lato-Light.ttf"));
+
+        if (SettingsManager.getListViewContents() == null) {
+            // illegal
+            return bitmap;
+        }
+
+        Util.log("Get trending bitmap after" + index);
+
+
+        float titlePaddingTop = 10f;
+        float titlePaddingLeft = 10f;
+        float contentPaddingTop = 10f;
+        float contentPaddingLeft = 10f;
+        float cornerPaddingTop = 10f;
+        float cornerPaddingRight = 10f;
+
+        HashMap<String, String> content = SettingsManager.getListViewContents().get(index);
+
+        canvas.drawText(content.get("title"),
+                titlePaddingLeft,
+                titlePaddingTop + getTextHeight(titlePaint, content.get("title")),
+                titlePaint);
+
+        canvas.drawText(content.get("content"),
+                contentPaddingLeft,
+                titlePaddingTop + getTextHeight(titlePaint, content.get("title")) + contentPaddingTop,
+                contentPaint);
+
+        String starsString = content.get("corner");
+        if ("1".equals(starsString)) starsString += getString(R.string.corner_star);
+        else starsString += getString(R.string.corner_stars);
+        canvas.drawText(starsString,
+                canvas.getWidth() - cornerPaddingRight - getTextWidth(cornerPaint, starsString),
+                cornerPaddingTop,
+                cornerPaint);
+
+        return bitmap;
+    }
 
 
 

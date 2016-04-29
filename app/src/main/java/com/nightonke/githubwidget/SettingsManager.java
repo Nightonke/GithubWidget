@@ -5,6 +5,13 @@ import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
 /**
  * Created by Weiping on 2016/4/26.
  */
@@ -42,6 +49,12 @@ public class SettingsManager {
     private static int todayStars = 0;
 
     private static int receivedEventPerPage = 30;
+
+    private static ListViewContent listViewContent = ListViewContent.TRENDING_DAILY;
+
+    private static Language language = Language.JAVA;
+
+    private static ArrayList<HashMap<String, String>> listViewContents = null;
 
     public static boolean getShowToast() {
         showToast = PreferenceManager.
@@ -299,7 +312,135 @@ public class SettingsManager {
         editor.putInt("RECEIVED_EVENT_PER_PAGE", receivedEventPerPage);
         editor.commit();
     }
-    
+
+    public static ListViewContent getListViewContent() {
+        listViewContent = ListViewContent.values()[PreferenceManager.
+                getDefaultSharedPreferences(GithubWidgetApplication.getAppContext())
+                .getInt("LIST_VIEW_CONTENT", listViewContent.v)];
+        return listViewContent;
+    }
+
+    public static void setListViewContent(ListViewContent listViewContent) {
+        SettingsManager.listViewContent = listViewContent;
+        SharedPreferences.Editor editor = PreferenceManager
+                .getDefaultSharedPreferences(GithubWidgetApplication.getAppContext()).edit();
+        editor.putInt("LIST_VIEW_CONTENT", listViewContent.v);
+        editor.commit();
+    }
+
+    public static Language getLanguage() {
+        language = Language.valueOf(PreferenceManager.
+                getDefaultSharedPreferences(GithubWidgetApplication.getAppContext())
+                .getString("LANGUAGE", language.v));
+        return language;
+    }
+
+    public static void setLanguage(Language language) {
+        SettingsManager.language = language;
+        SharedPreferences.Editor editor = PreferenceManager
+                .getDefaultSharedPreferences(GithubWidgetApplication.getAppContext()).edit();
+        editor.putString("LANGUAGE", language.v);
+    }
+
+    public static ArrayList<HashMap<String, String>> getListViewContents() {
+        String contents = PreferenceManager.
+                getDefaultSharedPreferences(GithubWidgetApplication.getAppContext())
+                .getString("LIST_VIEW_CONTENTS", null);
+        if (contents == null) {
+            Util.log("No list view contents in xml file");
+            listViewContents = null;
+        }
+        try {
+            JSONArray jsonArray = new JSONArray(contents);
+            listViewContents = new ArrayList<>();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                HashMap<String, String> content = new HashMap<>();
+                content.put("title", jsonObject.getString("title"));
+                content.put("content", jsonObject.getString("content"));
+                content.put("corner", jsonObject.getString("corner"));
+                content.put("url", jsonObject.getString("url"));
+                listViewContents.add(content);
+            }
+        } catch (JSONException j) {
+            j.printStackTrace();
+            listViewContents = null;
+            Util.log("Json error in getting list view contents");
+        }
+        return listViewContents;
+    }
+
+    public static final String A_REPO = "<li class=\"repo-list-item\" id=\"";
+    public static final String TITLE = "<a href=\"/";
+    public static final String TITLE_END = "\">";
+    public static final String CONTENT = "<p class=\"repo-list-description\">";
+    public static final String CONTENT_END = "\n    </p>\n";
+    public static final String CORNER = "      &#8226;\n\n    ";
+    public static final String CORNER_END = " star";
+    public static final String URL = "<a href=\"";
+    public static final String URL_END = "\">";
+    public static void setListViewContents(String contents) {
+        ArrayList<HashMap<String, String>> listViewContents = new ArrayList<>();
+        try {
+            switch (listViewContent) {
+                case TRENDING_DAILY:
+                    int repoIndex = -1;
+                    while (true) {
+                        repoIndex = contents.indexOf(A_REPO, repoIndex + 1);
+
+                        if (repoIndex == -1) break;
+
+                        int start = -1;
+                        int end = -1;
+                        HashMap<String, String> content = new HashMap<>();
+
+                        start = contents.indexOf(TITLE, repoIndex) + TITLE.length();
+                        end = contents.indexOf(TITLE_END, start) + TITLE_END.length();
+                        content.put("title", contents.substring(start, end));
+
+                        start = contents.indexOf(CONTENT, repoIndex) + CONTENT.length();
+                        end = contents.indexOf(CONTENT_END, start) + CONTENT_END.length();
+                        content.put("content", contents.substring(start, end));
+
+                        start = contents.indexOf(CORNER, repoIndex) + CORNER.length();
+                        end = contents.indexOf(CORNER_END, start) + CORNER_END.length();
+                        content.put("corner", contents.substring(start, end));
+
+                        start = contents.indexOf(URL, repoIndex) + URL.length();
+                        end = contents.indexOf(URL_END, start) + URL_END.length();
+                        content.put("url", contents.substring(start, end));
+
+                        listViewContents.add(content);
+                    }
+                    break;
+                case TRENDING_WEEKLY:
+                    break;
+                case EVENT:
+                    break;
+            }
+
+            if (listViewContents.size() != 0) SettingsManager.listViewContents = listViewContents;
+
+            JSONArray jsonArray = new JSONArray();
+            for (HashMap<String, String> content : listViewContents) {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("title", content.get("title"));
+                jsonObject.put("content", content.get("content"));
+                jsonObject.put("corner", content.get("corner"));
+                jsonObject.put("url", content.get("url"));
+                jsonArray.put(jsonObject);
+            }
+
+            SharedPreferences.Editor editor = PreferenceManager
+                    .getDefaultSharedPreferences(GithubWidgetApplication.getAppContext()).edit();
+            editor.putString("LIST_VIEW_CONTENTS", jsonArray.toString());
+            editor.commit();
+        } catch (JSONException j) {
+            j.printStackTrace();
+            Util.log("Json error in getting list view contents");
+        }
+    }
+
     private static SettingsManager ourInstance = new SettingsManager();
 
     public static SettingsManager getInstance() {

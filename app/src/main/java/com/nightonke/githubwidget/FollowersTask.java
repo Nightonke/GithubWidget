@@ -90,33 +90,33 @@ public class FollowersTask extends AsyncTask<String, Void, String> {
                 } finally{
                     if (httpURLConnection != null) httpURLConnection.disconnect();
                 }
-            } else {
-                try {
-                    String urlString = "https://api.github.com/users/" + userName;
-                    if (BuildConfig.DEBUG)
-                        Log.d("GithubWidget", "Get user followers: " + urlString);
-                    url = new URL(urlString);
-                    httpURLConnection = (HttpURLConnection) url.openConnection();
-                    httpURLConnection.setRequestMethod("GET");
-                    httpURLConnection.setConnectTimeout(5000);
-                    httpURLConnection.connect();
-                    if(httpURLConnection.getResponseCode() == 200){
-                        InputStream in = httpURLConnection.getInputStream();
-                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                        byte[] buffer = new byte[1024];
-                        int len = 0;
-                        while((len = in.read(buffer)) != -1) {
-                            byteArrayOutputStream.write(buffer, 0, len);
-                        }
-                        return byteArrayOutputStream.toString();
-                    } else {
-                        return null;
+            }
+            if (SettingsManager.getUserId() == -1) return null;
+            try {
+                String urlString = "https://api.github.com/users/" + userName;
+                if (BuildConfig.DEBUG)
+                    Log.d("GithubWidget", "Get user followers: " + urlString);
+                url = new URL(urlString);
+                httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("GET");
+                httpURLConnection.setConnectTimeout(5000);
+                httpURLConnection.connect();
+                if(httpURLConnection.getResponseCode() == 200){
+                    InputStream in = httpURLConnection.getInputStream();
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    byte[] buffer = new byte[1024];
+                    int len = 0;
+                    while((len = in.read(buffer)) != -1) {
+                        byteArrayOutputStream.write(buffer, 0, len);
                     }
-                } catch (IOException i) {
-                    i.printStackTrace();
-                } finally{
-                    if (httpURLConnection != null) httpURLConnection.disconnect();
+                    return byteArrayOutputStream.toString();
+                } else {
+                    return null;
                 }
+            } catch (IOException i) {
+                i.printStackTrace();
+            } finally{
+                if (httpURLConnection != null) httpURLConnection.disconnect();
             }
         }
         return null;
@@ -132,6 +132,7 @@ public class FollowersTask extends AsyncTask<String, Void, String> {
                 case WIDGET_3:
                 case WIDGET_4:
                 case WIDGET_5:
+                case WIDGET_6:
                     remoteViews.setImageViewBitmap(R.id.motto,
                             Util.getInputUserNameBitmap(
                                     context, SettingsManager.getBaseColor()));
@@ -151,6 +152,7 @@ public class FollowersTask extends AsyncTask<String, Void, String> {
                     case WIDGET_3:
                     case WIDGET_4:
                     case WIDGET_5:
+                    case WIDGET_6:
                         remoteViews.setImageViewBitmap(R.id.followers,
                                 Util.getFollowersWithLetterBitmap(context, baseColor,
                                         followers, bitmapWidth, bitmapHeight));

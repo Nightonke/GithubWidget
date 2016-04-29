@@ -24,7 +24,7 @@ public class GithubWidgetService extends Service {
             return super.onStartCommand(intent, flags, startId);
         }
 
-        if (intent.getAction() != null
+        if (intent != null && intent.getAction() != null
                 && intent.getAction().equals(Actions.CLICK_AVATAR)) updateWidgetManually();
         else updateWidgetAutomatically();
 

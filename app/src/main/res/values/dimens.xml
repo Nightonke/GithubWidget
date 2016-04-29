@@ -3,6 +3,8 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <dimen name="list_view_content_item_height">50dp</dimen>
+
     <dimen name="github_widget_0_avator_border_size">50dp</dimen>
     <dimen name="github_widget_0_avator_padding">5dp</dimen>
     <dimen name="github_widget_0_avator_size">40dp</dimen>
@@ -44,5 +46,17 @@
     <dimen name="github_widget_5_contributions_padding_left">5dp</dimen>
     <dimen name="github_widget_5_contributions_padding_right">5dp</dimen>
     <dimen name="github_widget_5_avator_size">50dp</dimen>
+
+    <dimen name="github_widget_6_avator_border_size">60dp</dimen>
+    <dimen name="github_widget_6_avator_padding_top">5dp</dimen>
+    <dimen name="github_widget_6_avator_padding_bottom">5dp</dimen>
+    <dimen name="github_widget_6_avator_padding_left">10dp</dimen>
+    <dimen name="github_widget_6_contributions_padding_top">5dp</dimen>
+    <dimen name="github_widget_6_contributions_padding_left">5dp</dimen>
+    <dimen name="github_widget_6_contributions_padding_right">5dp</dimen>
+    <dimen name="github_widget_6_listview_padding_left">20dp</dimen>
+    <dimen name="github_widget_6_listview_padding_right">20dp</dimen>
+    <dimen name="github_widget_6_listview_padding_bottom">10dp</dimen>
+    <dimen name="github_widget_6_avator_size">50dp</dimen>
 
 </resources>

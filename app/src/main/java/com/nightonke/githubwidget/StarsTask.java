@@ -91,6 +91,7 @@ public class StarsTask extends AsyncTask<String, Void, String> {
                     if (httpURLConnection != null) httpURLConnection.disconnect();
                 }
             }
+            if (SettingsManager.getUserId() == -1) return null;
             try {
                 String urlString = "https://api.github.com/users/" + userName
                         + "/received_events?per_page=" + SettingsManager.getReceivedEventPerPage();
@@ -132,6 +133,7 @@ public class StarsTask extends AsyncTask<String, Void, String> {
                 case WIDGET_3:
                 case WIDGET_4:
                 case WIDGET_5:
+                case WIDGET_6:
                     remoteViews.setImageViewBitmap(R.id.motto,
                             Util.getInputUserNameBitmap(
                                     context, SettingsManager.getBaseColor()));
@@ -151,6 +153,7 @@ public class StarsTask extends AsyncTask<String, Void, String> {
                     case WIDGET_3:
                     case WIDGET_4:
                     case WIDGET_5:
+                    case WIDGET_6:
                         remoteViews.setImageViewBitmap(R.id.stars_today,
                                 Util.getStarsWithLetterBitmap(context, baseColor,
                                         stars, bitmapWidth, bitmapHeight));

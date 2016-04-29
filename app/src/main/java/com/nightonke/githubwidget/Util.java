@@ -24,9 +24,10 @@ import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.media.ThumbnailUtils;
 import android.os.Build;
-import android.os.Looper;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
@@ -1645,6 +1646,9 @@ public class Util {
      * @param servicePendingIntent PendingIntent for service.
      */
     public static void addAlarmService(Context context, PendingIntent servicePendingIntent) {
+        if (BuildConfig.DEBUG) Log.d("GithubWidget", "----------------------------------------" +
+                "Add alarm service");
+
         final AlarmManager m = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         final Calendar TIME = Calendar.getInstance();
@@ -1661,6 +1665,11 @@ public class Util {
 
         m.setRepeating(AlarmManager.RTC, TIME.getTime().getTime(),
                 SettingsManager.getUpdateTime(), servicePendingIntent);
+    }
+
+    public static boolean checkAlarmService(Context context, PendingIntent servicePendingIntent) {
+        final Intent i = new Intent(context, GithubWidgetService.class);
+        return PendingIntent.getService(context, 0, i, PendingIntent.FLAG_NO_CREATE) != null;
     }
 
     public static String getLoginCookie() {

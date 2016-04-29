@@ -40,6 +40,7 @@ public class GithubWidget0 extends AppWidgetProvider {
                 if (BuildConfig.DEBUG)
                     Log.d("GithubWidget", "Receive in widget 0: Update from manual");
                 Util.showToast(R.string.refreshing);
+                Util.addAlarmService(context, servicePendingIntent);
                 updateAll(context, -1);
                 break;
         }
@@ -58,6 +59,7 @@ public class GithubWidget0 extends AppWidgetProvider {
 
     @Override
     public void onDisabled(Context context) {
+        if (servicePendingIntent == null) return;
         final AlarmManager m = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         m.cancel(servicePendingIntent);
     }

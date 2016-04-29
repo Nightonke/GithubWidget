@@ -9,9 +9,6 @@ import android.util.Log;
  * Created by Weiping on 2016/4/27.
  */
 public class GithubWidgetService extends Service {
-    private static final int ALARM_DURATION  = 60 * 60 * 1000;
-
-    private static final int UPDATE_MESSAGE  = 1000;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -21,6 +18,11 @@ public class GithubWidgetService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (BuildConfig.DEBUG) Log.d("GithubWidget", "Service on start");
+        if (SettingsManager.getUpdateTime() == Integer.MAX_VALUE) {
+            if (BuildConfig.DEBUG) Log.d("GithubWidget", "----------------------------------------" +
+                    "Auto-update set to false in settings, just return");
+            return super.onStartCommand(intent, flags, startId);
+        }
 
         if (intent.getAction() != null
                 && intent.getAction().equals(Actions.CLICK_AVATAR)) updateWidgetManually();
@@ -51,5 +53,12 @@ public class GithubWidgetService extends Service {
         Intent intent = new Intent();
         intent.setAction(Actions.CLICK_AVATAR);
         sendBroadcast(intent);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (BuildConfig.DEBUG) Log.d("GithubWidget", "----------------------------------------" +
+                "Service destroy");
     }
 }

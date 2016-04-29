@@ -77,7 +77,7 @@ public class AvatarTask extends AsyncTask<String, Void, State> {
                         Util.writeUserBasicData(context, byteArrayOutputStream.toString());
                     } else {
                         if (httpURLConnection.getResponseCode() == 403) {
-                            Util.showToast(R.string.refresh_too_frequently);
+                            return State.TOO_FREQUENTLY;
                         } else {
                             if (BuildConfig.DEBUG) Log.d("GithubWidget",
                                     "Get user id failed: " + httpURLConnection.getResponseCode());
@@ -116,7 +116,9 @@ public class AvatarTask extends AsyncTask<String, Void, State> {
     @Override
     protected void onPostExecute(State state) {
         super.onPostExecute(state);
-        if (state.equals(State.SUCCESS)) {
+        if (state.equals(State.TOO_FREQUENTLY)) {
+            Util.showToast(R.string.refresh_too_frequently);
+        } else if (state.equals(State.SUCCESS)) {
             remoteViews.setImageViewBitmap(R.id.avatar,
                     Util.getRoundBitmap(bitmap));
         } else if (state.equals(State.FIRST_TIME)) {

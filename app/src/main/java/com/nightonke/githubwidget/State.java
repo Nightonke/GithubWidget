@@ -7,7 +7,8 @@ public enum State {
 
     SUCCESS(0),
     FAIL(1),
-    FIRST_TIME(2);
+    FIRST_TIME(2),
+    TOO_FREQUENTLY(3);
 
     int v;
 

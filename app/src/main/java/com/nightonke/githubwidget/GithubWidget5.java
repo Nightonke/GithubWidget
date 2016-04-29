@@ -7,16 +7,15 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-import java.util.Calendar;
-
 /**
  * Created by Weiping on 2016/4/26.
  */
-public class GithubWidget3 extends AppWidgetProvider {
+public class GithubWidget5 extends AppWidgetProvider {
 
     private PendingIntent servicePendingIntent = null;
 
@@ -25,29 +24,29 @@ public class GithubWidget3 extends AppWidgetProvider {
         super.onReceive(context, intent);
 
         if (AppWidgetManager.getInstance(context).getAppWidgetIds(
-                new ComponentName(context, GithubWidget3.class)).length == 0) return;
+                new ComponentName(context, GithubWidget5.class)).length == 0) return;
 
-        if (BuildConfig.DEBUG) Log.d("GithubWidget", "Receive in widget 3: " + intent.getAction());
+        if (BuildConfig.DEBUG) Log.d("GithubWidget", "Receive in widget 5: " + intent.getAction());
 
         switch (intent.getAction()) {
             case Actions.UPDATE_FROM_SERVICE:
                 if (BuildConfig.DEBUG)
-                    Log.d("GithubWidget", "Receive in widget 3: Update from service");
+                    Log.d("GithubWidget", "Receive in widget 5: Update from service");
                 updateAll(context, -1);
                 break;
             case Actions.CLICK_AVATAR:
                 if (BuildConfig.DEBUG)
-                    Log.d("GithubWidget", "Receive in widget 3: Update from manual");
+                    Log.d("GithubWidget", "Receive in widget 5: Update from manual");
                 Util.showToast(R.string.refreshing);
                 updateAll(context, -1);
                 break;
             case Actions.UPDATE_MOTTO:
                 if (BuildConfig.DEBUG)
-                    Log.d("GithubWidget", "Receive in widget 3: Update motto");
-                Util.updateMotto(GithubWidget3.class, R.layout.github_widget_3, context,
+                    Log.d("GithubWidget", "Receive in widget 5: Update motto");
+                Util.updateMotto(GithubWidget5.class, R.layout.github_widget_5, context,
                         (int) (Util.getScreenWidth(context)
-                                - Util.getDimen(R.dimen.github_widget_3_avator_size)),
-                        (int )Util.getDimen(R.dimen.github_widget_3_avator_size));
+                                - Util.getDimen(R.dimen.github_widget_5_avator_size)),
+                        (int )Util.getDimen(R.dimen.github_widget_5_avator_size));
                 break;
         }
     }
@@ -72,15 +71,15 @@ public class GithubWidget3 extends AppWidgetProvider {
     private void updateAll(Context context, int appWidgetId) {
         if (BuildConfig.DEBUG) Log.d("GithubWidget", "Update all");
         RemoteViews remoteViews
-                = new RemoteViews(context.getPackageName(), R.layout.github_widget_3);
-        ComponentName componentName = new ComponentName(context, GithubWidget3.class);
+                = new RemoteViews(context.getPackageName(), R.layout.github_widget_5);
+        ComponentName componentName = new ComponentName(context, GithubWidget5.class);
 
         // update avatar
         new AvatarTask(remoteViews, context, componentName, appWidgetId)
                 .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "");
         // update contributions and contributions sum
         new ContributionsTask(
-                Widget.WIDGET_3, remoteViews,
+                Widget.WIDGET_5, remoteViews,
                 context, componentName, appWidgetId, false,
                 Util.getScreenWidth(context), 0)
                 .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "");

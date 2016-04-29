@@ -122,7 +122,6 @@ public class StarsTask extends AsyncTask<String, Void, String> {
         return null;
     }
 
-    // Todo simplify this
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
@@ -132,6 +131,7 @@ public class StarsTask extends AsyncTask<String, Void, String> {
                 case WIDGET_2:
                 case WIDGET_3:
                 case WIDGET_4:
+                case WIDGET_5:
                     remoteViews.setImageViewBitmap(R.id.motto,
                             Util.getInputUserNameBitmap(
                                     context, SettingsManager.getBaseColor()));
@@ -150,6 +150,7 @@ public class StarsTask extends AsyncTask<String, Void, String> {
                     case WIDGET_2:
                     case WIDGET_3:
                     case WIDGET_4:
+                    case WIDGET_5:
                         remoteViews.setImageViewBitmap(R.id.stars_today,
                                 Util.getStarsWithLetterBitmap(context, baseColor,
                                         stars, bitmapWidth, bitmapHeight));

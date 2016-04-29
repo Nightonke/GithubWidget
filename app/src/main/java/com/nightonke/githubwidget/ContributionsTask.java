@@ -28,6 +28,7 @@ public class ContributionsTask extends AsyncTask<String, Void, String> {
     private boolean is2D = true;
     private int bitmapWidth = 0;
     private int bitmapHeight = 0;
+    private boolean tooFrequently = false;
 
     public ContributionsTask(
             Widget widget,
@@ -87,7 +88,8 @@ public class ContributionsTask extends AsyncTask<String, Void, String> {
                         Util.writeUserBasicData(context, byteArrayOutputStream.toString());
                     } else {
                         if (httpURLConnection.getResponseCode() == 403) {
-                            Util.showToast(R.string.refresh_too_frequently);
+                            tooFrequently = true;
+                            return null;
                         } else {
                             if (BuildConfig.DEBUG) Log.d("GithubWidget",
                                     "Get user id failed: " + httpURLConnection.getResponseCode());
@@ -142,6 +144,12 @@ public class ContributionsTask extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
 
+        if (tooFrequently) {
+            Util.showToast(R.string.refresh_too_frequently);
+            tooFrequently = false;
+            if (BuildConfig.DEBUG) Log.d("GithubWidget", "Get user contributions failed: too frequently");
+        }
+
         if (SettingsManager.getUserName() == null) {
             switch (widget) {
                 case WIDGET_0:
@@ -157,6 +165,7 @@ public class ContributionsTask extends AsyncTask<String, Void, String> {
                 case WIDGET_2:
                 case WIDGET_3:
                 case WIDGET_4:
+                case WIDGET_5:
                     remoteViews.setImageViewBitmap(R.id.motto,
                             Util.getInputUserNameBitmap(
                                     context, SettingsManager.getBaseColor()));
@@ -192,6 +201,7 @@ public class ContributionsTask extends AsyncTask<String, Void, String> {
                     case WIDGET_2:
                     case WIDGET_3:
                     case WIDGET_4:
+                    case WIDGET_5:
                         if (widget.equals(Widget.WIDGET_2) || widget.equals(Widget.WIDGET_3)) {
                             bitmap = Util.get2DBitmap(context, result, startWeekDay,
                                     baseColor, textColor, bitmapWidth, bitmapHeight,

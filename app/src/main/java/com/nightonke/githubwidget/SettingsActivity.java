@@ -250,7 +250,7 @@ public class SettingsActivity extends AppCompatActivity
                 @Override
                 public void onClick(View v) {
                     Util.clearCookies();
-                    loginButton.setText(R.string.login);
+                    setLoginButtonText();
                 }
             });
             loginButton.setText(R.string.logout);

@@ -1,18 +1,9 @@
 package com.nightonke.githubwidget;
 
 import android.app.Service;
-import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.IBinder;
-import android.os.Message;
-import android.preference.PreferenceManager;
-import android.text.format.DateFormat;
 import android.util.Log;
-import android.widget.RemoteViews;
-
-import java.util.Calendar;
 
 /**
  * Created by Weiping on 2016/4/27.
@@ -31,7 +22,9 @@ public class GithubWidgetService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (BuildConfig.DEBUG) Log.d("GithubWidget", "Service on start");
 
-        updateWidget();
+        if (intent.getAction() != null
+                && intent.getAction().equals(Actions.CLICK_AVATAR)) updateWidgetManually();
+        else updateWidgetAutomatically();
 
         return super.onStartCommand(intent, flags, startId);
     }
@@ -42,32 +35,21 @@ public class GithubWidgetService extends Service {
         if (BuildConfig.DEBUG) Log.d("GithubWidget", "Service on create");
     }
 
-    private void updateWidget() {
+    private void updateWidgetAutomatically() {
         if (BuildConfig.DEBUG) Log.d("GithubWidget", "----------------------------------------" +
-                "Send broadcast in service");
+                "Send broadcast in service automatically");
 
         Intent intent = new Intent();
         intent.setAction(Actions.UPDATE_FROM_SERVICE);
         sendBroadcast(intent);
+    }
 
-//        long lastUpdateFromServiceTime = PreferenceManager
-//                .getDefaultSharedPreferences(GithubWidgetApplication.getAppContext())
-//                .getLong("LAST_UPDATE_FROM_SERVICE_TIME", -1);
-//
-//        long nowTime = Calendar.getInstance().getTime().getTime();
-//
-//        if (lastUpdateFromServiceTime != -1
-//                && nowTime - lastUpdateFromServiceTime < SettingsManager.getUpdateTime()) {
-//            if (BuildConfig.DEBUG) Log.d("GithubWidget", "Wait for sending broadcast in service");
-//        } else {
-//            Intent intent = new Intent();
-//            intent.setAction(Actions.UPDATE_FROM_SERVICE);
-//            sendBroadcast(intent);
-//
-//            SharedPreferences.Editor editor = PreferenceManager
-//                    .getDefaultSharedPreferences(GithubWidgetApplication.getAppContext()).edit();
-//            editor.putLong("LAST_UPDATE_FROM_SERVICE_TIME", nowTime);
-//            editor.commit();
-//        }
+    private void updateWidgetManually() {
+        if (BuildConfig.DEBUG) Log.d("GithubWidget", "----------------------------------------" +
+                "Send broadcast in service manually");
+
+        Intent intent = new Intent();
+        intent.setAction(Actions.CLICK_AVATAR);
+        sendBroadcast(intent);
     }
 }

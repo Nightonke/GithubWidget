@@ -24,6 +24,7 @@ import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.media.ThumbnailUtils;
 import android.os.Build;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -303,16 +304,17 @@ public class Util {
     }
 
     /**
-     * Todo
+     * Get a 2D contributions bitmap.
      *
-     * @param context
-     * @param data
-     * @param startWeekDay
-     * @param baseColor
-     * @param textColor
-     * @param bitmapWidth
-     * @param bitmapHeight
-     * @return
+     * @param context Context.
+     * @param data Data, from http get.
+     * @param startWeekDay Start weekday.
+     * @param baseColor Base color.
+     * @param textColor Text color.
+     * @param bitmapWidth Bitmap width.
+     * @param bitmapHeight Bitmap height, this is useless. Because we calculate the height by width.
+     * @param monthBelow Whether the months text is below the blocks.
+     * @return The bitmap.
      */
     public static Bitmap get2DBitmap(
             Context context,
@@ -822,16 +824,18 @@ public class Util {
     }
 
     /**
-     * Todo
+     * Get a 3D bitmap for contributions.
      *
-     * @param context
-     * @param data
-     * @param startWeekday
-     * @param baseColor
-     * @param textColor
-     * @param drawMonthText
-     * @param drawWeekdayText
-     * @return
+     * @param context Context.
+     * @param data Data, from http get.
+     * @param startWeekday Start weekday.
+     * @param baseColor Base color.
+     * @param textColor Text color.
+     * @param drawMonthText Whether draw the dashes and text of months.
+     * @param drawWeekdayText Whether draw the dashes and text for weekdays.
+     * @param containsAvatar Whether contain an avatar. Notice that this method does NOT draw an
+     *                       avatar, but just leave space for it.
+     * @return The bitmap.
      */
     public static Bitmap get3DBitmap(
             Context context,

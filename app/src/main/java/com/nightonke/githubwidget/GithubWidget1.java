@@ -88,10 +88,11 @@ public class GithubWidget1 extends AppWidgetProvider {
             remoteViews.setOnClickPendingIntent(R.id.avatar,
                     PendingIntent.getActivity(context, 0, intent, 0));
         } else {
-            intent = new Intent();
-            intent.setAction(Actions.CLICK_AVATAR);
-            remoteViews.setOnClickPendingIntent(R.id.avatar,
-                    PendingIntent.getBroadcast(context, 0, intent, 0));
+            Intent serviceIntent = new Intent(context, GithubWidgetService.class);
+            serviceIntent.setAction(Actions.CLICK_AVATAR);
+            PendingIntent pendingServiceIntent = PendingIntent.getService(
+                    context, 0, serviceIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            remoteViews.setOnClickPendingIntent(R.id.avatar, pendingServiceIntent);
         }
 
         intent = new Intent(context, SettingsActivity.class);

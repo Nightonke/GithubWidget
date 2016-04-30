@@ -1,7 +1,10 @@
 package com.nightonke.githubwidget;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -15,6 +18,7 @@ public class WidgetListViewService extends RemoteViewsService {
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
         return new MyWidgetFactory(getApplicationContext(), intent);
     }
+
     public static class MyWidgetFactory implements RemoteViewsService.RemoteViewsFactory {
 
         private Context mContext;
@@ -39,7 +43,10 @@ public class WidgetListViewService extends RemoteViewsService {
         // 如果return null，那么将会有一个默认的loadingView
         @Override
         public RemoteViews getLoadingView() {
-            return null;
+            RemoteViews views = new RemoteViews(mContext.getPackageName(),
+                    R.layout.list_view_content_item);
+            views.setImageViewBitmap(R.id.image_view, Util.getLoadingBitmap());
+            return views;
         }
 
         @Override
@@ -50,6 +57,13 @@ public class WidgetListViewService extends RemoteViewsService {
             RemoteViews views = new RemoteViews(mContext.getPackageName(),
                     R.layout.list_view_content_item);
             views.setImageViewBitmap(R.id.image_view, Util.getTrendingBitmap(position));
+
+            Bundle extras = new Bundle();
+            extras.putInt(Actions.LIST_ITEM, position);
+            Intent fillInIntent = new Intent();
+            fillInIntent.putExtras(extras);
+            views.setOnClickFillInIntent(R.id.image_view, fillInIntent);
+
             return views;
         }
 
@@ -77,6 +91,8 @@ public class WidgetListViewService extends RemoteViewsService {
         public void onDestroy() {
 
         }
+
+
     }
 
 }

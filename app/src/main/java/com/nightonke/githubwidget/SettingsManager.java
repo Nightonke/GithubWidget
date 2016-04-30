@@ -371,14 +371,12 @@ public class SettingsManager {
     }
 
     public static final String A_REPO = "<li class=\"repo-list-item\" id=\"";
-    public static final String TITLE = "<a href=\"/";
-    public static final String TITLE_END = "\">";
-    public static final String CONTENT = "<p class=\"repo-list-description\">";
+    public static final String TITLE = "<a href=\"/login?return_to=%2F";
+    public static final String TITLE_END = "\"";
+    public static final String CONTENT = "<p class=\"repo-list-description\">\n      ";
     public static final String CONTENT_END = "\n    </p>\n";
     public static final String CORNER = "      &#8226;\n\n    ";
     public static final String CORNER_END = " star";
-    public static final String URL = "<a href=\"";
-    public static final String URL_END = "\">";
     public static void setListViewContents(String contents) {
         ArrayList<HashMap<String, String>> listViewContents = new ArrayList<>();
         try {
@@ -395,20 +393,26 @@ public class SettingsManager {
                         HashMap<String, String> content = new HashMap<>();
 
                         start = contents.indexOf(TITLE, repoIndex) + TITLE.length();
-                        end = contents.indexOf(TITLE_END, start) + TITLE_END.length();
-                        content.put("title", contents.substring(start, end));
-
-                        start = contents.indexOf(CONTENT, repoIndex) + CONTENT.length();
-                        end = contents.indexOf(CONTENT_END, start) + CONTENT_END.length();
-                        content.put("content", contents.substring(start, end));
+                        end = contents.indexOf(TITLE_END, start);
+                        String title = contents.substring(start, end);
+                        title = title.replaceAll("%2F", "/");
+                        Util.log(title);
+                        content.put("title", title);
+                        content.put("url", title);
 
                         start = contents.indexOf(CORNER, repoIndex) + CORNER.length();
-                        end = contents.indexOf(CORNER_END, start) + CORNER_END.length();
+                        end = contents.indexOf(CORNER_END, start);
                         content.put("corner", contents.substring(start, end));
+                        int starsIndex = start;
 
-                        start = contents.indexOf(URL, repoIndex) + URL.length();
-                        end = contents.indexOf(URL_END, start) + URL_END.length();
-                        content.put("url", contents.substring(start, end));
+                        start = contents.indexOf(CONTENT, repoIndex) + CONTENT.length();
+                        if (start > starsIndex) {
+                            // no content
+                            content.put("content", "");
+                        } else {
+                            end = contents.indexOf(CONTENT_END, start);
+                            content.put("content", contents.substring(start, end));
+                        }
 
                         listViewContents.add(content);
                     }

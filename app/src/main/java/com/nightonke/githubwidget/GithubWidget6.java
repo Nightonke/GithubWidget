@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 /**
  * Created by Weiping on 2016/4/26.
@@ -48,6 +49,14 @@ public class GithubWidget6 extends AppWidgetProvider {
                         (int) (Util.getScreenWidth(context)
                                 - Util.getDimen(R.dimen.github_widget_6_avator_size)),
                         (int )Util.getDimen(R.dimen.github_widget_6_avator_size));
+                break;
+            case Actions.CLICK_LIST:
+                int viewIndex = intent.getIntExtra(Actions.LIST_ITEM, 0);
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse(Util.getString(R.string.url_prefix)
+                                + SettingsManager.getListViewContents().get(viewIndex).get("url")));
+                browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(browserIntent);
                 break;
         }
     }

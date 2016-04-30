@@ -17,6 +17,8 @@ public class Actions {
     public static final String CLICK_CURRENT_STREAK = PREFIX + "CLICK_CURRENT_STREAK";
     public static final String UPDATE_MOTTO = PREFIX + "UPDATE_MOTTO";
     public static final String UPDATE_FROM_SERVICE = PREFIX + "UPDATE_FROM_SERVICE";
+    public static final String CLICK_LIST = PREFIX + "CLICK_LIST";
+    public static final String LIST_ITEM = PREFIX + "LIST_ITEM";
 
 
 

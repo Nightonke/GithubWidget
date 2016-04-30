@@ -63,5 +63,8 @@
 
     <string name="corner_star">&#160;star</string>
     <string name="corner_stars">&#160;stars</string>
+    <string name="loading">Loading&#8230;</string>
+    <string name="dots">&#8230;</string>
+    <string name="url_prefix">https://github.com/</string>
 
 </resources>

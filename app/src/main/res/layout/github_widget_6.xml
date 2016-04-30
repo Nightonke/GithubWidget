@@ -135,6 +135,7 @@
         android:layout_marginEnd="@dimen/github_widget_6_listview_padding_right"
         android:layout_marginRight="@dimen/github_widget_6_listview_padding_right"
         android:layout_marginBottom="@dimen/github_widget_6_listview_padding_bottom"
+        android:overScrollMode="never"
         />
 
 </LinearLayout>

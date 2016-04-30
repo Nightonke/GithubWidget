@@ -25,6 +25,7 @@ import android.graphics.Typeface;
 import android.media.ThumbnailUtils;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -1739,21 +1740,106 @@ public class Util {
     }
 
     public static Bitmap getTrendingBitmap(int index) {
-        Util.log("Get trending bitmap " + index);
         Bitmap bitmap = Bitmap.createBitmap(
-                (int) (dp2px(250)
-                        - getDimen(R.dimen.github_widget_6_listview_padding_left)
-                        - getDimen(R.dimen.github_widget_6_listview_padding_right)),
+                (int) (dp2px(280)),
                 (int) getDimen(R.dimen.list_view_content_item_height),
                 Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
-        Paint titlePaint = getTextPaint(35f, SettingsManager.getBaseColor(),
+        Paint ownerPaint = getTextPaint(25f, calculateLevelColor(SettingsManager.getBaseColor(), 4),
                 Typeface.createFromAsset(GithubWidgetApplication.getAppContext().getAssets(),
                         "fonts/Lato-Light.ttf"));
-        Paint contentPaint = getTextPaint(15f, SettingsManager.getBaseColor(),
+        Paint repoPaint = getTextPaint(25f, calculateLevelColor(SettingsManager.getBaseColor(), 4),
                 Typeface.createFromAsset(GithubWidgetApplication.getAppContext().getAssets(),
                         "fonts/Lato-Light.ttf"));
-        Paint cornerPaint = getTextPaint(15f, SettingsManager.getBaseColor(),
+        repoPaint.setFakeBoldText(true);
+        Paint contentPaint = getTextPaint(15f, calculateLevelColor(SettingsManager.getBaseColor(), 4),
+                Typeface.createFromAsset(GithubWidgetApplication.getAppContext().getAssets(),
+                        "fonts/Lato-Light.ttf"));
+        Paint cornerPaint = getTextPaint(18f, calculateLevelColor(SettingsManager.getBaseColor(), 4),
+                Typeface.createFromAsset(GithubWidgetApplication.getAppContext().getAssets(),
+                        "fonts/Lato-Light.ttf"));
+        Paint dividerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        dividerPaint.setColor(ContextCompat.getColor(
+                GithubWidgetApplication.getAppContext(), R.color.divider_color));
+        canvas.drawLine(0, canvas.getHeight(), canvas.getWidth(), canvas.getHeight(), dividerPaint);
+
+        if (SettingsManager.getListViewContents() == null) {
+            // illegal
+            return bitmap;
+        }
+
+        float titlePaddingTop = 10f;
+        float titlePaddingLeft = 10f;
+        float titlePaddingRight = 10f;
+        float contentPaddingTop = 10f;
+        float contentPaddingLeft = 10f;
+        float contentPaddingRight = 10f;
+        float contentPaddingBottom = 10f;
+        float cornerPaddingTop = 10f;
+        float cornerPaddingRight = 10f;
+        float titleCenterY = (int) ((canvas.getHeight() / 2)
+                - ((repoPaint.descent() + repoPaint.ascent()) / 2));
+
+        HashMap<String, String> content = SettingsManager.getListViewContents().get(index);
+        String ownerString = content.get("title").substring(0, content.get("title").indexOf("/") + 1);
+        String repoString = content.get("title").substring(content.get("title").indexOf("/") + 1,
+                content.get("title").length());
+
+        while (titlePaddingLeft + titlePaddingRight
+                + getTextWidth(ownerPaint, ownerString)
+                + getTextWidth(repoPaint, repoString) > dp2px(280)) {
+            if (repoString.length() == 0) break;
+            repoString = repoString.substring(0, repoString.length() - 1) + getString(R.string.dots);
+        }
+
+        canvas.drawText(ownerString, titlePaddingLeft, titleCenterY, ownerPaint);
+
+        canvas.drawText(repoString,
+                getTextWidth(ownerPaint, ownerString) + titlePaddingLeft,
+                titleCenterY,
+                repoPaint);
+
+        String fullContentString = content.get("content");
+        String contentString = "";
+        boolean enough = false;
+        int i = 0;
+
+        while (contentPaddingLeft + contentPaddingRight
+                + getTextWidth(contentPaint, contentString + getString(R.string.dots)) < dp2px(280)) {
+            if (i >= fullContentString.length()) {
+                enough = true;
+                break;
+            }
+            contentString += fullContentString.charAt(i);
+            i++;
+        }
+        if (!enough) contentString = contentString.substring(0, contentString.length() - 1)
+                + getString(R.string.dots);
+
+        canvas.drawText(contentString,
+                contentPaddingLeft,
+                canvas.getHeight() - contentPaddingBottom,
+                contentPaint);
+
+        String starsString = content.get("corner");
+        if ("1".equals(starsString)) starsString += getString(R.string.corner_star);
+        else starsString += getString(R.string.corner_stars);
+        starsString = SettingsManager.getLanguage().v + " • " + starsString;
+        canvas.drawText(starsString,
+                canvas.getWidth() - cornerPaddingRight - getTextWidth(cornerPaint, starsString),
+                cornerPaddingTop + getTextHeight(cornerPaint, content.get("corner")),
+                cornerPaint);
+
+        return bitmap;
+    }
+
+    public static Bitmap getLoadingBitmap() {
+        Bitmap bitmap = Bitmap.createBitmap(
+                (int) (dp2px(280)),
+                (int) getDimen(R.dimen.list_view_content_item_height),
+                Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        Paint loadingPaint = getTextPaint(25f, calculateLevelColor(SettingsManager.getBaseColor(), 4),
                 Typeface.createFromAsset(GithubWidgetApplication.getAppContext().getAssets(),
                         "fonts/Lato-Light.ttf"));
 
@@ -1762,35 +1848,13 @@ public class Util {
             return bitmap;
         }
 
-        Util.log("Get trending bitmap after" + index);
+        float titleCenterY = (int) ((canvas.getHeight() / 2)
+                - ((loadingPaint.descent() + loadingPaint.ascent()) / 2));
 
-
-        float titlePaddingTop = 10f;
-        float titlePaddingLeft = 10f;
-        float contentPaddingTop = 10f;
-        float contentPaddingLeft = 10f;
-        float cornerPaddingTop = 10f;
-        float cornerPaddingRight = 10f;
-
-        HashMap<String, String> content = SettingsManager.getListViewContents().get(index);
-
-        canvas.drawText(content.get("title"),
-                titlePaddingLeft,
-                titlePaddingTop + getTextHeight(titlePaint, content.get("title")),
-                titlePaint);
-
-        canvas.drawText(content.get("content"),
-                contentPaddingLeft,
-                titlePaddingTop + getTextHeight(titlePaint, content.get("title")) + contentPaddingTop,
-                contentPaint);
-
-        String starsString = content.get("corner");
-        if ("1".equals(starsString)) starsString += getString(R.string.corner_star);
-        else starsString += getString(R.string.corner_stars);
-        canvas.drawText(starsString,
-                canvas.getWidth() - cornerPaddingRight - getTextWidth(cornerPaint, starsString),
-                cornerPaddingTop,
-                cornerPaint);
+        canvas.drawText(getString(R.string.loading),
+                canvas.getWidth() / 2 - getTextWidth(loadingPaint, getString(R.string.loading)) / 2,
+                titleCenterY,
+                loadingPaint);
 
         return bitmap;
     }

@@ -1,5 +1,6 @@
 package com.nightonke.githubwidget;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -181,6 +182,16 @@ public class ListViewContentTask extends AsyncTask<String, Void, String> {
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
             intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
             remoteViews.setRemoteAdapter(R.id.list_view, intent);
+
+            // Todo set empty view
+
+            Intent toastIntent = new Intent(context, GithubWidget6.class);
+            toastIntent.setAction(Actions.CLICK_LIST);
+            toastIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+            intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
+            PendingIntent toastPendingIntent = PendingIntent.getBroadcast(context, 0, toastIntent,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
+            remoteViews.setPendingIntentTemplate(R.id.list_view, toastPendingIntent);
 
             AppWidgetManager.getInstance(context).updateAppWidget(appWidgetId, remoteViews);
             AppWidgetManager.getInstance(context)

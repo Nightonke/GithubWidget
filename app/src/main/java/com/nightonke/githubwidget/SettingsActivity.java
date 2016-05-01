@@ -23,7 +23,8 @@ import android.widget.TextView;
 
 public class SettingsActivity extends AppCompatActivity
         implements
-        View.OnClickListener {
+        View.OnClickListener,
+        LanguageDialog.OnLanguageSelectedListener {
 
     private LinearLayout userNameLayout;
     private EditText userNameEditText;
@@ -35,17 +36,9 @@ public class SettingsActivity extends AppCompatActivity
     private ImageView imageView2D;
     private ImageView colorImageView;
     private TextView colorText;
-    private TextView seekBarMinA;
-    private TextView seekBarMaxA;
     private MySeekBar seekBarA;
-    private TextView seekBarMinR;
-    private TextView seekBarMaxR;
     private MySeekBar seekBarR;
-    private TextView seekBarMinG;
-    private TextView seekBarMaxG;
     private MySeekBar seekBarG;
-    private TextView seekBarMinB;
-    private TextView seekBarMaxB;
     private MySeekBar seekBarB;
     private Button resetBaseColorButton;
     
@@ -70,6 +63,8 @@ public class SettingsActivity extends AppCompatActivity
     private SeekBar receivedEventPerPageSeekBar;
     private TextView receivedEventPerPageTextView;
 
+    private Button languageButton;
+
     private String oldUserName;
     private String oldMotto;
     private int oldBaseColor;
@@ -80,6 +75,7 @@ public class SettingsActivity extends AppCompatActivity
     private Weekday oldWeekday;
     private int oldUpdateTime;
     private int oldReceivedEventPerPage;
+    private Language oldLanguage;
 
     private int newBaseColor;
 
@@ -124,20 +120,12 @@ public class SettingsActivity extends AppCompatActivity
         imageView2D = findView(R.id.two_d);
         colorImageView = findView(R.id.color);
         colorText = findView(R.id.color_edit_text);
-        seekBarMinA = findView(R.id.seek_bar_min_a);
-        seekBarMaxA = findView(R.id.seek_bar_max_a);
         seekBarA = findView(R.id.seek_bar_a);
         seekBarA.setOnSeekBarChangeListener(onSeekBarChangeListener);
-        seekBarMinR = findView(R.id.seek_bar_min_r);
-        seekBarMaxR = findView(R.id.seek_bar_max_r);
         seekBarR = findView(R.id.seek_bar_r);
         seekBarR.setOnSeekBarChangeListener(onSeekBarChangeListener);
-        seekBarMinG = findView(R.id.seek_bar_min_g);
-        seekBarMaxG = findView(R.id.seek_bar_max_g);
         seekBarG = findView(R.id.seek_bar_g);
         seekBarG.setOnSeekBarChangeListener(onSeekBarChangeListener);
-        seekBarMinB = findView(R.id.seek_bar_min_b);
-        seekBarMaxB = findView(R.id.seek_bar_max_b);
         seekBarB = findView(R.id.seek_bar_b);
         seekBarB.setOnSeekBarChangeListener(onSeekBarChangeListener);
         resetBaseColorButton = findView(R.id.reset_base_color);
@@ -228,11 +216,21 @@ public class SettingsActivity extends AppCompatActivity
         receivedEventPerPageSeekBar.setProgress(SettingsManager.getReceivedEventPerPage() - 1);
         receivedEventPerPageTextView = findView(R.id.received_event_per_page_text);
         setReceivedEventPerPageText();
+
+        languageButton = findView(R.id.language);
+        languageButton.setOnClickListener(this);
+        setLanguageText();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void setLanguageText() {
+        languageButton.setText(R.string.set_language);
+        languageButton.setText(languageButton.getText().toString()
+                + SettingsManager.getLanguage().v);
     }
 
     private void setLoginButtonText() {
@@ -373,6 +371,9 @@ public class SettingsActivity extends AppCompatActivity
                 startFromSunday.setChecked(SettingsManager.getStartWeekDay().equals(Weekday.SUN));
                 startFromMonday.setChecked(SettingsManager.getStartWeekDay().equals(Weekday.MON));
                 break;
+            case R.id.language:
+                new LanguageDialog(this).show();
+                break;
         }
     }
 
@@ -393,6 +394,7 @@ public class SettingsActivity extends AppCompatActivity
         oldWeekday = SettingsManager.getStartWeekDay();
         oldUpdateTime = SettingsManager.getUpdateTime();
         oldReceivedEventPerPage = SettingsManager.getReceivedEventPerPage();
+        oldLanguage = SettingsManager.getLanguage();
 
         userNameLayout.post(new Runnable() {
             @Override
@@ -436,6 +438,7 @@ public class SettingsActivity extends AppCompatActivity
         if (oldUpdateTime != SettingsManager.getUpdateTime()) changed = true;
         if (oldReceivedEventPerPage != SettingsManager.getReceivedEventPerPage())
             receivedEventPerPageChanged = true;
+        if (oldLanguage != SettingsManager.getLanguage()) changed = true;
 
         if (receivedEventPerPageChanged) {
             SettingsManager.setLastUpdateStarsDate(null);
@@ -491,4 +494,8 @@ public class SettingsActivity extends AppCompatActivity
         }
     };
 
+    @Override
+    public void onLanguageSelected() {
+        setLanguageText();
+    }
 }

@@ -72,6 +72,15 @@ public class Util {
         return point.x;
     }
 
+    public static int getScreenHeight(Context context) {
+        Display localDisplay
+                = ((WindowManager)context.getSystemService(Context.WINDOW_SERVICE))
+                .getDefaultDisplay();
+        Point point = new Point();
+        localDisplay.getSize(point);
+        return point.y;
+    }
+
     public final static String WIDTH_STRING = "<svg width=\"";
     public final static int BLOCK_WIDTH = 13;
     public static int getContributionsColumnNumber(String string) {

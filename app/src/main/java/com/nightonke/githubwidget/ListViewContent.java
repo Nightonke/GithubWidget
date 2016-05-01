@@ -7,7 +7,8 @@ public enum ListViewContent {
 
     TRENDING_DAILY(0),
     TRENDING_WEEKLY(1),
-    EVENT(2);
+    TRENDING_MONTHLY(2),
+    EVENT(3);
 
     int v;
 

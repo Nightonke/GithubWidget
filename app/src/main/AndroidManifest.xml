@@ -20,10 +20,12 @@
         <activity
             android:name=".SettingsActivity"
             android:windowSoftInputMode="stateHidden"
-            android:exported="false">
+            android:exported="false"
+            android:screenOrientation="portrait">
         </activity>
 
-        <activity android:name=".LoginActivity"/>
+        <activity android:name=".LoginActivity"
+            android:screenOrientation="portrait"/>
 
         <service android:name=".GithubWidgetService" />
 

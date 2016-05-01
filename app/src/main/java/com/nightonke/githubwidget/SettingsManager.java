@@ -329,7 +329,7 @@ public class SettingsManager {
     }
 
     public static Language getLanguage() {
-        language = Language.valueOf(PreferenceManager.
+        language = Language.fromString(PreferenceManager.
                 getDefaultSharedPreferences(GithubWidgetApplication.getAppContext())
                 .getString("LANGUAGE", language.v));
         return language;
@@ -340,6 +340,7 @@ public class SettingsManager {
         SharedPreferences.Editor editor = PreferenceManager
                 .getDefaultSharedPreferences(GithubWidgetApplication.getAppContext()).edit();
         editor.putString("LANGUAGE", language.v);
+        editor.commit();
     }
 
     public static ArrayList<HashMap<String, String>> getListViewContents() {
@@ -396,13 +397,18 @@ public class SettingsManager {
                         end = contents.indexOf(TITLE_END, start);
                         String title = contents.substring(start, end);
                         title = title.replaceAll("%2F", "/");
-                        Util.log(title);
                         content.put("title", title);
                         content.put("url", title);
 
                         start = contents.indexOf(CORNER, repoIndex) + CORNER.length();
                         end = contents.indexOf(CORNER_END, start);
-                        content.put("corner", contents.substring(start, end));
+                        String starsString = contents.substring(start, end);
+                        try {
+                            Integer.parseInt(starsString);
+                            content.put("corner", starsString);
+                        } catch (NumberFormatException n) {
+                            content.put("corner", "0");
+                        }
                         int starsIndex = start;
 
                         start = contents.indexOf(CONTENT, repoIndex) + CONTENT.length();

@@ -67,4 +67,14 @@
     <string name="dots">&#8230;</string>
     <string name="url_prefix">https://github.com/</string>
 
+    <string name="contents_in_list">Contents in List</string>
+    <string name="trending_daily">Trending today</string>
+    <string name="trending_weekly">Trending this week</string>
+    <string name="trending_monthly">Trending this month</string>
+    <string name="received_event">Received events</string>
+    <string name="set_language">Languages:&#160;</string>
+
+    <string name="language">Language</string>
+    <string name="cancel">Cancel</string>
+
 </resources>

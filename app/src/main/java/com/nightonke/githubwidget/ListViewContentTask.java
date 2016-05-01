@@ -26,16 +26,19 @@ public class ListViewContentTask extends AsyncTask<String, Void, String> {
     private Context context;
     private ComponentName componentName;
     private int appWidgetId;
+    private Widget widget;
 
     public ListViewContentTask(
             RemoteViews remoteViews,
             Context context,
             ComponentName componentName,
-            int appWidgetId) {
+            int appWidgetId,
+            Widget widget) {
         this.remoteViews = remoteViews;
         this.context = context;
         this.componentName = componentName;
         this.appWidgetId = appWidgetId;
+        this.widget = widget;
     }
 
     @Override
@@ -87,7 +90,8 @@ public class ListViewContentTask extends AsyncTask<String, Void, String> {
                 }
             }
             if (SettingsManager.getListViewContent().equals(ListViewContent.TRENDING_DAILY)
-                    || SettingsManager.getListViewContent().equals(ListViewContent.TRENDING_WEEKLY))
+                    || SettingsManager.getListViewContent().equals(ListViewContent.TRENDING_WEEKLY)
+                    || SettingsManager.getListViewContent().equals(ListViewContent.TRENDING_MONTHLY))
                 result = getTrending();
             if (SettingsManager.getListViewContent().equals(ListViewContent.EVENT)) {
                 result = getEvent();
@@ -106,10 +110,13 @@ public class ListViewContentTask extends AsyncTask<String, Void, String> {
             String urlString = "";
             if (SettingsManager.getListViewContent().equals(ListViewContent.TRENDING_DAILY))
                 urlString = "https://github.com/trending/"
-                        + SettingsManager.getLanguage() + "?since=daily";
+                        + SettingsManager.getLanguage().v + "?since=daily";
             if (SettingsManager.getListViewContent().equals(ListViewContent.TRENDING_WEEKLY))
                 urlString = "https://github.com/trending/"
-                        + SettingsManager.getLanguage() + "?since=weekly";
+                        + SettingsManager.getLanguage().v + "?since=weekly";
+            if (SettingsManager.getListViewContent().equals(ListViewContent.TRENDING_MONTHLY))
+                urlString = "https://github.com/trending/"
+                        + SettingsManager.getLanguage().v + "?since=monthly";
             if (BuildConfig.DEBUG)
                 Log.d("GithubWidget", "Get trending: " + urlString);
             url = new URL(urlString);
@@ -193,9 +200,28 @@ public class ListViewContentTask extends AsyncTask<String, Void, String> {
                     PendingIntent.FLAG_UPDATE_CURRENT);
             remoteViews.setPendingIntentTemplate(R.id.list_view, toastPendingIntent);
 
-            AppWidgetManager.getInstance(context).updateAppWidget(appWidgetId, remoteViews);
-            AppWidgetManager.getInstance(context)
-                    .notifyAppWidgetViewDataChanged(appWidgetId, R.id.list_view);
+            if (appWidgetId == -1) {
+                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+                switch (widget) {
+                    case WIDGET_6:
+                        int[] appWidgetIds =
+                                appWidgetManager.getAppWidgetIds(new ComponentName(context, GithubWidget6.class));
+                        for (int id : appWidgetIds) {
+                            AppWidgetManager.getInstance(context).updateAppWidget(id, null);
+                            AppWidgetManager.getInstance(context).updateAppWidget(id, remoteViews);
+                            AppWidgetManager.getInstance(context)
+                                    .notifyAppWidgetViewDataChanged(appWidgetId, R.id.list_view);
+                        }
+                        break;
+                }
+                appWidgetManager.updateAppWidget(componentName, remoteViews);
+            } else {
+                AppWidgetManager.getInstance(context).updateAppWidget(appWidgetId, remoteViews);
+                AppWidgetManager.getInstance(context)
+                        .notifyAppWidgetViewDataChanged(appWidgetId, R.id.list_view);
+            }
+
+
         }
     }
 

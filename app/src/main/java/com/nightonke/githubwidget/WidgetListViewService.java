@@ -23,7 +23,6 @@ public class WidgetListViewService extends RemoteViewsService {
 
         private Context mContext;
 
-        // 构造
         public MyWidgetFactory(Context context, Intent intent) {
             mContext = context;
         }
@@ -39,8 +38,6 @@ public class WidgetListViewService extends RemoteViewsService {
             return position;
         }
 
-        // 在调用getViewAt的过程中，显示一个LoadingView。
-        // 如果return null，那么将会有一个默认的loadingView
         @Override
         public RemoteViews getLoadingView() {
             RemoteViews views = new RemoteViews(mContext.getPackageName(),

@@ -18,6 +18,8 @@
         android:layout_marginRight="@dimen/github_widget_2_contributions_padding_right"
         android:layout_marginEnd="@dimen/github_widget_2_contributions_padding_right"
         android:layout_marginTop="@dimen/github_widget_2_avator_padding_top"
+        android:adjustViewBounds="true"
+        android:scaleType="centerInside"
         />
 
     <LinearLayout
@@ -75,7 +77,9 @@
             android:layout_gravity="center_vertical"
             android:gravity="center"
             android:layout_marginLeft="@dimen/github_widget_2_avator_padding_left"
-            android:layout_marginStart="@dimen/github_widget_2_avator_padding_left"/>
+            android:layout_marginStart="@dimen/github_widget_2_avator_padding_left"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"/>
 
         <ImageView
             android:id="@+id/contributions_sum"
@@ -83,7 +87,9 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"/>
 
         <ImageView
             android:id="@+id/contributions_today"
@@ -91,7 +97,9 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"/>
 
         <ImageView
             android:id="@+id/current_streak"
@@ -99,7 +107,9 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"/>
 
         <ImageView
             android:id="@+id/stars_today"
@@ -109,7 +119,9 @@
             android:layout_gravity="center_vertical"
             android:gravity="center"
             android:layout_marginRight="@dimen/github_widget_2_avator_padding_left"
-            android:layout_marginEnd="@dimen/github_widget_2_avator_padding_left"/>
+            android:layout_marginEnd="@dimen/github_widget_2_avator_padding_left"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"/>
 
     </LinearLayout>
 

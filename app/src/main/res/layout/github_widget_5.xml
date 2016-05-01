@@ -63,7 +63,9 @@
             android:layout_gravity="center_vertical"
             android:gravity="center"
             android:layout_marginLeft="@dimen/github_widget_5_avator_padding_left"
-            android:layout_marginStart="@dimen/github_widget_5_avator_padding_left"/>
+            android:layout_marginStart="@dimen/github_widget_5_avator_padding_left"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"/>
 
         <ImageView
             android:id="@+id/contributions_sum"
@@ -71,7 +73,9 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"/>
 
         <ImageView
             android:id="@+id/contributions_today"
@@ -79,7 +83,9 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"/>
 
         <ImageView
             android:id="@+id/current_streak"
@@ -87,7 +93,9 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"/>
 
         <ImageView
             android:id="@+id/stars_today"
@@ -97,9 +105,17 @@
             android:layout_gravity="center_vertical"
             android:gravity="center"
             android:layout_marginRight="@dimen/github_widget_5_avator_padding_left"
-            android:layout_marginEnd="@dimen/github_widget_5_avator_padding_left"/>
+            android:layout_marginEnd="@dimen/github_widget_5_avator_padding_left"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"/>
 
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
 
     <ImageView
         android:id="@+id/contributions"

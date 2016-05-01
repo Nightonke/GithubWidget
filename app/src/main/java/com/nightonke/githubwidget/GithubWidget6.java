@@ -25,7 +25,7 @@ public class GithubWidget6 extends AppWidgetProvider {
         super.onReceive(context, intent);
 
         if (AppWidgetManager.getInstance(context).getAppWidgetIds(
-                new ComponentName(context, GithubWidget6.class)).length == 0) return;
+                new ComponentName(context, this.getClass())).length == 0) return;
 
         if (BuildConfig.DEBUG) Log.d("GithubWidget", "Receive in widget 6: " + intent.getAction());
 
@@ -150,14 +150,14 @@ public class GithubWidget6 extends AppWidgetProvider {
         remoteViews.setOnClickPendingIntent(R.id.base_layout,
                 PendingIntent.getActivity(context, 0, intent, 0));
 
+        // update contents of list view
+        new ListViewContentTask(remoteViews, context, componentName, appWidgetId, Widget.WIDGET_6)
+                .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "");
+
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         if (appWidgetId == -1) {
             appWidgetManager.updateAppWidget(componentName, remoteViews);
         } else {
-            // update contents of list view
-            new ListViewContentTask(remoteViews, context, componentName, appWidgetId)
-                    .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "");
-
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
         }
     }

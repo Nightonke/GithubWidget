@@ -27,18 +27,21 @@ public class ListViewContentTask extends AsyncTask<String, Void, String> {
     private ComponentName componentName;
     private int appWidgetId;
     private Widget widget;
+    private Class<?> c;
 
     public ListViewContentTask(
             RemoteViews remoteViews,
             Context context,
             ComponentName componentName,
             int appWidgetId,
-            Widget widget) {
+            Widget widget,
+            Class<?> c) {
         this.remoteViews = remoteViews;
         this.context = context;
         this.componentName = componentName;
         this.appWidgetId = appWidgetId;
         this.widget = widget;
+        this.c = c;
     }
 
     @Override
@@ -117,6 +120,7 @@ public class ListViewContentTask extends AsyncTask<String, Void, String> {
             if (SettingsManager.getListViewContent().equals(ListViewContent.TRENDING_MONTHLY))
                 urlString = "https://github.com/trending/"
                         + SettingsManager.getLanguage().v + "?since=monthly";
+            urlString = urlString.replace(" ", "%20");
             if (BuildConfig.DEBUG)
                 Log.d("GithubWidget", "Get trending: " + urlString);
             url = new URL(urlString);
@@ -184,6 +188,7 @@ public class ListViewContentTask extends AsyncTask<String, Void, String> {
 
         if (result == null) {
             // do nothing
+            Util.log("Get trending fail");
         } else {
             Intent intent = new Intent(context, WidgetListViewService.class);
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
@@ -204,24 +209,22 @@ public class ListViewContentTask extends AsyncTask<String, Void, String> {
                 AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
                 switch (widget) {
                     case WIDGET_6:
+                    case WIDGET_7:
                         int[] appWidgetIds =
-                                appWidgetManager.getAppWidgetIds(new ComponentName(context, GithubWidget6.class));
+                                appWidgetManager.getAppWidgetIds(new ComponentName(context, c));
                         for (int id : appWidgetIds) {
-                            AppWidgetManager.getInstance(context).updateAppWidget(id, null);
-                            AppWidgetManager.getInstance(context).updateAppWidget(id, remoteViews);
                             AppWidgetManager.getInstance(context)
                                     .notifyAppWidgetViewDataChanged(appWidgetId, R.id.list_view);
+                            AppWidgetManager.getInstance(context).updateAppWidget(id, remoteViews);
                         }
                         break;
                 }
                 appWidgetManager.updateAppWidget(componentName, remoteViews);
             } else {
-                AppWidgetManager.getInstance(context).updateAppWidget(appWidgetId, remoteViews);
                 AppWidgetManager.getInstance(context)
                         .notifyAppWidgetViewDataChanged(appWidgetId, R.id.list_view);
+                AppWidgetManager.getInstance(context).updateAppWidget(appWidgetId, remoteViews);
             }
-
-
         }
     }
 

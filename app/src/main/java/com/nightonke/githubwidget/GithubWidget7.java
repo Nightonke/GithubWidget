@@ -11,12 +11,11 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 /**
  * Created by Weiping on 2016/4/26.
  */
-public class GithubWidget6 extends AppWidgetProvider {
+public class GithubWidget7 extends AppWidgetProvider {
 
     private PendingIntent servicePendingIntent = null;
 
@@ -27,28 +26,28 @@ public class GithubWidget6 extends AppWidgetProvider {
         if (AppWidgetManager.getInstance(context).getAppWidgetIds(
                 new ComponentName(context, this.getClass())).length == 0) return;
 
-        if (BuildConfig.DEBUG) Log.d("GithubWidget", "Receive in widget 6: " + intent.getAction());
+        if (BuildConfig.DEBUG) Log.d("GithubWidget", "Receive in widget 7: " + intent.getAction());
 
         switch (intent.getAction()) {
             case Actions.UPDATE_FROM_SERVICE:
                 if (BuildConfig.DEBUG)
-                    Log.d("GithubWidget", "Receive in widget 6: Update from service");
+                    Log.d("GithubWidget", "Receive in widget 7: Update from service");
                 updateAll(context, -1);
                 break;
             case Actions.CLICK_AVATAR:
                 if (BuildConfig.DEBUG)
-                    Log.d("GithubWidget", "Receive in widget 6: Update from manual");
+                    Log.d("GithubWidget", "Receive in widget 7: Update from manual");
                 Util.showToast(R.string.refreshing);
                 Util.addAlarmService(context, servicePendingIntent);
                 updateAll(context, -1);
                 break;
             case Actions.UPDATE_MOTTO:
                 if (BuildConfig.DEBUG)
-                    Log.d("GithubWidget", "Receive in widget 6: Update motto");
-                Util.updateMotto(GithubWidget6.class, R.layout.github_widget_6, context,
+                    Log.d("GithubWidget", "Receive in widget 7: Update motto");
+                Util.updateMotto(GithubWidget7.class, R.layout.github_widget_7, context,
                         (int) (Util.getScreenWidth(context)
-                                - Util.getDimen(R.dimen.github_widget_6_avator_size)),
-                        (int )Util.getDimen(R.dimen.github_widget_6_avator_size));
+                                - Util.getDimen(R.dimen.github_widget_7_avator_size)),
+                        (int )Util.getDimen(R.dimen.github_widget_7_avator_size));
                 break;
             case Actions.CLICK_LIST:
                 int viewIndex = intent.getIntExtra(Actions.LIST_ITEM, 0);
@@ -82,15 +81,15 @@ public class GithubWidget6 extends AppWidgetProvider {
     private void updateAll(Context context, int appWidgetId) {
         if (BuildConfig.DEBUG) Log.d("GithubWidget", "Update all");
         RemoteViews remoteViews
-                = new RemoteViews(context.getPackageName(), R.layout.github_widget_6);
-        ComponentName componentName = new ComponentName(context, GithubWidget6.class);
+                = new RemoteViews(context.getPackageName(), R.layout.github_widget_7);
+        ComponentName componentName = new ComponentName(context, GithubWidget7.class);
 
         // update avatar
         new AvatarTask(remoteViews, context, componentName, appWidgetId)
                 .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "");
         // update contributions and contributions sum
         new ContributionsTask(
-                Widget.WIDGET_6, remoteViews,
+                Widget.WIDGET_7, remoteViews,
                 context, componentName, appWidgetId, false,
                 Util.getScreenWidth(context), 0)
                 .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "");
@@ -152,7 +151,7 @@ public class GithubWidget6 extends AppWidgetProvider {
 
         // update contents of list view
         new ListViewContentTask(remoteViews, context, componentName,
-                appWidgetId, Widget.WIDGET_6, this.getClass())
+                appWidgetId, Widget.WIDGET_7, this.getClass())
                 .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "");
 
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);

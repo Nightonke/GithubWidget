@@ -55,7 +55,7 @@ public enum Language {
     RACKET("Racket"),
     F_SHARP("F#"),
     D("D"),
-    RAGEL_IN_RUBY("Ragel in Ruby"),
+    RAGEL_IN_RUBY_HOST("Ragel in Ruby Host"),
     HOST("Host"),
     PUPPET("Puppet"),
     UNKNOWN("Unknown");

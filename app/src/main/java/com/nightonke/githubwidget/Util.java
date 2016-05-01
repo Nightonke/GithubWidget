@@ -1665,10 +1665,8 @@ public class Util {
 
         final AlarmManager m = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-        final Calendar TIME = Calendar.getInstance();
-        TIME.set(Calendar.MINUTE, 0);
-        TIME.set(Calendar.SECOND, 0);
-        TIME.set(Calendar.MILLISECOND, 0);
+        final Calendar current = Calendar.getInstance();
+        current.add(Calendar.MILLISECOND, SettingsManager.getUpdateTime());
 
         final Intent i = new Intent(context, GithubWidgetService.class);
 
@@ -1677,7 +1675,7 @@ public class Util {
                     PendingIntent.FLAG_CANCEL_CURRENT);
         }
 
-        m.setRepeating(AlarmManager.RTC, TIME.getTime().getTime(),
+        m.setRepeating(AlarmManager.RTC, current.getTime().getTime(),
                 SettingsManager.getUpdateTime(), servicePendingIntent);
     }
 

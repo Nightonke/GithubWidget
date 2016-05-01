@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -63,6 +64,8 @@ public class SettingsActivity extends AppCompatActivity
     private SeekBar receivedEventPerPageSeekBar;
     private TextView receivedEventPerPageTextView;
 
+    private RadioGroup contentTypeRadioGroup;
+
     private Button languageButton;
 
     private String oldUserName;
@@ -75,6 +78,7 @@ public class SettingsActivity extends AppCompatActivity
     private Weekday oldWeekday;
     private int oldUpdateTime;
     private int oldReceivedEventPerPage;
+    private ListViewContent oldListViewContent;
     private Language oldLanguage;
 
     private int newBaseColor;
@@ -217,6 +221,28 @@ public class SettingsActivity extends AppCompatActivity
         receivedEventPerPageTextView = findView(R.id.received_event_per_page_text);
         setReceivedEventPerPageText();
 
+        contentTypeRadioGroup = findView(R.id.list_view_content_radio_group);
+        contentTypeRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.trending_daily_radio_button:
+                        SettingsManager.setListViewContent(ListViewContent.TRENDING_DAILY);
+                        break;
+                    case R.id.trending_weekly_radio_button:
+                        SettingsManager.setListViewContent(ListViewContent.TRENDING_WEEKLY);
+                        break;
+                    case R.id.trending_monthly_radio_button:
+                        SettingsManager.setListViewContent(ListViewContent.TRENDING_MONTHLY);
+                        break;
+                    case R.id.received_event_radio_button:
+                        SettingsManager.setListViewContent(ListViewContent.EVENT);
+                        break;
+                }
+            }
+        });
+        setContentType();
+
         languageButton = findView(R.id.language);
         languageButton.setOnClickListener(this);
         setLanguageText();
@@ -225,6 +251,23 @@ public class SettingsActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void setContentType() {
+        switch (SettingsManager.getListViewContent()) {
+            case TRENDING_DAILY:
+                ((RadioButton)findView(R.id.trending_daily_radio_button)).setChecked(true);
+                break;
+            case TRENDING_WEEKLY:
+                ((RadioButton)findView(R.id.trending_weekly_radio_button)).setChecked(true);
+                break;
+            case TRENDING_MONTHLY:
+                ((RadioButton)findView(R.id.trending_monthly_radio_button)).setChecked(true);
+                break;
+            case EVENT:
+                ((RadioButton)findView(R.id.received_event_radio_button)).setChecked(true);
+                break;
+        }
     }
 
     private void setLanguageText() {
@@ -394,6 +437,7 @@ public class SettingsActivity extends AppCompatActivity
         oldWeekday = SettingsManager.getStartWeekDay();
         oldUpdateTime = SettingsManager.getUpdateTime();
         oldReceivedEventPerPage = SettingsManager.getReceivedEventPerPage();
+        oldListViewContent = SettingsManager.getListViewContent();
         oldLanguage = SettingsManager.getLanguage();
 
         userNameLayout.post(new Runnable() {
@@ -438,6 +482,7 @@ public class SettingsActivity extends AppCompatActivity
         if (oldUpdateTime != SettingsManager.getUpdateTime()) changed = true;
         if (oldReceivedEventPerPage != SettingsManager.getReceivedEventPerPage())
             receivedEventPerPageChanged = true;
+        if (!oldListViewContent.equals(SettingsManager.getListViewContent())) changed = true;
         if (oldLanguage != SettingsManager.getLanguage()) changed = true;
 
         if (receivedEventPerPageChanged) {

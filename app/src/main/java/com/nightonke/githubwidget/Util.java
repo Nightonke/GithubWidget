@@ -399,7 +399,7 @@ public class Util {
         float y = (currentWeekDay - startWeekDay.v + 7) % 7
                 * (blockWidth + spaceWidth)
                 + (monthBelow ? 0 : topMargin + monthTextHeight);
-        int lastMonth = contributions.get(0).month;
+        int lastMonth = contributions.get(0).month - 1;
         for (Day day : contributions) {
             blockPaint.setColor(Util.calculateLevelColor(baseColor, day.level));
             canvas.drawRect(x, y, x + blockWidth, y + blockWidth, blockPaint);
@@ -1765,6 +1765,10 @@ public class Util {
         Paint cornerPaint = getTextPaint(18f, calculateLevelColor(SettingsManager.getBaseColor(), 4),
                 Typeface.createFromAsset(GithubWidgetApplication.getAppContext().getAssets(),
                         "fonts/Lato-Light.ttf"));
+        Paint cornerNumberPaint = getTextPaint(18f, calculateLevelColor(SettingsManager.getBaseColor(), 4),
+                Typeface.createFromAsset(GithubWidgetApplication.getAppContext().getAssets(),
+                        "fonts/Lato-Light.ttf"));
+        cornerNumberPaint.setFakeBoldText(true);
         Paint dividerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         dividerPaint.setColor(ContextCompat.getColor(
                 GithubWidgetApplication.getAppContext(), R.color.divider_color));
@@ -1829,12 +1833,25 @@ public class Util {
                 contentPaint);
 
         String starsString = content.get("corner");
-        if ("1".equals(starsString)) starsString += getString(R.string.corner_star);
-        else starsString += getString(R.string.corner_stars);
-        starsString = SettingsManager.getLanguage().v + " • " + starsString;
+        String starsPostFixString = getString("1".equals(starsString) ? R.string.corner_star : R.string.corner_stars);
+        String languageString = SettingsManager.getLanguage().v + " •  ";
+        canvas.drawText(starsPostFixString,
+                canvas.getWidth() - cornerPaddingRight
+                        - getTextWidth(cornerPaint, starsPostFixString),
+                cornerPaddingTop + getTextHeight(cornerPaint, starsPostFixString),
+                cornerPaint);
         canvas.drawText(starsString,
-                canvas.getWidth() - cornerPaddingRight - getTextWidth(cornerPaint, starsString),
-                cornerPaddingTop + getTextHeight(cornerPaint, content.get("corner")),
+                canvas.getWidth() - cornerPaddingRight
+                        - getTextWidth(cornerNumberPaint, starsString)
+                        - getTextWidth(cornerPaint, starsPostFixString),
+                cornerPaddingTop + getTextHeight(cornerNumberPaint, starsString),
+                cornerNumberPaint);
+        canvas.drawText(languageString,
+                canvas.getWidth() - cornerPaddingRight
+                        - getTextWidth(cornerPaint, languageString)
+                        - getTextWidth(cornerNumberPaint, starsString)
+                        - getTextWidth(cornerPaint, starsPostFixString),
+                cornerPaddingTop + getTextHeight(cornerPaint, languageString),
                 cornerPaint);
 
         return bitmap;

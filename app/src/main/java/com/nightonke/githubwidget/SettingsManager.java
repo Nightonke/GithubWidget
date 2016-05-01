@@ -383,6 +383,8 @@ public class SettingsManager {
         try {
             switch (listViewContent) {
                 case TRENDING_DAILY:
+                case TRENDING_WEEKLY:
+                case TRENDING_MONTHLY:
                     int repoIndex = -1;
                     while (true) {
                         repoIndex = contents.indexOf(A_REPO, repoIndex + 1);
@@ -403,6 +405,7 @@ public class SettingsManager {
                         start = contents.indexOf(CORNER, repoIndex) + CORNER.length();
                         end = contents.indexOf(CORNER_END, start);
                         String starsString = contents.substring(start, end);
+                        starsString = starsString.replaceAll(",", "");
                         try {
                             Integer.parseInt(starsString);
                             content.put("corner", starsString);
@@ -423,9 +426,141 @@ public class SettingsManager {
                         listViewContents.add(content);
                     }
                     break;
-                case TRENDING_WEEKLY:
-                    break;
                 case EVENT:
+                    break;
+            }
+
+            if (listViewContents.size() != 0) SettingsManager.listViewContents = listViewContents;
+
+            JSONArray jsonArray = new JSONArray();
+            for (HashMap<String, String> content : listViewContents) {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("title", content.get("title"));
+                jsonObject.put("content", content.get("content"));
+                jsonObject.put("corner", content.get("corner"));
+                jsonObject.put("url", content.get("url"));
+                jsonArray.put(jsonObject);
+            }
+
+            SharedPreferences.Editor editor = PreferenceManager
+                    .getDefaultSharedPreferences(GithubWidgetApplication.getAppContext()).edit();
+            editor.putString("LIST_VIEW_CONTENTS", jsonArray.toString());
+            editor.commit();
+        } catch (JSONException j) {
+            j.printStackTrace();
+            Util.log("Json error in getting list view contents");
+        }
+    }
+
+    public static void setListViewContents(JSONArray contents) {
+        ArrayList<HashMap<String, String>> listViewContents = new ArrayList<>();
+        try {
+            switch (listViewContent) {
+                case EVENT:
+                    for (int i = 0; i < contents.length(); i++) {
+                        JSONObject event = contents.getJSONObject(i);
+                        HashMap<String, String> content = new HashMap<>();
+
+                        JSONObject repo = event.getJSONObject("repo");
+                        String repoName = repo.getString("name");
+
+                        String createAt = event.getString("created_at");
+
+                        content.put("corner", createAt);
+
+                        String actor = event.getJSONObject("actor").getString("login");
+                        String act = "";
+                        String url = "";
+                        String con = "";
+
+                        String type = event.getString("type");
+                        JSONObject payload = null;
+                        switch (type) {
+                            case "CommitCommentEvent":
+                                payload = event.getJSONObject("payload");
+                                actor = payload.getJSONObject("comment").getJSONObject("user").getString("login");
+                                url = payload.getJSONObject("comment").getString("html_url");
+                                act = " commented commit of";
+                                con = payload.getJSONObject("repository").getString("full_name");
+                                break;
+                            case "CreateEvent":
+                                payload = event.getJSONObject("payload");
+                                url = payload.getJSONObject("repository").getString("html_url");
+                                act = " created repository";
+                                con = event.getJSONObject("repo").getString("name");
+                                break;
+                            case "DeleteEvent":
+                                // I cannot find an example for this
+                                break;
+                            case "DeploymentEvent":
+                                // I cannot find an example for this
+                                break;
+                            case "DeploymentStatusEvent":
+                                // I cannot find an example for this
+                                break;
+                            case "DownloadEvent":
+                                // Events of this type are no longer created,
+                                // but it's possible that they exist in timelines of some users.
+                                break;
+                            case "FollowEvent":
+                                // Events of this type are no longer created,
+                                // but it's possible that they exist in timelines of some users.
+                                break;
+                            case "ForkEvent":
+                                payload = event.getJSONObject("payload");
+                                url = payload.getJSONObject("forkee").getString("html_url");
+                                act = " forked " + event.getJSONObject("repo").getString("name");
+                                con = "to " + payload.getJSONObject("forkee").getString("name");
+                                break;
+                            case "ForkApplyEvent":
+                                // Events of this type are no longer created,
+                                // but it's possible that they exist in timelines of some users.
+                                break;
+                            case "GistEvent":
+                                // Events of this type are no longer created,
+                                // but it's possible that they exist in timelines of some users.
+                                break;
+                            case "GollumEvent":
+                                payload = event.getJSONObject("payload");
+                                JSONArray pages = payload.getJSONArray("pages");
+                                if (pages.getJSONObject(0).getString("html_url").indexOf("https://github.com") != 0) {
+                                    url = "https://github.com" + pages.getJSONObject(0).getString("html_url");
+                                } else {
+                                    url = pages.getJSONObject(0).getString("html_url");
+                                }
+                                act = " updated wiki of";
+                                con = event.getJSONObject("repo").getString("name");
+                                break;
+                            case "IssueCommentEvent":
+                                payload = event.getJSONObject("payload");
+                                url = payload.getJSONObject("issue").getString("html_url");
+                                act = " comment the issue";
+                                con = event.getJSONObject("repo").getString("name") + payload.getJSONObject("issue").getString("title");
+                                break;
+                            case "IssuesEvent":
+                                payload = event.getJSONObject("payload");
+                                url = payload.getJSONObject("issue").getString("html_url");
+                                act = payload.getString("action") + " the issue";
+                                con = event.getJSONObject("repo").getString("name") + payload.getJSONObject("issue").getString("title");
+                                break;
+                            case "MemberEvent":
+                                // I cannot find an example for this
+                                break;
+                            case "MembershipEvent":
+                                // I cannot find an example for this
+                                break;
+                            case "PageBuildEvent":
+                                // I cannot find an example for this
+                                break;
+                            case "PublicEvent":
+                                payload = event.getJSONObject("payload");
+                                url = event.getJSONObject("repo").getString("url");
+                                actor = event.getJSONObject("repo").getString("name");
+                                act = "";
+                                con = " is open sourced";
+                                break;
+                        }
+                    }
                     break;
             }
 

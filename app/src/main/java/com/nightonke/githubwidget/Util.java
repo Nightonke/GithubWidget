@@ -1189,14 +1189,13 @@ public class Util {
      * @param baseColor Base color.
      * @return The bitmap.
      */
-    public static Bitmap getInputUserNameBitmap(Context context, int baseColor) {
+    public static Bitmap getInputUserNameBitmap(Context context, int baseColor, int bitmapHeight) {
         Bitmap bitmap;
         Canvas canvas;
         Paint paint = getTextPaint(40f, calculateLevelColor(baseColor, 4),
                 Typeface.createFromAsset(context.getAssets(), "fonts/Lato-Light.ttf"));
 
         int bitmapWidth = getScreenWidth(context);
-        int bitmapHeight = dp2px(30);
 
         bitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.ARGB_8888);
         canvas = new Canvas(bitmap);

@@ -155,12 +155,12 @@ public class ContributionsTask extends AsyncTask<String, Void, String> {
                 case WIDGET_0:
                     remoteViews.setImageViewBitmap(R.id.contributions,
                             Util.getInputUserNameBitmap(
-                                    context, SettingsManager.getBaseColor()));
+                                    context, SettingsManager.getBaseColor(), Util.dp2px(30)));
                     break;
                 case WIDGET_1:
                     remoteViews.setImageViewBitmap(R.id.contributions,
                             Util.getInputUserNameBitmap(
-                                    context, SettingsManager.getBaseColor()));
+                                    context, SettingsManager.getBaseColor(), Util.dp2px(30)));
                     break;
                 case WIDGET_2:
                 case WIDGET_3:
@@ -170,7 +170,13 @@ public class ContributionsTask extends AsyncTask<String, Void, String> {
                 case WIDGET_7:
                     remoteViews.setImageViewBitmap(R.id.motto,
                             Util.getInputUserNameBitmap(
-                                    context, SettingsManager.getBaseColor()));
+                                    context, SettingsManager.getBaseColor(), Util.dp2px(30)));
+                    break;
+                case WIDGET_8:
+                    remoteViews.setImageViewBitmap(R.id.contributions,
+                            Util.getInputUserNameBitmap(
+                                    context, SettingsManager.getBaseColor(),
+                                    (int) Util.getDimen(R.dimen.github_widget_8_avator_size)));
                     break;
             }
         } else {
@@ -194,6 +200,7 @@ public class ContributionsTask extends AsyncTask<String, Void, String> {
                                         Util.getContributionsSum(result)));
                         break;
                     case WIDGET_1:
+                    case WIDGET_8:
                         bitmap = Util.get3DBitmap(context, result, startWeekDay,
                                 baseColor, textColor,
                                 SettingsManager.getShowMonthDashIn3D(),

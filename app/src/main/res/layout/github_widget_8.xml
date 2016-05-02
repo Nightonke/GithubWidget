@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/base_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/github_widget_background"
+    android:orientation="vertical"
+    >
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+    
+        <ImageView
+            android:id="@+id/contributions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"
+            android:minHeight="@dimen/github_widget_8_avator_size"
+            android:layout_centerInParent="true"
+            />
+    
+        <ImageView
+            android:id="@+id/avatar"
+            android:layout_width="@dimen/github_widget_8_avator_size"
+            android:layout_height="@dimen/github_widget_8_avator_size"
+            android:src="@drawable/default_avatar"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/github_widget_8_avator_padding_right"
+            android:layout_marginEnd="@dimen/github_widget_8_avator_padding_right"
+            android:layout_marginTop="@dimen/github_widget_8_avator_padding_top"
+            />
+    
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/list_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginStart="@dimen/github_widget_8_listview_padding_left"
+        android:layout_marginLeft="@dimen/github_widget_8_listview_padding_left"
+        android:layout_marginEnd="@dimen/github_widget_8_listview_padding_right"
+        android:layout_marginRight="@dimen/github_widget_8_listview_padding_right"
+        android:layout_marginBottom="@dimen/github_widget_8_listview_padding_bottom"
+        android:layout_marginTop="@dimen/github_widget_8_listview_padding_top"
+        android:overScrollMode="never"
+        />
+    
+</LinearLayout>

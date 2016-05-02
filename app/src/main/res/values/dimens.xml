@@ -72,4 +72,13 @@
     <dimen name="github_widget_7_listview_padding_bottom">10dp</dimen>
     <dimen name="github_widget_7_avator_size">50dp</dimen>
 
+    <dimen name="github_widget_8_avator_border_size">60dp</dimen>
+    <dimen name="github_widget_8_avator_padding_top">10dp</dimen>
+    <dimen name="github_widget_8_avator_padding_right">15dp</dimen>
+    <dimen name="github_widget_8_avator_size">50dp</dimen>
+    <dimen name="github_widget_8_listview_padding_left">20dp</dimen>
+    <dimen name="github_widget_8_listview_padding_right">20dp</dimen>
+    <dimen name="github_widget_8_listview_padding_top">10dp</dimen>
+    <dimen name="github_widget_8_listview_padding_bottom">10dp</dimen>
+
 </resources>

@@ -12,7 +12,8 @@ public enum Widget {
     WIDGET_4(4),
     WIDGET_5(5),
     WIDGET_6(6),
-    WIDGET_7(7);
+    WIDGET_7(7),
+    WIDGET_8(8);
 
     int v;
 

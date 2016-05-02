@@ -205,7 +205,7 @@ public class ListViewContentTask extends AsyncTask<String, Void, String> {
 
             // Todo set empty view
 
-            Intent toastIntent = new Intent(context, GithubWidget6.class);
+            Intent toastIntent = new Intent(context, c);
             toastIntent.setAction(Actions.CLICK_LIST);
             toastIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
             intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
@@ -218,6 +218,7 @@ public class ListViewContentTask extends AsyncTask<String, Void, String> {
                 switch (widget) {
                     case WIDGET_6:
                     case WIDGET_7:
+                    case WIDGET_8:
                         int[] appWidgetIds =
                                 appWidgetManager.getAppWidgetIds(new ComponentName(context, c));
                         for (int id : appWidgetIds) {

@@ -136,7 +136,7 @@ public class FollowersTask extends AsyncTask<String, Void, String> {
                 case WIDGET_7:
                     remoteViews.setImageViewBitmap(R.id.motto,
                             Util.getInputUserNameBitmap(
-                                    context, SettingsManager.getBaseColor()));
+                                    context, SettingsManager.getBaseColor(), Util.dp2px(30)));
                     break;
             }
         } else {

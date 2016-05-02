@@ -1,9 +1,7 @@
 package com.nightonke.githubwidget;
 
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -53,7 +51,12 @@ public class WidgetListViewService extends RemoteViewsService {
             }
             RemoteViews views = new RemoteViews(mContext.getPackageName(),
                     R.layout.list_view_content_item);
-            views.setImageViewBitmap(R.id.image_view, Util.getTrendingBitmap(position));
+
+            if (SettingsManager.getListViewContent().equals(ListViewContent.EVENT)) {
+                views.setImageViewBitmap(R.id.image_view, Util.getReceivedEventBitmap(position));
+            } else {
+                views.setImageViewBitmap(R.id.image_view, Util.getTrendingBitmap(position));
+            }
 
             Bundle extras = new Bundle();
             extras.putInt(Actions.LIST_ITEM, position);

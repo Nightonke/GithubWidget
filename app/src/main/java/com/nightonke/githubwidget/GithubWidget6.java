@@ -53,8 +53,7 @@ public class GithubWidget6 extends AppWidgetProvider {
             case Actions.CLICK_LIST:
                 int viewIndex = intent.getIntExtra(Actions.LIST_ITEM, 0);
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse(Util.getString(R.string.url_prefix)
-                                + SettingsManager.getListViewContents().get(viewIndex).get("url")));
+                        Uri.parse(SettingsManager.getListViewContents().get(viewIndex).get("url")));
                 browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(browserIntent);
                 break;

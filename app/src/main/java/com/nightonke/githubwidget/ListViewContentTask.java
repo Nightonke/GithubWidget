@@ -10,6 +10,9 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -59,6 +62,7 @@ public class ListViewContentTask extends AsyncTask<String, Void, String> {
             // user didn't set the user name
             // but we can still get the trending
             result = getTrending();
+            if (result != null) SettingsManager.setListViewContents(result);
         } else {
             int userId = SettingsManager.getUserId();
             URL url = null;
@@ -71,7 +75,7 @@ public class ListViewContentTask extends AsyncTask<String, Void, String> {
                     httpURLConnection.setRequestMethod("GET");
                     httpURLConnection.setConnectTimeout(5000);
                     httpURLConnection.connect();
-                    if(httpURLConnection.getResponseCode() == 200){
+                    if(httpURLConnection.getResponseCode() == 200) {
                         InputStream in = httpURLConnection.getInputStream();
                         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                         byte[] buffer = new byte[1024];
@@ -82,7 +86,6 @@ public class ListViewContentTask extends AsyncTask<String, Void, String> {
                         if (BuildConfig.DEBUG) Log.d("GithubWidget", "Write user basic data: "
                                 + byteArrayOutputStream.toString());
                         Util.writeUserBasicData(context, byteArrayOutputStream.toString());
-                        return byteArrayOutputStream.toString();
                     } else {
                         return null;
                     }
@@ -96,12 +99,17 @@ public class ListViewContentTask extends AsyncTask<String, Void, String> {
                     || SettingsManager.getListViewContent().equals(ListViewContent.TRENDING_WEEKLY)
                     || SettingsManager.getListViewContent().equals(ListViewContent.TRENDING_MONTHLY))
                 result = getTrending();
+                if (result != null) SettingsManager.setListViewContents(result);
             if (SettingsManager.getListViewContent().equals(ListViewContent.EVENT)) {
                 result = getEvent();
+                try {
+                    if (result != null) SettingsManager.setListViewContents(new JSONArray(result));
+                } catch (JSONException j) {
+                    result = null;
+                }
             }
 
         }
-        if (result != null) SettingsManager.setListViewContents(result);
         return result;
     }
 
@@ -128,7 +136,7 @@ public class ListViewContentTask extends AsyncTask<String, Void, String> {
             httpURLConnection.setRequestMethod("GET");
             httpURLConnection.setConnectTimeout(5000);
             httpURLConnection.connect();
-            if(httpURLConnection.getResponseCode() == 200){
+            if(httpURLConnection.getResponseCode() == 200) {
                 InputStream in = httpURLConnection.getInputStream();
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 byte[] buffer = new byte[1024];
@@ -156,7 +164,7 @@ public class ListViewContentTask extends AsyncTask<String, Void, String> {
             String urlString = "https://api.github.com/users/" + SettingsManager.getUserName()
                     + "/received_events?per_page=" + SettingsManager.getReceivedEventPerPage();
             if (BuildConfig.DEBUG)
-                Log.d("GithubWidget", "Get user stars: " + urlString);
+                Log.d("GithubWidget", "Get user received event: " + urlString);
             url = new URL(urlString);
             httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod("GET");
@@ -213,9 +221,10 @@ public class ListViewContentTask extends AsyncTask<String, Void, String> {
                         int[] appWidgetIds =
                                 appWidgetManager.getAppWidgetIds(new ComponentName(context, c));
                         for (int id : appWidgetIds) {
+                            AppWidgetManager.getInstance(context).updateAppWidget(id, null);
+                            AppWidgetManager.getInstance(context).updateAppWidget(id, remoteViews);
                             AppWidgetManager.getInstance(context)
                                     .notifyAppWidgetViewDataChanged(appWidgetId, R.id.list_view);
-                            AppWidgetManager.getInstance(context).updateAppWidget(id, remoteViews);
                         }
                         break;
                 }

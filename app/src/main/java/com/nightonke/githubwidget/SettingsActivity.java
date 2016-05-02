@@ -99,7 +99,6 @@ public class SettingsActivity extends AppCompatActivity
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 SettingsManager.setUserName(userNameEditText.getText().toString());
-                SettingsManager.setUserId(-1);
             }
 
             @Override
@@ -464,7 +463,10 @@ public class SettingsActivity extends AppCompatActivity
         if (oldUserName == null) {
             if (SettingsManager.getUserName() != null) changed = true;
         } else {
-            if (!oldUserName.equals(SettingsManager.getUserName())) changed = true;
+            if (!oldUserName.equals(SettingsManager.getUserName())) {
+                SettingsManager.setUserId(-1);
+                changed = true;
+            }
         }
         if (oldMotto == null) {
             if (SettingsManager.getMotto() != null) mottoChanged = true;

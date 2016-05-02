@@ -41,11 +41,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.TimeZone;
 import java.util.regex.PatternSyntaxException;
 
 /**
@@ -1746,6 +1750,12 @@ public class Util {
         if (BuildConfig.DEBUG) Log.d(TAG, content);
     }
 
+    /**
+     * Get the bitmap of the trending sub view in list view in widget.
+     *
+     * @param index The index of the trending.
+     * @return The bitmap.
+     */
     public static Bitmap getTrendingBitmap(int index) {
         Bitmap bitmap = Bitmap.createBitmap(
                 (int) (dp2px(280)),
@@ -1759,7 +1769,7 @@ public class Util {
                 Typeface.createFromAsset(GithubWidgetApplication.getAppContext().getAssets(),
                         "fonts/Lato-Light.ttf"));
         repoPaint.setFakeBoldText(true);
-        Paint contentPaint = getTextPaint(15f, calculateLevelColor(SettingsManager.getBaseColor(), 4),
+        Paint contentPaint = getTextPaint(18f, calculateLevelColor(SettingsManager.getBaseColor(), 4),
                 Typeface.createFromAsset(GithubWidgetApplication.getAppContext().getAssets(),
                         "fonts/Lato-Light.ttf"));
         Paint cornerPaint = getTextPaint(18f, calculateLevelColor(SettingsManager.getBaseColor(), 4),
@@ -1768,7 +1778,7 @@ public class Util {
         Paint cornerNumberPaint = getTextPaint(18f, calculateLevelColor(SettingsManager.getBaseColor(), 4),
                 Typeface.createFromAsset(GithubWidgetApplication.getAppContext().getAssets(),
                         "fonts/Lato-Light.ttf"));
-        cornerNumberPaint.setFakeBoldText(true);
+//        cornerNumberPaint.setFakeBoldText(true);
         Paint dividerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         dividerPaint.setColor(ContextCompat.getColor(
                 GithubWidgetApplication.getAppContext(), R.color.divider_color));
@@ -1793,19 +1803,27 @@ public class Util {
 
         HashMap<String, String> content = SettingsManager.getListViewContents().get(index);
         String ownerString = content.get("title").substring(0, content.get("title").indexOf("/") + 1);
-        String repoString = content.get("title").substring(content.get("title").indexOf("/") + 1,
+        String originRepoString = content.get("title").substring(content.get("title").indexOf("/") + 1,
                 content.get("title").length());
+        int i = 1;
+        String showRepoString = originRepoString;
 
-        while (titlePaddingLeft + titlePaddingRight
+        if (titlePaddingLeft + titlePaddingRight
                 + getTextWidth(ownerPaint, ownerString)
-                + getTextWidth(repoPaint, repoString) > dp2px(280)) {
-            if (repoString.length() == 0) break;
-            repoString = repoString.substring(0, repoString.length() - 1) + getString(R.string.dots);
+                + getTextWidth(repoPaint, showRepoString) > dp2px(280)) {
+            showRepoString = originRepoString.substring(0, originRepoString.length() - i) + getString(R.string.dots);;
+            while (titlePaddingLeft + titlePaddingRight
+                    + getTextWidth(ownerPaint, ownerString)
+                    + getTextWidth(repoPaint, showRepoString) > dp2px(280)) {
+                i++;
+                showRepoString = originRepoString.substring(0, originRepoString.length() - i) + getString(R.string.dots);
+                if (i == originRepoString.length()) break;
+            }
         }
 
         canvas.drawText(ownerString, titlePaddingLeft, titleCenterY, ownerPaint);
 
-        canvas.drawText(repoString,
+        canvas.drawText(showRepoString,
                 getTextWidth(ownerPaint, ownerString) + titlePaddingLeft,
                 titleCenterY,
                 repoPaint);
@@ -1813,7 +1831,7 @@ public class Util {
         String fullContentString = content.get("content");
         String contentString = "";
         boolean enough = false;
-        int i = 0;
+        i = 0;
 
         while (contentPaddingLeft + contentPaddingRight
                 + getTextWidth(contentPaint, contentString + getString(R.string.dots)) < dp2px(280)) {
@@ -1833,30 +1851,116 @@ public class Util {
                 contentPaint);
 
         String starsString = content.get("corner");
-        String starsPostFixString = getString("1".equals(starsString) ? R.string.corner_star : R.string.corner_stars);
-        String languageString = SettingsManager.getLanguage().v + " •  ";
-        canvas.drawText(starsPostFixString,
-                canvas.getWidth() - cornerPaddingRight
-                        - getTextWidth(cornerPaint, starsPostFixString),
-                cornerPaddingTop + getTextHeight(cornerPaint, starsPostFixString),
-                cornerPaint);
+        if ("1".equals(starsString)) starsString += " star";
+        else starsString += " stars";
+        starsString = SettingsManager.getLanguage().v + " • " + starsString;
         canvas.drawText(starsString,
                 canvas.getWidth() - cornerPaddingRight
-                        - getTextWidth(cornerNumberPaint, starsString)
-                        - getTextWidth(cornerPaint, starsPostFixString),
-                cornerPaddingTop + getTextHeight(cornerNumberPaint, starsString),
-                cornerNumberPaint);
-        canvas.drawText(languageString,
-                canvas.getWidth() - cornerPaddingRight
-                        - getTextWidth(cornerPaint, languageString)
-                        - getTextWidth(cornerNumberPaint, starsString)
-                        - getTextWidth(cornerPaint, starsPostFixString),
-                cornerPaddingTop + getTextHeight(cornerPaint, languageString),
+                        - getTextWidth(cornerPaint, starsString),
+                cornerPaddingTop + getTextHeight(cornerPaint, starsString),
                 cornerPaint);
 
         return bitmap;
     }
 
+    /**
+     * Get the bitmap of received-event in list view in widget.
+     *
+     * @param index The index of the received-events.
+     * @return The bitmap.
+     */
+    public static Bitmap getReceivedEventBitmap(int index) {
+
+        Bitmap bitmap = Bitmap.createBitmap(
+                (int) (dp2px(280)),
+                (int) getDimen(R.dimen.list_view_content_item_height),
+                Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        Paint titlePaint = getTextPaint(25f, calculateLevelColor(SettingsManager.getBaseColor(), 4),
+                Typeface.createFromAsset(GithubWidgetApplication.getAppContext().getAssets(),
+                        "fonts/Lato-Light.ttf"));
+        Paint contentPaint = getTextPaint(18f, calculateLevelColor(SettingsManager.getBaseColor(), 4),
+                Typeface.createFromAsset(GithubWidgetApplication.getAppContext().getAssets(),
+                        "fonts/Lato-Light.ttf"));
+        Paint cornerPaint = getTextPaint(18f, calculateLevelColor(SettingsManager.getBaseColor(), 4),
+                Typeface.createFromAsset(GithubWidgetApplication.getAppContext().getAssets(),
+                        "fonts/Lato-Light.ttf"));
+        Paint dividerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        dividerPaint.setColor(ContextCompat.getColor(
+                GithubWidgetApplication.getAppContext(), R.color.divider_color));
+        canvas.drawLine(0, canvas.getHeight(), canvas.getWidth(), canvas.getHeight(), dividerPaint);
+
+        if (SettingsManager.getListViewContents() == null) {
+            // illegal
+            return bitmap;
+        }
+
+        float titlePaddingTop = 10f;
+        float titlePaddingLeft = 10f;
+        float titlePaddingRight = 10f;
+        float contentPaddingTop = 10f;
+        float contentPaddingLeft = 10f;
+        float contentPaddingRight = 10f;
+        float contentPaddingBottom = 10f;
+        float cornerPaddingTop = 10f;
+        float cornerPaddingRight = 10f;
+        float titleCenterY = (int) ((canvas.getHeight() / 2)
+                - ((titlePaint.descent() + titlePaint.ascent()) / 2));
+
+        HashMap<String, String> content = SettingsManager.getListViewContents().get(index);
+
+        String originTitleString = content.get("title");
+        int i = 1;
+        String showTitleString = originTitleString;
+
+        if (titlePaddingLeft + titlePaddingRight
+                + getTextWidth(titlePaint, showTitleString) > dp2px(280)) {
+            showTitleString = originTitleString.substring(0, originTitleString.length() - i) + getString(R.string.dots);;
+            while (titlePaddingLeft + titlePaddingRight
+                    + getTextWidth(titlePaint, showTitleString) > dp2px(280)) {
+                i++;
+                showTitleString = originTitleString.substring(0, originTitleString.length() - i) + getString(R.string.dots);
+                if (i == originTitleString.length()) break;
+            }
+        }
+
+        canvas.drawText(showTitleString, titlePaddingLeft, titleCenterY, titlePaint);
+
+        String originContentString = content.get("content");
+        i = 1;
+        String showContentString = originContentString;
+
+        if (titlePaddingLeft + titlePaddingRight
+                + getTextWidth(titlePaint, showContentString) > dp2px(280)) {
+            showContentString = originContentString.substring(0, originContentString.length() - i) + getString(R.string.dots);;
+            while (titlePaddingLeft + titlePaddingRight
+                    + getTextWidth(titlePaint, showContentString) > dp2px(280)) {
+                i++;
+                showContentString = originContentString.substring(0, originContentString.length() - i) + getString(R.string.dots);
+                if (i == originContentString.length()) break;
+            }
+        }
+
+        canvas.drawText(showContentString,
+                contentPaddingLeft,
+                canvas.getHeight() - contentPaddingBottom,
+                contentPaint);
+
+        String cornerString = content.get("corner");
+        canvas.drawText(cornerString,
+                canvas.getWidth() - cornerPaddingRight
+                        - getTextWidth(cornerPaint, cornerString),
+                cornerPaddingTop + getTextHeight(cornerPaint, cornerString),
+                cornerPaint);
+
+        return bitmap;
+    }
+
+    /**
+     * Get the loading view in the list view of widget.
+     *
+     * @return The bitmap.
+     */
     public static Bitmap getLoadingBitmap() {
         Bitmap bitmap = Bitmap.createBitmap(
                 (int) (dp2px(280)),
@@ -1881,6 +1985,28 @@ public class Util {
                 loadingPaint);
 
         return bitmap;
+    }
+
+    public static String getTime(String string) {
+        string = string.replace("T", " ");
+        string = string.replace("Z", "");
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+            Date date = simpleDateFormat.parse(string);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+
+            return getShortDateName(
+                    calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH) + 1,
+                    calendar.get(Calendar.DAY_OF_MONTH)) + " " +
+                    calendar.get(Calendar.HOUR_OF_DAY) + ":" +
+                    (calendar.get(Calendar.MINUTE) < 10 ? "0" + calendar.get(Calendar.MINUTE) : calendar.get(Calendar.MINUTE));
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return string;
+        }
     }
 
 

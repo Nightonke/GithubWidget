@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -245,6 +246,9 @@ public class SettingsActivity extends AppCompatActivity
         languageButton = findView(R.id.language);
         languageButton.setOnClickListener(this);
         setLanguageText();
+
+        findView(R.id.view_source_code).setOnClickListener(this);
+        findView(R.id.follow_nightonke).setOnClickListener(this);
     }
 
     @Override
@@ -354,7 +358,7 @@ public class SettingsActivity extends AppCompatActivity
             userNameEditText.setText(SettingsManager.getUserName());
             userNameEditText.setSelection(userNameEditText.getText().toString().length());
         } else {
-            showSoftKeyboard(userNameEditText);
+//            showSoftKeyboard(userNameEditText);
         }
         mottoEditText.setText(SettingsManager.getMotto());
         mottoEditText.setSelection(mottoEditText.getText().toString().length());
@@ -415,6 +419,18 @@ public class SettingsActivity extends AppCompatActivity
                 break;
             case R.id.language:
                 new LanguageDialog(this).show();
+                break;
+            case R.id.view_source_code:
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("https://github.com/Nightonke/GithubWidget"));
+                browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(browserIntent);
+                break;
+            case R.id.follow_nightonke:
+                browserIntent = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("https://github.com/Nightonke"));
+                browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(browserIntent);
                 break;
         }
     }

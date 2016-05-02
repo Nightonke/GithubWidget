@@ -77,4 +77,24 @@
     <string name="language">Language</string>
     <string name="cancel">Cancel</string>
 
+    <string name="about">About</string>
+    <string name="about_content">
+        Github-Widget is a lightweight application that can show:\n
+        &#160;• Contributions chart(2D/3D)\n
+        &#160;• Total contribution of this year\n
+        &#160;• Avatar\n
+        &#160;• Motto\n
+        &#160;• Followers\n
+        &#160;• Contributions of today\n
+        &#160;• Current streak\n
+        &#160;• Addition of stars\n
+        &#160;• Contributions of busiest day\n
+        &#160;• Longest streak\n
+        &#160;• Trending(daily/weekly/monthly)\n
+        &#160;• Received events\n
+        For more information, please click the \"View Source Code\" button to view the read-me file in the repository-page. Tell me any problems, bugs, enhancement of Github-Widget in issues.
+    </string>
+    <string name="view_source">View Source Code</string>
+    <string name="follow_me">Follow Nightonke</string>
+
 </resources>

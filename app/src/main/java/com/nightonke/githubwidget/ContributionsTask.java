@@ -168,6 +168,8 @@ public class ContributionsTask extends AsyncTask<String, Void, String> {
                 case WIDGET_5:
                 case WIDGET_6:
                 case WIDGET_7:
+                case WIDGET_9:
+                case WIDGET_10:
                     remoteViews.setImageViewBitmap(R.id.motto,
                             Util.getInputUserNameBitmap(
                                     context, SettingsManager.getBaseColor(), Util.dp2px(30)));
@@ -213,6 +215,8 @@ public class ContributionsTask extends AsyncTask<String, Void, String> {
                     case WIDGET_5:
                     case WIDGET_6:
                     case WIDGET_7:
+                    case WIDGET_9:
+                    case WIDGET_10:
                         if (widget.equals(Widget.WIDGET_2)
                                 || widget.equals(Widget.WIDGET_3)
                                 || widget.equals(Widget.WIDGET_6)

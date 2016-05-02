@@ -135,6 +135,8 @@ public class StarsTask extends AsyncTask<String, Void, String> {
                 case WIDGET_5:
                 case WIDGET_6:
                 case WIDGET_7:
+                case WIDGET_9:
+                case WIDGET_10:
                     remoteViews.setImageViewBitmap(R.id.motto,
                             Util.getInputUserNameBitmap(
                                     context, SettingsManager.getBaseColor(), Util.dp2px(30)));
@@ -156,6 +158,8 @@ public class StarsTask extends AsyncTask<String, Void, String> {
                     case WIDGET_5:
                     case WIDGET_6:
                     case WIDGET_7:
+                    case WIDGET_9:
+                    case WIDGET_10:
                         remoteViews.setImageViewBitmap(R.id.stars_today,
                                 Util.getStarsWithLetterBitmap(context, baseColor,
                                         stars, bitmapWidth, bitmapHeight));

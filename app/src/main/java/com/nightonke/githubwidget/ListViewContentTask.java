@@ -219,6 +219,8 @@ public class ListViewContentTask extends AsyncTask<String, Void, String> {
                     case WIDGET_6:
                     case WIDGET_7:
                     case WIDGET_8:
+                    case WIDGET_9:
+                    case WIDGET_10:
                         int[] appWidgetIds =
                                 appWidgetManager.getAppWidgetIds(new ComponentName(context, c));
                         for (int id : appWidgetIds) {

@@ -81,4 +81,31 @@
     <dimen name="github_widget_8_listview_padding_top">10dp</dimen>
     <dimen name="github_widget_8_listview_padding_bottom">10dp</dimen>
 
+    <dimen name="github_widget_9_avator_border_size">60dp</dimen>
+    <dimen name="github_widget_9_avator_padding_top">5dp</dimen>
+    <dimen name="github_widget_9_avator_padding_left">10dp</dimen>
+    <dimen name="github_widget_9_avator_padding_bottom">5dp</dimen>
+    <dimen name="github_widget_9_contributions_padding_top">5dp</dimen>
+    <dimen name="github_widget_9_contributions_padding_left">5dp</dimen>
+    <dimen name="github_widget_9_contributions_padding_right">5dp</dimen>
+    <dimen name="github_widget_9_avator_size">50dp</dimen>
+    <dimen name="github_widget_9_listview_padding_left">20dp</dimen>
+    <dimen name="github_widget_9_listview_padding_right">20dp</dimen>
+    <dimen name="github_widget_9_listview_padding_top">10dp</dimen>
+    <dimen name="github_widget_9_listview_padding_bottom">10dp</dimen>
+
+    <dimen name="github_widget_10_avator_border_size">60dp</dimen>
+    <dimen name="github_widget_10_avator_padding_top">5dp</dimen>
+    <dimen name="github_widget_10_avator_padding_left">10dp</dimen>
+    <dimen name="github_widget_10_avator_padding_bottom">5dp</dimen>
+    <dimen name="github_widget_10_contributions_padding_top">5dp</dimen>
+    <dimen name="github_widget_10_contributions_padding_left">5dp</dimen>
+    <dimen name="github_widget_10_contributions_padding_right">5dp</dimen>
+    <dimen name="github_widget_10_contributions_padding_bottom">10dp</dimen>
+    <dimen name="github_widget_10_avator_size">50dp</dimen>
+    <dimen name="github_widget_10_listview_padding_left">20dp</dimen>
+    <dimen name="github_widget_10_listview_padding_right">20dp</dimen>
+    <dimen name="github_widget_10_listview_padding_top">10dp</dimen>
+    <dimen name="github_widget_10_listview_padding_bottom">10dp</dimen>
+
 </resources>

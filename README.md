@@ -1,16 +1,16 @@
-![GithubWidget](https://github.com/Nightonke/GithubWidget/blob/master/Pic/title_image_1.png?raw=true)
+![GithubWidget](https://github.com/Nightonke/GithubWidget/blob/master/Pic/title_image_3.png?raw=true)
 
 # Github Widget
 Contributions, stars, followers, trending and etc. on Github.
 
 # Guide
 #### [中文文档](https://github.com/Nightonke/GithubWidget/blob/master/README-ZH.md)
-#### [What is Github Widget?](https://github.com/Nightonke/GithubWidget#What is Github Widget?)
+#### [What is Github Widget?](https://github.com/Nightonke/GithubWidget#what-is-github-widget-1)
 #### [Download](https://github.com/Nightonke/GithubWidget#Download)
-#### [Styles of Github Widget](https://github.com/Nightonke/GithubWidget#Styles of Github Widget)
+#### [Styles of Github Widget](https://github.com/Nightonke/GithubWidget#styles-of-github-widget-1)
 #### [Settings](https://github.com/Nightonke/GithubWidget#Settings)
-#### [Problems, Bugs or EnHancement](https://github.com/Nightonke/GithubWidget#Problems, Bugs or EnHancement)
-#### [Version List](https://github.com/Nightonke/GithubWidget#Version List)
+#### [Problems, Bugs or EnHancement](https://github.com/Nightonke/GithubWidget#problems-bugs-or-enhancement-1)
+#### [Version List](https://github.com/Nightonke/GithubWidget#version-list-1)
 #### [License](https://github.com/Nightonke/GithubWidget#License)
 
 ### What is Github Widget?
@@ -46,6 +46,141 @@ The first version supports 11 styles for showing part of the above information.
 ✓ Total contributions of this year  
 ✓ vatar  
 ![4×1](https://github.com/Nightonke/GithubWidget/blob/master/Pic/style_0.png?raw=true)
+
+#### 4×2-1
+✓ 2D Contributions chart  
+✓ Total contributions of this year  
+✓ Avatar  
+✓ Motto  
+✓ Followers  
+✓ Contributions of today  
+✓ Current streak  
+✓ Addition of stars  
+From top to bottom: contribution, avatar and motto, numbers  
+![4×2-1](https://github.com/Nightonke/GithubWidget/blob/master/Pic/style_1.png?raw=true)
+
+#### 4×2-2
+✓ 2D Contributions chart  
+✓ Total contributions of this year  
+✓ Avatar  
+✓ Motto  
+✓ Followers  
+✓ Contributions of today  
+✓ Current streak  
+✓ Addition of stars  
+From top to bottom: avatar and motto, numbers,  contribution  
+![4×2-2](https://github.com/Nightonke/GithubWidget/blob/master/Pic/style_2.png?raw=true)
+
+#### 4×3-1
+✓ 3D Contributions chart  
+✓ Total contributions of this year  
+✓ Avatar  
+✓ Contributions on busiest day  
+✓ Current streak  
+✓ Longest streak  
+![4×3-1](https://github.com/Nightonke/GithubWidget/blob/master/Pic/style_3.png?raw=true)
+
+#### 4×345-2
+✓ 2D Contributions chart  
+✓ Total contributions of this year  
+✓ Avatar  
+✓ Motto  
+✓ Followers  
+✓ Contributions of today  
+✓ Current streak  
+✓ Addition of stars  
+✓ Trending(daily, weekly or monthly)  
+✓ Received events  
+(From top to bottom: contribution, avatar and motto, numbers, trending or events)  
+Notice that this style is able to resize to 4×3, 4×4 or 4×5.  
+![4×345-2](https://github.com/Nightonke/GithubWidget/blob/master/Pic/style_4.png?raw=true)
+
+#### 4×345-3
+✓ 2D Contributions chart  
+✓ Total contributions of this year  
+✓ Avatar  
+✓ Motto  
+✓ Followers  
+✓ Contributions of today  
+✓ Current streak  
+✓ Addition of stars  
+✓ Trending(daily, weekly or monthly)  
+✓ Received events  
+(From top to bottom: avatar and motto, numbers, contribution, trending or events)  
+Notice that this style is able to resize to 4×3, 4×4 or 4×5.  
+![4×345-3](https://github.com/Nightonke/GithubWidget/blob/master/Pic/style_5.png?raw=true)
+
+#### 4×4-1
+✓ 3D Contributions chart  
+✓ Total contributions of this year  
+✓ Avatar  
+✓ Motto  
+✓ Followers  
+✓ Contributions of today  
+✓ Current streak  
+✓ Addition of stars  
+✓ Contributions on busiest day  
+✓ Longest streak
+(From top to bottom: contribution, avatar and motto, numbers)  
+![4×4-1](https://github.com/Nightonke/GithubWidget/blob/master/Pic/style_6.png?raw=true)
+
+#### 4×4-2
+✓ 3D Contributions chart  
+✓ Total contributions of this year  
+✓ Avatar  
+✓ Motto  
+✓ Followers  
+✓ Contributions of today  
+✓ Current streak  
+✓ Addition of stars  
+✓ Contributions on busiest day  
+✓ Longest streak
+(From top to bottom: avatar and motto, numbers, contribution)  
+![4×4-2](https://github.com/Nightonke/GithubWidget/blob/master/Pic/style_7.png?raw=true)
+
+#### 4×45-3
+✓ 3D Contributions chart  
+✓ Total contributions of this year  
+✓ Avatar  
+✓ Contributions on busiest day  
+✓ Current streak  
+✓ Longest streak  
+✓ Trending(daily, weekly and monthly)   
+✓ Received events  
+Notice that this style is able to resize to 4×4 or 4×5.  
+![4×45-3](https://github.com/Nightonke/GithubWidget/blob/master/Pic/style_8.png?raw=true)
+
+#### 4×5-1
+✓ 3D Contributions chart  
+✓ Total contributions of this year  
+✓ Avatar  
+✓ Motto   
+✓ Followers   
+✓ Contributions of today   
+✓ Current streak   
+✓ Addition of stars   
+✓ Contributions on busiest day   
+✓ Longest streak   
+✓ Trending(daily, weekly or monthly)  
+✓ Received events  
+(From top to bottom: contribution, avatar and motto, numbers, trending or events)  
+![4×5-1](https://github.com/Nightonke/GithubWidget/blob/master/Pic/style_9.png?raw=true)
+
+#### 4×5-2
+✓ 3D Contributions chart  
+✓ Total contributions of this year  
+✓ Avatar  
+✓ Motto   
+✓ Followers   
+✓ Contributions of today   
+✓ Current streak   
+✓ Addition of stars   
+✓ Contributions on busiest day   
+✓ Longest streak   
+✓ Trending(daily, weekly or monthly)  
+✓ Received events  
+(From top to bottom: avatar and motto, numbers, trending or events, contribution)  
+![4×5-2](https://github.com/Nightonke/GithubWidget/blob/master/Pic/style_10.png?raw=true)
 
 ### Settings
 

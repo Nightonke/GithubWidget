@@ -8,8 +8,10 @@ Contributions, stars, followers, trending and etc. on Github.
 #### [What is Github Widget?](https://github.com/Nightonke/GithubWidget#what-is-github-widget-1)
 #### [Download](https://github.com/Nightonke/GithubWidget#download)
 #### [Styles of Github Widget](https://github.com/Nightonke/GithubWidget#styles-of-github-widget-1)
-1. ##### [4×1](https://github.com/Nightonke/GithubWidget#41)
-2. 
+
+##### [4×1](https://github.com/Nightonke/GithubWidget#41)
+
+
 #### [Settings](https://github.com/Nightonke/GithubWidget#settings-1)
 #### [Problems, Bugs or Enhancement](https://github.com/Nightonke/GithubWidget#problems-bugs-or-enhancement-1)
 #### [Version List](https://github.com/Nightonke/GithubWidget#version-list-1)
@@ -186,6 +188,7 @@ Notice that this style is able to resize to 4×4 or 4×5.
 
 ### Settings
 After inputting your user name in Github, you can click your avatar to refresh current data in Github Widget. Clicking anywhere else leads you to the settings page to do some DIY things for Github Widget. You can:
+
 1. Change the user name in Github to get another user's data to show in Github Widget
 2. Change your motto
 3. Change the color of the blocks in the 2D chart and the columns in 3D chart  

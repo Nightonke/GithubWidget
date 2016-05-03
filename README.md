@@ -9,11 +9,20 @@ Contributions, stars, followers, trending and etc. on Github.
 #### [Download](https://github.com/Nightonke/GithubWidget#download)
 #### [Styles of Github Widget](https://github.com/Nightonke/GithubWidget#styles-of-github-widget-1)
 
-##### [4×1](https://github.com/Nightonke/GithubWidget#41)
-
+##### [4×1](https://github.com/Nightonke/GithubWidget#41-1)
+##### [4×2-1](https://github.com/Nightonke/GithubWidget#42-1-1)
+##### [4×2-2](https://github.com/Nightonke/GithubWidget#42-2-1)
+##### [4×3-1](https://github.com/Nightonke/GithubWidget#43-1-1)
+##### [4×345-2](https://github.com/Nightonke/GithubWidget#4345-2-1)
+##### [4×345-3](https://github.com/Nightonke/GithubWidget#4345-3-1)
+##### [4×4-1](https://github.com/Nightonke/GithubWidget#44-1-1)
+##### [4×4-2](https://github.com/Nightonke/GithubWidget#44-2-1)
+##### [4×45-3](https://github.com/Nightonke/GithubWidget#445-3-1)
+##### [4×5-1](https://github.com/Nightonke/GithubWidget#45-1-1)
+##### [4×5-2](https://github.com/Nightonke/GithubWidget#45-2-1)
 
 #### [Settings](https://github.com/Nightonke/GithubWidget#settings-1)
-#### [Problems, Bugs or Enhancement](https://github.com/Nightonke/GithubWidget#problems-bugs-or-enhancement-1)
+#### [Problems, Bugs or Enhancement](https://github.com/Nightonke/GithubWidget#problems-bugs-or-enhancement)
 #### [Version List](https://github.com/Nightonke/GithubWidget#version-list-1)
 #### [License](https://github.com/Nightonke/GithubWidget#license-1)
 

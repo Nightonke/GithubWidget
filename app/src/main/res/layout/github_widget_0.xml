@@ -31,7 +31,8 @@
             android:layout_height="0dp"
             android:layout_width="match_parent"
             android:layout_weight="1"
-            android:gravity="center"/>
+            android:gravity="center"
+            />
 
     </LinearLayout>
 
@@ -41,6 +42,8 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:layout_gravity="center"
+        android:layout_marginEnd="@dimen/github_widget_0_contributions_padding_right"
+        android:layout_marginRight="@dimen/github_widget_0_contributions_padding_right"
         />
 
 </LinearLayout>

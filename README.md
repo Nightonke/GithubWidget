@@ -210,7 +210,7 @@ After inputting your user name in Github, you can click your avatar to refresh c
 10. Frequency for updating the data
 11. Events to be gotten from internet. The larger, the couting for stars are more accurate but more network flow is needed
 12. Contents in the list view in Github Widget. It can be one of the values: daily, weekly or monthly trending for the language you choose below or the events you got
-13. The language for the trenging content
+13. The language for the trending content
 14. About and the url for this page and url for the developer
 
 ![Color](https://github.com/Nightonke/GithubWidget/blob/master/Pic/color.png?raw=true)

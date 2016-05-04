@@ -57,7 +57,7 @@ The first version supports 11 styles for showing part of the above information.
 #### 4×1
 ✓ 2D Contributions chart  
 ✓ Total contributions of this year  
-✓ vatar  
+✓ Avatar  
 ![4×1](https://github.com/Nightonke/GithubWidget/blob/master/Pic/style_0.png?raw=true)
 
 #### 4×2-1

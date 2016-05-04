@@ -1,7 +1,7 @@
 ![GithubWidget](https://github.com/Nightonke/GithubWidget/blob/master/Pic/title_image_3.png?raw=true)
 
 # Github Widget
-Contributions, stars, followers, trending and etc. on Github.
+Contributions, stars, followers, trending etc. on Github.
 
 # Guide
 #### [中文文档](https://github.com/Nightonke/GithubWidget/blob/master/README-ZH.md)

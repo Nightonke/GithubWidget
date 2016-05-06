@@ -1,20 +1,40 @@
 ![GithubWidget](https://github.com/Nightonke/GithubWidget/blob/master/Pic/title_image_3.png?raw=true)
 
 # Github Widget
-Contributions, stars, followers, trending and etc. on Github.
+Contributions, stars, followers, trending etc. on Github.
+
+[![WoWoViewPager](https://github.com/Nightonke/WoWoViewPager/blob/master/app/src/main/res/mipmap-hdpi/ic_launcher.png?raw=true)](https://github.com/Nightonke/WoWoViewPager)
+[![BoomMenu](https://github.com/Nightonke/BoomMenu/blob/master/app/src/main/res/mipmap-hdpi/ic_launcher.png?raw=true)](https://github.com/Nightonke/BoomMenu)
+[![CoCoin](https://github.com/Nightonke/CoCoin/blob/master/app/src/main/res/mipmap-hdpi/ic_launcher.png?raw=true)](https://github.com/Nightonke/CoCoin)
+[![BlurLockView](https://github.com/Nightonke/BlurLockView/blob/master/app/src/main/res/mipmap-hdpi/ic_launcher.png?raw=true)](https://github.com/Nightonke/BlurLockView)
+[![LeeCo](https://github.com/Nightonke/LeeCo/blob/master/app/src/main/res/mipmap-hdpi/ic_launcher.png?raw=true)](https://github.com/Nightonke/LeeCo)
+[![GithubWidget](https://github.com/Nightonke/GithubWidget/blob/master/app/src/main/res/mipmap-hdpi/ic_launcher.png?raw=true)](https://github.com/Nightonke/GithubWidget)
 
 # Guide
 #### [中文文档](https://github.com/Nightonke/GithubWidget/blob/master/README-ZH.md)
 #### [What is Github Widget?](https://github.com/Nightonke/GithubWidget#what-is-github-widget-1)
-#### [Download](https://github.com/Nightonke/GithubWidget#Download)
+#### [Download](https://github.com/Nightonke/GithubWidget#download)
 #### [Styles of Github Widget](https://github.com/Nightonke/GithubWidget#styles-of-github-widget-1)
-#### [Settings](https://github.com/Nightonke/GithubWidget#Settings)
-#### [Problems, Bugs or EnHancement](https://github.com/Nightonke/GithubWidget#problems-bugs-or-enhancement-1)
+
+##### [4×1](https://github.com/Nightonke/GithubWidget#41-1)
+##### [4×2-1](https://github.com/Nightonke/GithubWidget#42-1-1)
+##### [4×2-2](https://github.com/Nightonke/GithubWidget#42-2-1)
+##### [4×3-1](https://github.com/Nightonke/GithubWidget#43-1-1)
+##### [4×345-2](https://github.com/Nightonke/GithubWidget#4345-2-1)
+##### [4×345-3](https://github.com/Nightonke/GithubWidget#4345-3-1)
+##### [4×4-1](https://github.com/Nightonke/GithubWidget#44-1-1)
+##### [4×4-2](https://github.com/Nightonke/GithubWidget#44-2-1)
+##### [4×45-3](https://github.com/Nightonke/GithubWidget#445-3-1)
+##### [4×5-1](https://github.com/Nightonke/GithubWidget#45-1-1)
+##### [4×5-2](https://github.com/Nightonke/GithubWidget#45-2-1)
+
+#### [Settings](https://github.com/Nightonke/GithubWidget#settings-1)
+#### [Problems, Bugs or Enhancement](https://github.com/Nightonke/GithubWidget#problems-bugs-or-enhancement)
 #### [Version List](https://github.com/Nightonke/GithubWidget#version-list-1)
-#### [License](https://github.com/Nightonke/GithubWidget#License)
+#### [License](https://github.com/Nightonke/GithubWidget#license-1)
 
 ### What is Github Widget?
-Github Widget is a ligthweight application for 11 different styles of widget to show the following informations of github user.  
+Github Widget is a ligthweight application for 11 different styles of widget to show the following information of github user.  
 
 1. Contributions chart(2D/3D)
 2. Total contribution of this year
@@ -44,7 +64,7 @@ The first version supports 11 styles for showing part of the above information.
 #### 4×1
 ✓ 2D Contributions chart  
 ✓ Total contributions of this year  
-✓ vatar  
+✓ Avatar  
 ![4×1](https://github.com/Nightonke/GithubWidget/blob/master/Pic/style_0.png?raw=true)
 
 #### 4×2-1
@@ -183,10 +203,31 @@ Notice that this style is able to resize to 4×4 or 4×5.
 ![4×5-2](https://github.com/Nightonke/GithubWidget/blob/master/Pic/style_10.png?raw=true)
 
 ### Settings
+After inputting your user name in Github, you can click your avatar to refresh current data in Github Widget. Clicking anywhere else leads you to the settings page to do some DIY things for Github Widget. You can:
 
-### Problems, Bugs or EnHancement
+1. Change the user name in Github to get another user's data to show in Github Widget
+2. Change your motto
+3. Change the color of the blocks in the 2D chart and the columns in 3D chart  
+4. Reset the above color to default color
+5. Sign in, then we can get the data of contributions for your private repositories
+6. Whether show toast when operations or errors happen
+7. Whether draw month dash in 3D chart
+8. Whether draw week dash in 3D chart
+9. Start from Sunday or Monday
+10. Frequency for updating the data
+11. Events to be gotten from internet. The larger, the couting for stars are more accurate but more network flow is needed
+12. Contents in the list view in Github Widget. It can be one of the values: daily, weekly or monthly trending for the language you choose below or the events you got
+13. The language for the trending content
+14. About and the url for this page and url for the developer
+
+![Color](https://github.com/Nightonke/GithubWidget/blob/master/Pic/color.png?raw=true)
+
+### Problems, Bugs or Enhancements
+Maybe you get problems or bugs? Just tell me in issues or email. And you can tell me your enhancements in issues or pull-requests.
 
 ### Version List
+##### First Version
+[V 1.0.1](https://github.com/Nightonke/GithubWidget/blob/master/Apk/GithubWidget_1.0.1.apk?raw=true)
 
 ### License
 

@@ -1849,14 +1849,11 @@ public class Util {
                 canvas.getHeight() - contentPaddingBottom,
                 contentPaint);
 
-        String starsString = content.get("corner");
-        if ("1".equals(starsString)) starsString += " star";
-        else starsString += " stars";
-        starsString = SettingsManager.getLanguage().v + " • " + starsString;
-        canvas.drawText(starsString,
+        String cornerString = content.get("corner");
+        canvas.drawText(cornerString,
                 canvas.getWidth() - cornerPaddingRight
-                        - getTextWidth(cornerPaint, starsString),
-                cornerPaddingTop + getTextHeight(cornerPaint, starsString),
+                        - getTextWidth(cornerPaint, cornerString),
+                cornerPaddingTop + getTextHeight(cornerPaint, cornerString),
                 cornerPaint);
 
         return bitmap;

@@ -52,7 +52,7 @@ public class SettingsManager {
 
     private static ListViewContent listViewContent = ListViewContent.TRENDING_DAILY;
 
-    private static Language language = Language.JAVA;
+    private static Language language = Language.ALL_LANGUAGE;
 
     private static ArrayList<HashMap<String, String>> listViewContents = null;
 
@@ -377,6 +377,8 @@ public class SettingsManager {
     public static final String TITLE_END = "\"";
     public static final String CONTENT = "<p class=\"repo-list-description\">\n      ";
     public static final String CONTENT_END = "\n    </p>\n";
+    public static final String LANGUAGE = "<p class=\"repo-list-meta\">\n    ";
+    public static final String LANGUAGE_END = "\n\n      &#8226;";
     public static final String CORNER = "      &#8226;\n\n    ";
     public static final String CORNER_END = " star";
     public static void setListViewContents(String contents) {
@@ -408,13 +410,31 @@ public class SettingsManager {
                         end = contents.indexOf(CORNER_END, start);
                         String starsString = contents.substring(start, end);
                         starsString = starsString.replaceAll(",", "");
+
+                        int starsIndex = start;
+
+                        start = contents.indexOf(LANGUAGE, repoIndex) + LANGUAGE.length();
+                        end = contents.indexOf(LANGUAGE_END, start);
+                        String language = contents.substring(start, end) + " • ";
+                        if (start > starsIndex) language = "";
+                        if (language.length() > 30) {
+                            // no language, like markdown
+                            language = "";
+                            int p1 = contents.indexOf("<p class=\"repo-list-meta\">", repoIndex);
+                            int p2 = contents.indexOf(" star", p1);
+                            int p3 = p2 - 1;
+                            while ('0' <= contents.charAt(p3) && contents.charAt(p3) <= '9') p3--;
+                            starsString = contents.substring(p3 + 1, p2);
+                        }
+
                         try {
                             Integer.parseInt(starsString);
-                            content.put("corner", starsString);
+                            if ("1".equals(starsString)) starsString += " star";
+                            else starsString += " stars";
+                            content.put("corner", language + starsString);
                         } catch (NumberFormatException n) {
-                            content.put("corner", "0");
+                            content.put("corner", language + "0" + " stars");
                         }
-                        int starsIndex = start;
 
                         start = contents.indexOf(CONTENT, repoIndex) + CONTENT.length();
                         if (start > starsIndex) {

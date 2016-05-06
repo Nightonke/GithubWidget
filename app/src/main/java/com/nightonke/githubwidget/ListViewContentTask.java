@@ -121,13 +121,16 @@ public class ListViewContentTask extends AsyncTask<String, Void, String> {
             String urlString = "";
             if (SettingsManager.getListViewContent().equals(ListViewContent.TRENDING_DAILY))
                 urlString = "https://github.com/trending/"
-                        + SettingsManager.getLanguage().v + "?since=daily";
+                        + (Language.ALL_LANGUAGE.equals(SettingsManager.getLanguage()) ?
+                        "" : SettingsManager.getLanguage().v) + "?since=daily";
             if (SettingsManager.getListViewContent().equals(ListViewContent.TRENDING_WEEKLY))
                 urlString = "https://github.com/trending/"
-                        + SettingsManager.getLanguage().v + "?since=weekly";
+                        + (Language.ALL_LANGUAGE.equals(SettingsManager.getLanguage()) ?
+                        "" : SettingsManager.getLanguage().v) + "?since=weekly";
             if (SettingsManager.getListViewContent().equals(ListViewContent.TRENDING_MONTHLY))
                 urlString = "https://github.com/trending/"
-                        + SettingsManager.getLanguage().v + "?since=monthly";
+                        + (Language.ALL_LANGUAGE.equals(SettingsManager.getLanguage()) ?
+                        "" : SettingsManager.getLanguage().v) + "?since=monthly";
             urlString = urlString.replace(" ", "%20");
             if (BuildConfig.DEBUG)
                 Log.d("GithubWidget", "Get trending: " + urlString);

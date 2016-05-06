@@ -5,6 +5,7 @@ package com.nightonke.githubwidget;
  */
 public enum Language {
 
+    ALL_LANGUAGE("All Language"),
     JAVASCRIPT("JavaScript"),
     CSS("CSS"),
     RUBY("Ruby"),

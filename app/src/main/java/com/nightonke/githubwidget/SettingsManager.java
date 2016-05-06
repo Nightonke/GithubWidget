@@ -415,9 +415,9 @@ public class SettingsManager {
 
                         start = contents.indexOf(LANGUAGE, repoIndex) + LANGUAGE.length();
                         end = contents.indexOf(LANGUAGE_END, start);
-                        String language = contents.substring(start, end) + " • ";
-                        if (start > starsIndex) language = "";
-                        if (language.length() > 30) {
+                        String language = "";
+                        if (end != -1) language = contents.substring(start, end) + " • ";
+                        if (language.length() > 30 || end == -1) {
                             // no language, like markdown
                             language = "";
                             int p1 = contents.indexOf("<p class=\"repo-list-meta\">", repoIndex);
@@ -425,6 +425,8 @@ public class SettingsManager {
                             int p3 = p2 - 1;
                             while ('0' <= contents.charAt(p3) && contents.charAt(p3) <= '9') p3--;
                             starsString = contents.substring(p3 + 1, p2);
+                        } else if (start > starsIndex) {
+                            language = "";
                         }
 
                         try {
@@ -442,7 +444,8 @@ public class SettingsManager {
                             content.put("content", "");
                         } else {
                             end = contents.indexOf(CONTENT_END, start);
-                            content.put("content", contents.substring(start, end));
+                            content.put("content",
+                                    Util.deleteUselessString(contents.substring(start, end)));
                         }
 
                         listViewContents.add(content);

@@ -1983,6 +1983,12 @@ public class Util {
         return bitmap;
     }
 
+    /**
+     * Transform the UTC time to the local time zone.
+     *
+     * @param string Input time.
+     * @return Output time.
+     */
     public static String getTime(String string) {
         string = string.replace("T", " ");
         string = string.replace("Z", "");
@@ -2003,6 +2009,24 @@ public class Util {
             e.printStackTrace();
             return string;
         }
+    }
+
+    public static final String[] keyWordsStart = new String[]{"<a href", "</a>", "<img"};
+    public static final String[] keyWordsEnd = new String[]{">", ">", ">"};
+    public static String deleteUselessString(String input) {
+        StringBuilder builder = new StringBuilder(input);
+        for (int i = 0; i < keyWordsStart.length; i++) {
+            while (true) {
+                int index = builder.indexOf(keyWordsStart[i]);
+                if (index != -1) {
+                    int end = builder.indexOf(keyWordsEnd[i], index);
+                    builder.delete(index, end + 1);
+                } else {
+                    break;
+                }
+            }
+        }
+        return builder.toString();
     }
 
 

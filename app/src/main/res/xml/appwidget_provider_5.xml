@@ -4,6 +4,7 @@
     android:initialLayout="@layout/github_widget_5"
     android:minWidth="250dp"
     android:minHeight="250dp"
+    android:resizeMode="horizontal"
     >
 
 </appwidget-provider>

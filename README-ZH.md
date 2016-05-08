@@ -53,13 +53,14 @@ Github Widget是一个轻量级、现版本拥有11中风格的显示以下Githu
 
 ### Download
 查看 [Apk](https://github.com/Nightonke/GithubWidget/tree/master/Apk) 文件夹来获取所有版本的Apk文件和二维码。  
-通过 [这里](https://github.com/Nightonke/GithubWidget/blob/master/Apk/GithubWidget_1.0.2.apk?raw=true)下载最新的版本。    
+通过 [这里](https://github.com/Nightonke/GithubWidget/blob/master/Apk/GithubWidget_1.0.3.apk?raw=true)下载最新的版本。    
 或者通过 [fir.im/GithubWidget](http://fir.im/GithubWidget)。  
 再或者通过二维码：    
-![Qrcode](https://github.com/Nightonke/GithubWidget/blob/master/Apk/GithubWidget_1.0.2.png?raw=true)
+![Qrcode](https://github.com/Nightonke/GithubWidget/blob/master/Apk/GithubWidget_1.0.3.png?raw=true)
 
 ### Styles of Github Widget
-第一个版本支持11种风格。
+第一个版本支持11种风格。  
+注意从版本1.0.3开始，所有的widget都支持宽度超过或等于4个格子。但是仍然建议使用4个格子宽度的widget，因为有时候在太宽的widget上显示效果会比较差。
 
 #### 4×1
 ✓ 2D 贡献图表   
@@ -231,6 +232,9 @@ Github Widget是一个轻量级、现版本拥有11中风格的显示以下Githu
 ##### 1.0.2
 [ V1.0.2](https://github.com/Nightonke/GithubWidget/blob/master/Apk/GithubWidget_1.0.2.apk?raw=true)  
 加入热门仓库所有语言支持。
+##### 1.0.3
+[ V1.0.3](https://github.com/Nightonke/GithubWidget/blob/master/Apk/GithubWidget_1.0.3.apk?raw=true)  
+删除表情、链接等符号，支持更大的宽度。
 
 ### License
 

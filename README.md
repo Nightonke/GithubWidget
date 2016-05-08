@@ -53,13 +53,14 @@ After installing Github Widget, there is no launch icon for it. Try to add widge
 
 ### Download
 Check the [Apk](https://github.com/Nightonke/GithubWidget/tree/master/Apk) diectory for all versions apks and qrcode pictures.  
-Download the current version [here](https://github.com/Nightonke/GithubWidget/blob/master/Apk/GithubWidget_1.0.2.apk?raw=true).  
+Download the current version [here](https://github.com/Nightonke/GithubWidget/blob/master/Apk/GithubWidget_1.0.3.apk?raw=true).  
 Or from [fir.im/GithubWidget](http://fir.im/GithubWidget).  
 Or by qrcode:  
-![Qrcode](https://github.com/Nightonke/GithubWidget/blob/master/Apk/GithubWidget_1.0.2.png?raw=true)
+![Qrcode](https://github.com/Nightonke/GithubWidget/blob/master/Apk/GithubWidget_1.0.3.png?raw=true)
 
 ### Styles of Github Widget
-The first version supports 11 styles for showing part of the above information.
+The first version supports 11 styles for showing part of the above information.  
+Notice that from version 1.0.3, all the widgets support width larger or equal than 4-blocks. But I suggest 4-blocks-width widgets should be used because sometimes images look strange when the widgets are too wide.
 
 #### 4×1
 ✓ 2D Contributions chart  
@@ -230,7 +231,10 @@ Maybe you get problems or bugs? Just tell me in issues or email. And you can tel
 [ V1.0.1](https://github.com/Nightonke/GithubWidget/blob/master/Apk/GithubWidget_1.0.1.apk?raw=true)
 ##### 1.0.2
 [ V1.0.2](https://github.com/Nightonke/GithubWidget/blob/master/Apk/GithubWidget_1.0.2.apk?raw=true)  
-Add all language support.
+Add all language support.  
+##### 1.0.3
+[ V1.0.3](https://github.com/Nightonke/GithubWidget/blob/master/Apk/GithubWidget_1.0.3.apk?raw=true)  
+Delete url and img tags, support larger width.
 
 ### License
 

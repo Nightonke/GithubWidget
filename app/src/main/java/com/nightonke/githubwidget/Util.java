@@ -753,6 +753,7 @@ public class Util {
         int streak = 0;
         int currentStreakStart = 0;
         int lastStreak = -1;
+        int lastContributed = 0;
         for (int i = contributions.size() - 1; i >= 0; i--) {
             if (contributions.get(i).level != 0) {
                 streak++;
@@ -760,6 +761,12 @@ public class Util {
                 currentStreakStart = i + 1;
                 break;
             }
+        }
+        for (int i = contributions.size() - 1; i >= 0; i--) {
+            if (contributions.get(i).level == 0)
+                lastContributed++;
+            else
+                break;
         }
         for (int i = currentStreakStart - 1; i >= 0; i--) {
             if (contributions.get(i).level != 0) {
@@ -781,7 +788,7 @@ public class Util {
         } else if (lastStreak != -1) {
             int days = contributions.size() - lastStreak + 1;
             remarkString
-                    = getString(R.string.last_contributed) + days + getString(R.string.days_ago);
+                    = getString(R.string.last_contributed) + lastContributed + getString(R.string.days_ago);
         }
         String days = getString(streak == 1 ? R.string.day : R.string.days);
 

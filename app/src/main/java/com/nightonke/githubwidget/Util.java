@@ -115,11 +115,11 @@ public class Util {
                     = string.substring(fillPos + FILL_STRING.length(),
                     fillPos + FILL_STRING.length() + 7);
             switch (levelString) {
-                case "#eeeeee": level = 0; break;
-                case "#d6e685": level = 1; break;
-                case "#8cc665": level = 2; break;
-                case "#44a340": level = 3; break;
-                case "#1e6823": level = 4; break;
+                case "#ebedf0": level = 0; break;
+                case "#c6e48b": level = 1; break;
+                case "#7bc96f": level = 2; break;
+                case "#239a3b": level = 3; break;
+                case "#196127": level = 4; break;
             }
 
             int dataEndPos = string.indexOf("\"", dataPos + DATA_STRING.length());

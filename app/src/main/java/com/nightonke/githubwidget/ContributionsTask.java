@@ -153,10 +153,6 @@ public class ContributionsTask extends AsyncTask<String, Void, String> {
         if (SettingsManager.getUserName() == null) {
             switch (widget) {
                 case WIDGET_0:
-                    remoteViews.setImageViewBitmap(R.id.contributions,
-                            Util.getInputUserNameBitmap(
-                                    context, SettingsManager.getBaseColor(), Util.dp2px(30)));
-                    break;
                 case WIDGET_1:
                     remoteViews.setImageViewBitmap(R.id.contributions,
                             Util.getInputUserNameBitmap(

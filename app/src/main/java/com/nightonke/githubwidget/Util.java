@@ -88,11 +88,21 @@ public class Util {
     public final static String WIDTH_STRING = "<svg width=\"";
     public final static int BLOCK_WIDTH = 13;
     public static int getContributionsColumnNumber(String string) {
-        int width = Integer.valueOf(
-                string.substring(
-                        string.indexOf(WIDTH_STRING) + WIDTH_STRING.length(),
-                        string.indexOf("\"", WIDTH_STRING.length() + 1)));
+        int pos = string.indexOf(WIDTH_STRING);
+        int endPos = string.indexOf("\"", pos + WIDTH_STRING.length());
+        int width = Integer.valueOf(string.substring(pos + WIDTH_STRING.length(), endPos));
         return width / BLOCK_WIDTH;
+    }
+
+    public final static String LEVEL_COLOR_STRING = "<li style=\"background-color: ";
+    public static void setLevelColorsFromString(String string, String[] levels) {
+        int pos = -1;
+        int endPos = -1;
+        for (int i = 0; i < 5; i++) {
+            pos = string.indexOf(LEVEL_COLOR_STRING, pos + 1);
+            endPos = string.indexOf("\"", pos + LEVEL_COLOR_STRING.length());
+            levels[i] = string.substring(pos + LEVEL_COLOR_STRING.length(), endPos);
+        }
     }
 
     public final static String FILL_STRING = "fill=\"";
@@ -103,42 +113,48 @@ public class Util {
         int fillPos = -1;
         int dataPos = -1;
         int datePos = -1;
+        int fillEndPos = -1;
+        String[] levels = new String[5];
+        setLevelColorsFromString(string, levels);
         while (true) {
             fillPos = string.indexOf(FILL_STRING, fillPos + 1);
             dataPos = string.indexOf(DATA_STRING, dataPos + 1);
             datePos = string.indexOf(DATE_STRING, datePos + 1);
-
             if (fillPos == -1) break;
 
+            fillEndPos = string.indexOf("\"", fillPos + FILL_STRING.length());
+            String levelString = string.substring(fillPos + FILL_STRING.length(), fillEndPos);
+
             int level = 0;
-            String levelString
-                    = string.substring(fillPos + FILL_STRING.length(),
-                    fillPos + FILL_STRING.length() + 7);
-            switch (levelString) {
-                case "#eeeeee": level = 0; break;
-                case "#d6e685": level = 1; break;
-                case "#8cc665": level = 2; break;
-                case "#44a340": level = 3; break;
-                case "#1e6823": level = 4; break;
+            for (int i = 0; i < 5; i++) {
+                if (levels[i].equals(levelString)) {
+                    level = i;
+                    break;
+                }
             }
 
-            int dataEndPos = string.indexOf("\"", dataPos + DATA_STRING.length());
-            String dataString = string.substring(dataPos + DATA_STRING.length(), dataEndPos);
-            int data = Integer.valueOf(dataString);
+            try {
+                int dataEndPos = string.indexOf("\"", dataPos + DATA_STRING.length());
+                String dataString = string.substring(dataPos + DATA_STRING.length(), dataEndPos);
+                int data = Integer.valueOf(dataString);
+                String dateString =
+                        string.substring(datePos + DATE_STRING.length(),
+                        datePos + DATE_STRING.length() + 11);
 
-            String dateString
-                    = string.substring(datePos + DATE_STRING.length(),
-                    datePos + DATE_STRING.length() + 11);
-
-            contributions.add(new Day(
-                    Integer.valueOf(dateString.substring(0, 4)),
-                    Integer.valueOf(dateString.substring(5, 7)),
-                    Integer.valueOf(dateString.substring(8, 10)),
-                    level,
-                    data
-                    ));
+//                if (BuildConfig.DEBUG)
+//                    Log.d("GithubWidget", "Get user contributions: " + dataString +
+//                            "(day: " + dateString + ") level: " + level);
+                contributions.add(new Day(
+                        Integer.valueOf(dateString.substring(0, 4)),
+                        Integer.valueOf(dateString.substring(5, 7)),
+                        Integer.valueOf(dateString.substring(8, 10)),
+                        level,
+                        data
+                ));
+            } catch (Exception e) {
+                break;
+            }
         }
-
         return contributions;
     }
 
